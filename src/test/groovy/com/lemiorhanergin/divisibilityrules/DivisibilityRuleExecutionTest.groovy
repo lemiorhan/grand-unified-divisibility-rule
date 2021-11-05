@@ -2,14 +2,14 @@ package com.lemiorhanergin.divisibilityrules
 
 import spock.lang.Specification
 
-class FormulaExecutionTest extends Specification {
+class DivisibilityRuleExecutionTest extends Specification {
 
     def "should find divisibility results"() {
         given:
-        def formulaExecutor = new FormulaExecutor()
+        def divisibilityRule = new DivisibilityRule()
 
         when:
-        def isDivisible = formulaExecutor.execute(dividend, divisor)
+        def isDivisible = divisibilityRule.isDivisible(dividend, divisor)
 
         then:
         isDivisible ? (dividend % divisor == 0) : (dividend % divisor != 0)
