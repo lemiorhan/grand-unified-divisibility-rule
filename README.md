@@ -99,18 +99,18 @@ For instance, 396 is divisible by 33, because 6 x 10 is 60 and 39 + 60 is 99 and
 For the given:
 * `a1`: Remaining digits of dividend
 * `a2`: Remaining digits of divisor
-* `b`: Ones digit of dividend
+* `b1`: Ones digit of dividend
  
 The formula:
-* When ones digit of divisor is 1: `(1 x a1) + ((9 x a2) + 1) x b`
-* When ones digit of divisor is 2: `(2 x a1) + ((4 x a2) + 1) x b`
-* When ones digit of divisor is 3: `(1 x a1) + ((3 x a2) + 1) x b`
-* When ones digit of divisor is 4: `(2 x a1) + ((2 x a2) + 1) x b`
-* When ones digit of divisor is 5: `(5 x a1) + ((1 x a2) + 1) x b`
-* When ones digit of divisor is 6: `(4 x a1) + ((1 x a2) + 1) x b`
-* When ones digit of divisor is 7: `(3 x a1) + ((1 x a2) + 1) x b`
-* When ones digit of divisor is 8: `(2 x a1) + ((1 x a2) + 1) x b`
-* When ones digit of divisor is 9: `(1 x a1) + ((1 x a2) + 1) x b`
+* When ones digit of divisor is 1: `(1 x a1) + ((9 x a2) + 1) x b1`
+* When ones digit of divisor is 2: `(2 x a1) + ((4 x a2) + 1) x b1`
+* When ones digit of divisor is 3: `(1 x a1) + ((3 x a2) + 1) x b1`
+* When ones digit of divisor is 4: `(2 x a1) + ((2 x a2) + 1) x b1`
+* When ones digit of divisor is 5: `(5 x a1) + ((1 x a2) + 1) x b1`
+* When ones digit of divisor is 6: `(4 x a1) + ((1 x a2) + 1) x b1`
+* When ones digit of divisor is 7: `(3 x a1) + ((1 x a2) + 1) x b1`
+* When ones digit of divisor is 8: `(2 x a1) + ((1 x a2) + 1) x b1`
+* When ones digit of divisor is 9: `(1 x a1) + ((1 x a2) + 1) x b1`
  
 If the calculated number with the formula in first iteration is not equal to itself or the divisor, use it as the new dividend and apply the same formula again in a new iteration. When iterations stop, check if the last calculated number is divisible by the divisor or not.
  
@@ -120,12 +120,12 @@ For the given:
 * `a1`: Remaining digits of dividend
 * `a2`: Remaining digits of divisor
 * `b1`: Ones digit of dividend
-* `b2`: Ones digit of dividend
+* `b2`: Ones digit of divisor
 * `x`: (10 + b2  - (b2 * CEIL(10 / b2)))
 * `y`: (CEIL(10 / b2) - 1)
 
 Lemi's Equation becomes:
-`(x * a1) + ((y * a2) + 1) * b`
+`(x * a1) + ((y * a2) + 1) * b1`
 
 
 
