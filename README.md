@@ -1,16 +1,36 @@
-# Grand Unified Divisibility Rule: Lemi's Equation
+# Grand Unified Divisibility Rule: The Lemi's Formula
 
-Divisibility rules are fast and simple calculations to help you to determine whether a given integer is divisible by another integer without performing the division, usually by examining its digits in your head.
+`Divisibility rules` are fast and simple calculations to help you to determine whether a given integer is divisible by another integer without performing the division, usually by examining its digits in your head.
 
-Every kid learn divisibility rules of one-digit numbers, usually at primary school. Knowing these practical tricks increase your speed at solving mathematical problems. Therefore divisibility rules could be most recognized shortcuts people use in calculations in all around the world.
+Every kid learn divisibility rules of one-digit numbers, usually at primary school. Knowing these practical tricks increase your speed at solving mathematical problems. Therefore, divisibility rules could be most recognized shortcuts people use in calculations in all around the world.
 
-Let’s remember the first well-known divisibility rules.
+[Lemi Orhan Ergin](https://www.linkedin.com/in/lemiorhan/) identified a unified divisibility rule for all numbers in 1997 while he was at high school. This document explains the root formula where each divisibility rule derives from.
 
-A little note about terminology here. `Dividend` is the number that is to be divided by the divisor. `Divisor` is the factor that divides the dividend. `Quotient` is the result of the division. `Remainder` is the number that is left after division. For instance for the division 75 / 20, 75 is the dividend, 20 is the divisor, 3 is the quotient and 15 is the remainder.
+# History
 
-# A. Practical Divisibilty Rules for One-Digit Numbers
+When I was at high school in Turkey in 1997, I decided to investigate an algorithm for detecting prime numbers as a maths project. Since prime numbers are the numbers only divided by one and itself, I started to understand the divisibility rules of first few prime numbers, 5, 7, 11, 13, 17 and 19. I thought that If I understand the logic behind these rules, I can find a common algorithm and detect prime numbers with that algorithm.
 
-The followings are the ones what we learned in the days of primary school. 
+I had no computers at that time. With a basic calculator, I did thousands of calculations. At some point I figured out that divisibility rule of 2 is similar to divisibility rule of 12, and 22, and 32, etc. Interestingly divisibility rule of 3 is also similar to divisibility rule of 13, 23, etc. Then I had an eureca! moment. Clearly the divisibility rules are very similar among numbers sharing same ones place digit. For instance, divisibility rule of 6 is very similar to divisibility rule of 45732360346. Around 1997, 
+
+Afters working months spending hundreds of hours with my calculator, I found one single formula covering all possible known divisibility rules. I documented everything with my very-amateur words to a paper, put it to an envelope and sent it to [TUBITAK](https://en.wikipedia.org/wiki/Scientific_and_Technological_Research_Council_of_Turkey) as a Math Project by my own. Nothing happened of course. I had no expectations, since it was very poorly written with no academic background, and I was just a high school kid working alone. 
+
+After 24 years, in 2021, I remembered old good days of divisibility rules. I found my papers and wrote a [simple program](https://github.com/lemiorhan/grand-unified-divisibility-rules) for validating my findings. Guess the result: It works!
+
+If you are here reading my words, thanks for your interest! As of 2021, [I am a software crafter](https://www.linkedin.com/in/lemiorhan/) living in Istanbul. I am the co-founder of [Craftgate, the cloud based payment gateway](https://www.craftgate.io). I am neither a mathematician, not an academician. This post is not an academic paper too. However, it contains a true story of my passion and my amateur findings about Grand Unified Divisibility Rule. I already give the formula my name, `The Lemi's Formula`.   
+
+# Terminology
+
+* `Ones place digit` is the last digit of a number. For instance, for number 5632, ones place digit is 2.
+* `Remaining digits` is the number containing all the digits except the last digit. For instance, for number 5632, the remaining digits is 563.
+* `Coefficient` is a numerical or constant quantity placed before and multiplying the variable in an algebraic expression.
+* `Dividend` is the number that is to be divided by the divisor. For instance for the division 75 / 20, 75 is the dividend. 
+* `Divisor` is the factor that divides the dividend. For instance for the division 75 / 20, 20 is the divisor.
+* `Quotient` is the result of the division. For instance for the division 75 / 20, 3 is the quotient.
+* `Remainder` is the number that is left after division. For instance for the division 75 / 20, 15 is the remainder.
+
+# Practical Divisibility Rules for One-Digit Numbers
+
+Before starting with my findings, let's look at some common well-known divisibility rules that we usually learn in the days of primary school. 
 
 ### Divisible by 2
 A number is even or a number whose last digit is an even number i.e. 0, 2, 4, 6, and 8. 
@@ -59,7 +79,7 @@ For instance 560 is divisible by 10, because the last digit is 0. 651 is not div
 
 As you see the divisibility rules for one-digit numbers are pretty practical. All can be done in your head in seconds. In contrast, the divisibility rules of bigger numbers requires extra calculation and not practical in reality. However if we do not stop and investigate for bigger numbers, we end up with complex but working algorithms for deciding divisibility.
 
-# B. Divisibility Rules for All Numbers
+# Divisibility Rules for All Numbers
 
 During investigation, I noticed that divisibility rules of numbers having same ones place digit are very similar, so similar that we can end up with a formula about it. Let's deep dive into it by giving examples.
 
@@ -121,8 +141,8 @@ For the given:
 * `a2`: Remaining digits of divisor
 * `b1`: Ones digit of dividend
 * `b2`: Ones digit of divisor
-* `x`: (10 + b2  - (b2 * CEIL(10 / b2)))
-* `y`: (CEIL(10 / b2) - 1)
+* `x`: First coefficient as (10 + b2  - (b2 * CEIL(10 / b2)))
+* `y`: Second coefficient as (CEIL(10 / b2) - 1)
 
 Lemi's Equation becomes:
 `(x * a1) + ((y * a2) + 1) * b1`
