@@ -26,25 +26,20 @@ class DivisibilityRule {
         // formula is selected with the last digit of divisor
         long lastNumberOfDivisor = divisor % 10
 
-        log.info("============[ {}/{} ]==============", dividend, divisor)
-        log.info("FORMULA SELECTED FOR {}", lastNumberOfDivisor)
+        log.info("DIVISIBILITY CHECK FOR [{}/{}]", dividend, divisor)
 
         // run the formula and calculate a number of iteration #1
-        long calculated = execute(lastNumberOfDivisor, dividend, divisor)
-        log.info("{}. iteration -> {}", 1, calculated)
+        def iteration = 1
+        long calculated = execute(iteration, lastNumberOfDivisor, dividend, divisor)
 
         long previousCalculated = Long.MAX_VALUE
-        def iteration = 2
 
         // let's do the iterations
-        while (continueIterating(iteration, calculated, previousCalculated, divisor)) {
+        while (continueIterating(++iteration, calculated, previousCalculated, divisor)) {
             previousCalculated = calculated
 
             // run the formula and calculate a number for each iteration
-            calculated = execute(lastNumberOfDivisor, calculated, divisor)
-
-            log.info("{}. iteration -> {}", iteration, calculated)
-            iteration++
+            calculated = execute(iteration, lastNumberOfDivisor, calculated, divisor)
 
             // for repeats, try reducing the calculated number for the next iteration
             if (calculated == previousCalculated && calculated > divisor) {
@@ -53,8 +48,8 @@ class DivisibilityRule {
         }
 
         // identify if dividend can be divided to divisor with a zero remainder
-        def divisibilityResult = calculateDivisibility(calculated, previousCalculated, divisor)
-        log.info("RESULT: " + (divisibilityResult ? "DIVISIBLE" : "NOT DIVISIBLE") + " CALCULATED IN ${iteration - 1} STEPS")
+        def divisibilityResult = calculateDivisibility(calculated, divisor)
+        log.info("{} IS {} BY {}. RESULT CALCULATED IN {} {}.", dividend, (divisibilityResult ? "DIVISIBLE" : "NOT DIVISIBLE"), divisor, iteration - 1, (iteration - 1 == 1 ? "ITERATION" : "ITERATIONS"))
         return divisibilityResult
     }
 
@@ -66,15 +61,17 @@ class DivisibilityRule {
      * @param divisor the divisor number
      * @return calculated result as long
      */
-    private long execute(long lastNumberOfDivisor, long dividend, long divisor) {
+    private long execute(int iteration, long lastNumberOfDivisor, long dividend, long divisor) {
         def x = (10 + lastNumberOfDivisor - (lastNumberOfDivisor * Math.ceil(10 / lastNumberOfDivisor))) as int // firstCoefficient
         def y = (Math.ceil(10 / lastNumberOfDivisor) - 1) as int // secondCoefficient
 
         long a1 = (long) (dividend / 10) // remainingFirstDigitsOfDividend
         long a2 = (long) (divisor / 10) // remainingFirstDigitsOfDivisor
-        long b = dividend % 10 // lastNumberOfDividend
+        long b1 = dividend % 10 // lastNumberOfDividend
 
-        return (x * a1) + ((y * a2) + 1) * b
+        def calculated = (x * a1) + ((y * a2) + 1) * b1
+        log.info("ITERATION {} =>   ({} x {}) + (({} x {}) + 1) x {} = {}", iteration, x, a1, y, a2, b1, calculated)
+        return calculated
     }
 
     /**
@@ -87,7 +84,17 @@ class DivisibilityRule {
      * @return boolean, true if continue iterating, false if stop iterating and continue
      */
     private boolean continueIterating(int iteration, long calculated, long previousCalculated, long divisor) {
-        return iteration < MAX_ITERATION_COUNT_ALLOWED && calculated != divisor && calculated != previousCalculated && calculated < previousCalculated && (calculated - divisor) > 0
+        def maxIterationLimitExceeded = iteration >= MAX_ITERATION_COUNT_ALLOWED
+        def calculatedNumberEqualToDivisor = calculated == divisor
+        def calculatedNumberIsGreaterThanPreviousIteration = calculated > previousCalculated
+        def calculatedNumberIsLowerThanDivisor = (calculated - divisor) < 0
+
+        if (maxIterationLimitExceeded) log.info("ITERATION STOPS DUE TO \"MAX ITERATION LIMIT EXCEEDED\"")
+        if (calculatedNumberEqualToDivisor) log.info("ITERATION STOPS DUE TO \"CALCULATED NUMBER IS EQUAL TO DIVISOR\"")
+        if (calculatedNumberIsGreaterThanPreviousIteration) log.info("ITERATION STOPS DUE TO \"CALCULATED NUMBER IS GREATER THAN PREVIOUS ITERATION\"")
+        if (calculatedNumberIsLowerThanDivisor) log.info("ITERATION STOPS DUE TO \"CALCULATED NUMBER IS LOWER THAN DIVISOR\"")
+
+        return !maxIterationLimitExceeded && !calculatedNumberEqualToDivisor && !calculatedNumberIsGreaterThanPreviousIteration && !calculatedNumberIsLowerThanDivisor
     }
 
     /**
@@ -98,7 +105,7 @@ class DivisibilityRule {
      * @param divisor
      * @return boolean, true if divisible, false if not divisible
      */
-    private boolean calculateDivisibility(long calculated, long previousCalculation, long divisor) {
-        return calculated == divisor || calculated == previousCalculation
+    private boolean calculateDivisibility(long calculated, long divisor) {
+        return calculated == divisor
     }
 }

@@ -1,7 +1,9 @@
 package com.lemiorhanergin.divisibilityrules
 
+import groovy.util.logging.Slf4j
 import spock.lang.Specification
 
+@Slf4j
 class DivisibilityRuleExecutionTest extends Specification {
 
     def "should find divisibility results"() {
@@ -9,6 +11,7 @@ class DivisibilityRuleExecutionTest extends Specification {
         def divisibilityRule = new DivisibilityRule()
 
         when:
+        log.info("==============[{}/{}]==============", dividend, divisor)
         def isDivisible = divisibilityRule.isDivisible(dividend, divisor)
 
         then:
