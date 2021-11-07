@@ -12,11 +12,11 @@ I have no concerns about practicality, performance, or simplicity. My main conce
 
 When I was at high school in Turkey in 1997, I decided to investigate an algorithm for detecting prime numbers as a maths project. Since prime numbers are the numbers only divided by one and itself, I started to understand the divisibility rules of the first few prime numbers, 5, 7, 11, 13, 17, and 19. I thought that If I understand the logic behind these rules, I can find a common algorithm and detect prime numbers with that algorithm.
 
-I had no computers at that time. With a basic calculator, I did thousands of calculations. At some point, I figured out that the divisibility rule of 2 is similar to the divisibility rule of 12, and 22, and 32, etc. Interestingly divisibility rule of 3 is also similar to the divisibility rule of 13, 23, etc. Then I had a eureka! moment. Clearly, the divisibility rules are very similar among numbers sharing the same ones place digit. For instance, the divisibility rule of 6 is very similar to the divisibility rule of 45732360346. Around 1997,
+I had no computers at that time. With a basic calculator, I did thousands of calculations. At some point, I figured out that the divisibility rule of 2 is similar to the divisibility rule of 12, and 22, and 32, etc. Interestingly divisibility rule of 3 is also similar to the divisibility rule of 13, 23, etc. Then I had a eureka! moment. Clearly, the divisibility rules are very similar among numbers sharing the same ones place digit. For instance, the divisibility rule of 6 is very similar to the divisibility rule of 45732360346. 
 
 After working months spending hundreds of hours with my calculator, I found one single formula covering all possible known divisibility rules. I documented everything with my very-amateur words to a paper, put it in an envelope, and sent it to [TUBITAK](https://en.wikipedia.org/wiki/Scientific_and_Technological_Research_Council_of_Turkey) as a Math Project on my own. Nothing happened of course. I had no expectations since it was very poorly written with no academic background, and I was just a high school kid working alone.
 
-After 24 years, in 2021, I remembered the old good days of divisibility rules. I found my papers and wrote a [simple program](https://github.com/lemiorhan/grand-unified-divisibility-rules) for validating my findings. Guess the result: It works!
+After 24 years, in 2021, I remembered the old good days of divisibility rules. I found my papers and wrote a [simple program](https://github.com/lemiorhan/grand-unified-divisibility-rule) for validating my findings. Guess the result: It works!
 
 If you are here reading my words, thanks for your interest! As of 2021, [I am a software crafter](https://www.linkedin.com/in/lemiorhan/) living in Istanbul. I am the co-founder of [Craftgate, the cloud-based payment gateway](https://www.craftgate.io). I am neither a mathematician, not an academician. This post is not in academic paper standards. However, it contains a true story of my passion and my amateur findings of Grand Unified Divisibility Rule. I have already given the formula my name, `Lemi's Formula`.
 
@@ -182,7 +182,7 @@ Lemi's Equation becomes: `(x * a1) + ((y * a2) + 1) * b1`
 
 # Implementation
 
-The implementation of the formula is pretty straightforward. The following code is written in Groovy. You can find the code from [DivisibilityRule.groovy file](https://github.com/lemiorhan/grand-unified-divisibility-rules/blob/main/src/main/groovy/com/lemiorhanergin/divisibilityrules/DivisibilityRule.groovy).
+The implementation of the formula is pretty straightforward. The following code is written in Groovy. You can find the code from [DivisibilityRule.groovy file](https://github.com/lemiorhan/grand-unified-divisibility-rule/blob/main/src/main/groovy/com/lemiorhanergin/divisibilityrules/DivisibilityRule.groovy).
 
 ```
 01:  def isDivisible(long dividend, long divisor) {
@@ -254,7 +254,13 @@ At the end of execution, we need to determine whether dividend is divisible by d
 
 # Examples
 
-You can run your own tests too. Just open and update [DivisibilityRuleExecutionTest.groovy file](https://github.com/lemiorhan/grand-unified-divisibility-rules/blob/main/src/test/groovy/com/lemiorhanergin/divisibilityrules/DivisibilityRuleExecutionTest.groovy) and run.
+You can run your own tests too. Just open and update [DivisibilityRuleExecutionTest.groovy file](https://github.com/lemiorhan/grand-unified-divisibility-rule/blob/main/src/test/groovy/com/lemiorhanergin/divisibilityrules/DivisibilityRuleExecutionTest.groovy) and run.
+
+I used [Groovy](https://groovy-lang.org/) for coding and [Spock Framework](https://spockframework.org/) for writing unit tests. I used [Gradle](https://gradle.org/) for building the project. You can build and run the tests with the following command from command line.
+
+```
+ > ./gradlew build
+```
 
 ### Is 18 divisible by 3 ?
 ```
