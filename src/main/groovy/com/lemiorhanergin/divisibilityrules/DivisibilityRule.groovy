@@ -29,46 +29,41 @@ class DivisibilityRule {
         if (isLogEnabled) log.info("FACTORS: {}", factors)
 
         factors.every { factor ->
-            div(dividend, factor.key, factor.value, divisor, 1)
+            calculateDivisibilityForFactorGroup(dividend, factor.key, factor.value, divisor, 1)
         }
     }
 
-    def div(long dividend, long factor, int count, long divisor, Integer iteration) {
+    def calculateDivisibilityForFactorGroup(long dividend, long factor, int count, long divisor, Integer iteration) {
         if (count == 0) return true
-        return div((long) (dividend / factor), factor, count - 1, divisor, iteration) && calculateDivisibility(dividend, factor, divisor, iteration)
+        return calculateDivisibilityForFactorGroup((long) (dividend / factor), factor, count - 1, divisor, iteration) &&
+                calculateDivisibilityForFactor(dividend, factor, divisor, iteration)
     }
 
-    def calculateDivisibility(long dividend, long factor, long divisor, int iteration) {
-        if (iteration > 50) return false
+    def calculateDivisibilityForFactor(long dividend, long factor, long divisor, int iteration) {
+        if (iteration > MAX_ITERATION_COUNT_ALLOWED) return false
 
-        // formula is selected with the last digit of factor
-        def coefficient = 1
         long lastNumberOfDivisor = factor % 10
         if (isLogEnabled) log.info("DIVISIBILITY CHECK FOR [{}/{}]", dividend, factor)
 
-        // run the formula and calculate a number of iteration #1
         long previousCalculated = dividend
 
-        def calculated = execute(iteration, lastNumberOfDivisor, dividend, factor, coefficient)
-        if (calculated == previousCalculated && calculated > factor) calculated = calculated - factor
-        if (isLogEnabled) log.info("1. calculated: {}", calculated)
+        def calculation = execute(iteration, lastNumberOfDivisor, dividend, factor)
+        if (calculation == previousCalculated && calculation > factor) calculation = calculation - factor
+        if (isLogEnabled) log.info("1. ITERATION: {}", calculation)
 
-        // let's do the iterations
-        while (continueIterating(++iteration, dividend, divisor, factor, calculated, previousCalculated)) {
-            previousCalculated = calculated
-            // run the formula and calculate a number for each iteration
+        while (continueIterating(++iteration, dividend, divisor, factor, calculation, previousCalculated)) {
+            previousCalculated = calculation
 
-            calculated = execute(iteration, lastNumberOfDivisor, calculated, factor, coefficient)
-            if (calculated == previousCalculated && calculated > factor) calculated = calculated - factor
-            if (isLogEnabled) log.info("n. calculated: {}", calculated)
+            calculation = execute(iteration, lastNumberOfDivisor, calculation, factor)
+            if (calculation == previousCalculated && calculation > factor) calculation = calculation - factor
+            if (isLogEnabled) log.info("{}. ITERATION: {}", iteration, calculation)
         }
 
-        // identify if dividend can be divided to factor with a zero remainder
-        def divisibilityResult = decideDivisibility(dividend, divisor, factor, calculated, previousCalculated, coefficient)
+        def divisibilityResult = decideDivisibility(factor, calculation)
         if (isLogEnabled) log.info("{} IS {} BY {}. RESULT CALCULATED IN {} {}.", dividend, (divisibilityResult ? "DIVISIBLE" : "NOT DIVISIBLE"), factor, iteration - 1, (iteration - 1 == 1 ? "ITERATION" : "ITERATIONS"))
-        if (!divisibilityResult && calculated > factor) {
-            calculated = calculated - factor
-            calculateDivisibility(calculated, factor, divisor, iteration)
+        if (!divisibilityResult && calculation > factor) {
+            calculation = calculation - factor
+            calculateDivisibilityForFactor(calculation, factor, divisor, iteration)
         }
         return divisibilityResult
     }
@@ -81,20 +76,24 @@ class DivisibilityRule {
      * @param divisor the divisor number
      * @return calculated result as long
      */
-    private long execute(int iteration, long lastNumberOfDivisor, long dividend, long divisor, long coefficient) {
+    private long execute(int iteration, long lastNumberOfDivisor, long dividend, long divisor) {
+        // first coefficient
         def x = (10 + lastNumberOfDivisor - (lastNumberOfDivisor * Math.ceil(10 / lastNumberOfDivisor))) as int
-        // firstCoefficient
-        def y = (Math.ceil(10 / lastNumberOfDivisor) - 1) as int // secondCoefficient
-
-        long a1 = (long) (dividend / 10) // remainingFirstDigitsOfDividend
-        long a2 = (long) (divisor / 10) // remainingFirstDigitsOfDivisor
-        long b1 = dividend % 10 // lastNumberOfDividend
+        // second coefficient
+        def y = (Math.ceil(10 / lastNumberOfDivisor) - 1) as int
+        // remaining first digits of dividend
+        long a1 = (long) (dividend / 10)
+        // remaining first digits of divisor
+        long a2 = (long) (divisor / 10)
+        // last number of dividend
+        long b1 = dividend % 10
+        // constant
         long b2 = 1
 
 
-        def calculated = (x * a1) + (((y * a2) + b2) * b1) as long
-        if (isLogEnabled) log.info("ITERATION {} => ({} x {}) + (({} x {}) + {}) x {} = {}", iteration, x, a1, y, a2, b2, b1, calculated)
-        return calculated
+        def calculation = (x * a1) + (((y * a2) + b2) * b1) as long
+        if (isLogEnabled) log.info("ITERATION {} => ({} x {}) + (({} x {}) + {}) x {} = {}", iteration, x, a1, y, a2, b2, b1, calculation)
+        return calculation
     }
 
     /**
@@ -109,52 +108,39 @@ class DivisibilityRule {
     private boolean continueIterating(int iteration, long dividend, long divisor, long factor, long calculated, long previousCalculated) {
         def maxIterationLimitExceeded = iteration >= MAX_ITERATION_COUNT_ALLOWED
         def calculatedNumberEqualToFactor = calculated == factor
+        def calculatedNumberIsLowerThanFactor = calculated < factor
         def calculatedNumberEqualToDivisor = calculated == divisor
         def calculatedNumberEqualToDividend = calculated == dividend
-        def calculatedNumberIsGreaterThanPreviousIteration = calculated > previousCalculated
         def calculatedNumberIsEqualToPreviousIteration = calculated == previousCalculated
-        //def calculatedNumberIsLowerThanDivisor = (calculated - divisor) < 0
-        def calculatedNumberIsLowerThanDivisor = calculated == 0
 
         if (isLogEnabled) {
             if (calculatedNumberEqualToFactor) log.info("ITERATION STOPS DUE TO \"CALCULATED NUMBER IS EQUAL TO FACTOR\"")
+            if (calculatedNumberIsLowerThanFactor) log.info("ITERATION STOPS DUE TO \"CALCULATED NUMBER IS LOWER THAN FACOR\"")
             if (calculatedNumberEqualToDivisor) log.info("ITERATION STOPS DUE TO \"CALCULATED NUMBER IS EQUAL TO DIVISOR\"")
             if (calculatedNumberEqualToDividend) log.info("ITERATION STOPS DUE TO \"CALCULATED NUMBER IS EQUAL TO DIVIDEND\"")
-            //if (calculatedNumberIsGreaterThanPreviousIteration) log.info("ITERATION STOPS DUE TO \"CALCULATED NUMBER IS GREATER THAN PREVIOUS ITERATION\"")
-            if (calculatedNumberIsLowerThanDivisor) log.info("ITERATION STOPS DUE TO \"CALCULATED NUMBER IS LOWER THAN DIVISOR\"")
             if (calculatedNumberIsEqualToPreviousIteration) log.info("ITERATION STOPS DUE TO \"CALCULATED NUMBER IS EQUAL TO PREVIOUS VERSION\"")
         }
 
-        return !maxIterationLimitExceeded && !calculatedNumberIsEqualToPreviousIteration && !calculatedNumberIsLowerThanDivisor & !calculatedNumberEqualToDividend  && !calculatedNumberEqualToFactor
+        return !maxIterationLimitExceeded && !calculatedNumberIsEqualToPreviousIteration && !calculatedNumberIsLowerThanFactor & !calculatedNumberEqualToDividend && !calculatedNumberEqualToFactor
     }
 
     /**
      * Defines if the dividend is divided to divisor with zero reminder
      *
-     * @param calculated , calculated number after each iteration
-     * @param previousCalculation , calculated number of previous iteration
-     * @param divisor
+     * @param factor
+     * @param calculation , calculation number after each iteration
      * @return boolean, true if divisible, false if not divisible
      */
-    private boolean decideDivisibility(long dividend, long divisor, long factor, long calculated, long previousCalculated, long coefficient) {
-        if (isLogEnabled) log.info("calculated: {}", calculated)
-        if (isLogEnabled) log.info("previousCalculated: {}", previousCalculated)
-        //return dividend != calculated && (calculated == 0 || calculated == divisor)
-        //return (calculated == divisor || calculated == dividend || calculated == factor)
-        //return (calculated == factor || calculated == dividend)
-        return (calculated == factor)
-        //return calculated == divisor
+    private boolean decideDivisibility(long factor, long calculation) {
+        return (calculation == factor)
     }
 
-    def gcd(a, b) {
-        if (!b) a
-        else gcd(b, a % b)
-    }
-
-    def lcm(a, b) {
-        a * b / gcd(a, b)
-    }
-
+    /**
+     * Detects prime factors
+     *
+     * @param number , the given number
+     * @return list of prime factors (a prime factor can be available multiple times)
+     */
     def primeFactors(long number) {
         long n = number;
         List<Integer> factors = new ArrayList<Integer>()
@@ -167,19 +153,13 @@ class DivisibilityRule {
         return factors
     }
 
+    /**
+     * Groups prime factors and creates a [primeFactor, number of repetition] map
+     *
+     * @param primeFactors , list of prime factors
+     * @return Map of
+     */
     def factors(List<Long> primeFactors) {
         return primeFactors.countBy { it }
-    }
-
-    def coefficient(List<Long> primeFactors, long divisor) {
-        def factorCountsMap = primeFactors.countBy { it }
-        if (factorCountsMap.size() == 1) {
-            def primeFactor = (int) primeFactors.get(0) // 2
-            def factor = factorCountsMap.collect { factor, count -> (long) Math.pow(factor, count) }.get(0) // 8
-            def count = factorCountsMap.get((int) primeFactors.get(0)) // 3
-            if (isLogEnabled) log.info("divisor: {}, primeFactor: {}, factor: {}, count: {}", divisor, primeFactor, factor, count)
-            return divisor != primeFactor && count > 1 ? count - 1 : 1
-        }
-        return 1
     }
 }
