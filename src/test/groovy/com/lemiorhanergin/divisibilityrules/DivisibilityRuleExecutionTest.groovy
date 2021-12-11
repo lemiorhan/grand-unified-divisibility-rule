@@ -9,6 +9,7 @@ class DivisibilityRuleExecutionTest extends Specification {
     def "should find divisibility results"() {
         given:
         def divisibilityRule = new DivisibilityRule()
+        DivisibilityRule.isLogEnabled = true
 
         when:
         log.info("==============[{}/{}]==============", dividend, divisor)
@@ -78,4 +79,100 @@ class DivisibilityRuleExecutionTest extends Specification {
         75939187142  | 73778
         222387483951 | 89909
     }
+
+
+    def "should find divisibility results2"() {
+        given:
+        def divisibilityRule = new DivisibilityRule()
+        DivisibilityRule.isLogEnabled = true
+
+        when:
+        log.info("==============[{}/{}]==============", dividend, divisor)
+        def isDivisible = divisibilityRule.isDivisible(dividend, divisor)
+
+        then:
+        isDivisible ? (dividend % divisor == 0) : (dividend % divisor != 0)
+
+        where:
+        dividend | divisor
+        837      | 216
+        837      | 558
+        838      | 16
+        838      | 27
+        839      | 16
+        839      | 27
+        840      | 16
+        840      | 27
+        840      | 96
+        840      | 336
+        841      | 16
+        841      | 27
+        841      | 58
+        841      | 87
+        841      | 116
+        841      | 145
+        842      | 16
+        842      | 27
+        843      | 16
+        843      | 27
+        844      | 16
+        844      | 27
+        845      | 16
+        845      | 27
+        845      | 117
+        24       | 16
+        32       | 16
+        27       | 18
+        28       | 16
+        36       | 16
+        36       | 27
+        38       | 16
+        39       | 27
+        40       | 16
+        3        | 2
+        4        | 3
+        5        | 2
+        240      | 36
+        240      | 9
+        6        | 2
+        8        | 2
+        186      | 3
+        270      | 45
+        104      | 16
+        108      | 16
+        108      | 45
+        116      | 16
+        117      | 18
+        117      | 27
+        117      | 36
+        117      | 45
+        120      | 16
+        124      | 16
+        126      | 27
+        126      | 36
+        126      | 45
+        132      | 16
+        135      | 18
+        135      | 36
+    }
+
+/*
+    def "should find divisibility results2"() {
+        given:
+        def divisibilityRule = new DivisibilityRule()
+        DivisibilityRule.isLogEnabled = true
+
+        when:
+        log.info("==============[{}/{}]==============", dividend, divisor)
+        def isDivisible = divisibilityRule.isDivisible(dividend, divisor)
+
+        then:
+        isDivisible ? (dividend % divisor == 0) : (dividend % divisor != 0)
+
+        where:
+        dividend | divisor
+        840     | 336
+    }
+*/
+
 }
