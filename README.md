@@ -17,10 +17,11 @@ share a common algorithm and each one can be derived from the main formula.
 
 # History
 
-When I was at high school in Turkey in 1997, I decided to investigate an algorithm for detecting prime numbers as a
-maths project. Since prime numbers are the numbers only divided by one and itself, I started to understand the
-divisibility rules of the first few prime numbers, 5, 7, 11, 13, 17, and 19. I thought that If I understand the logic
-behind these rules, I can find a common algorithm and detect prime numbers with that algorithm.
+When I was at [high school](https://izmir60yilanadolu.meb.k12.tr/) in Turkey in 1997, I decided to investigate an
+algorithm for detecting prime numbers as a maths project. Since prime numbers are the numbers only divided by one and
+itself, I started to understand the divisibility rules of the first few prime numbers, 5, 7, 11, 13, 17, and 19. I
+thought that If I understand the logic behind these rules, I can find a common algorithm and detect prime numbers with
+that algorithm.
 
 I had no computers at that time. With a basic calculator, I did thousands of calculations. At some point, I figured out
 that the divisibility rule of 2 is similar to the divisibility rule of 12, and 22, and 32, etc. Interestingly
