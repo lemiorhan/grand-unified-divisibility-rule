@@ -25,7 +25,7 @@ class DivisibilityRule {
 
     def isDivisible(long dividend, long divisor) {
         def primeFactors = primeFactors(divisor)
-        def factors = factors(primeFactors)
+        def factors = groupPrimeFactorsByRepetition(primeFactors)
         if (isLogEnabled) log.info("FACTORS: {}", factors)
 
         factors.every { factor ->
@@ -90,7 +90,6 @@ class DivisibilityRule {
         // constant
         long b2 = 1
 
-
         def calculation = (x * a1) + (((y * a2) + b2) * b1) as long
         if (isLogEnabled) log.info("ITERATION {} => ({} x {}) + (({} x {}) + {}) x {} = {}", iteration, x, a1, y, a2, b2, b1, calculation)
         return calculation
@@ -112,16 +111,18 @@ class DivisibilityRule {
         def calculatedNumberEqualToDivisor = calculated == divisor
         def calculatedNumberEqualToDividend = calculated == dividend
         def calculatedNumberIsEqualToPreviousIteration = calculated == previousCalculated
+        def calculatedNumberIsGreaterThanPreviousIteration = calculated > previousCalculated
 
         if (isLogEnabled) {
             if (calculatedNumberEqualToFactor) log.info("ITERATION STOPS DUE TO \"CALCULATED NUMBER IS EQUAL TO FACTOR\"")
-            if (calculatedNumberIsLowerThanFactor) log.info("ITERATION STOPS DUE TO \"CALCULATED NUMBER IS LOWER THAN FACOR\"")
+            if (calculatedNumberIsLowerThanFactor) log.info("ITERATION STOPS DUE TO \"CALCULATED NUMBER IS LOWER THAN FACTOR\"")
             if (calculatedNumberEqualToDivisor) log.info("ITERATION STOPS DUE TO \"CALCULATED NUMBER IS EQUAL TO DIVISOR\"")
             if (calculatedNumberEqualToDividend) log.info("ITERATION STOPS DUE TO \"CALCULATED NUMBER IS EQUAL TO DIVIDEND\"")
             if (calculatedNumberIsEqualToPreviousIteration) log.info("ITERATION STOPS DUE TO \"CALCULATED NUMBER IS EQUAL TO PREVIOUS VERSION\"")
+            if (calculatedNumberIsGreaterThanPreviousIteration) log.info("ITERATION STOPS DUE TO \"CALCULATED NUMBER IS GREATER THAN PREVIOUS VERSION\"")
         }
 
-        return !maxIterationLimitExceeded && !calculatedNumberIsEqualToPreviousIteration && !calculatedNumberIsLowerThanFactor & !calculatedNumberEqualToDividend && !calculatedNumberEqualToFactor
+        return !maxIterationLimitExceeded && !calculatedNumberIsEqualToPreviousIteration && !calculatedNumberIsLowerThanFactor & !calculatedNumberEqualToDividend && !calculatedNumberEqualToFactor & !calculatedNumberIsGreaterThanPreviousIteration
     }
 
     /**
@@ -159,7 +160,7 @@ class DivisibilityRule {
      * @param primeFactors , list of prime factors
      * @return Map of
      */
-    def factors(List<Long> primeFactors) {
+    def groupPrimeFactorsByRepetition(List<Long> primeFactors) {
         return primeFactors.countBy { it }
     }
 }

@@ -170,10 +170,17 @@ class DivisibilityRuleExecutionTest extends Specification {
         isDivisible ? (dividend % divisor == 0) : (dividend % divisor != 0)
 
         where:
-        dividend | divisor
-        12     | 11
-        13     | 11
-        14     | 11
+        dividend    | divisor
+        18          | 3
+        1044        | 12
+        175789      | 23
+        24          | 8
+        19          | 3
+        41490       | 45
+        74284       | 11
+        25916917952 | 55456
+        23021493430 | 49251
+
     }
 
 
