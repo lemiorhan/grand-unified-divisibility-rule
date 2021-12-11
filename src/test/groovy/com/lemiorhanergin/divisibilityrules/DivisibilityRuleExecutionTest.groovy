@@ -156,8 +156,8 @@ class DivisibilityRuleExecutionTest extends Specification {
         135      | 36
     }
 
-/*
-    def "should find divisibility results2"() {
+
+    def "should find divisibility results3"() {
         given:
         def divisibilityRule = new DivisibilityRule()
         DivisibilityRule.isLogEnabled = true
@@ -171,8 +171,10 @@ class DivisibilityRuleExecutionTest extends Specification {
 
         where:
         dividend | divisor
-        840     | 336
+        12     | 11
+        13     | 11
+        14     | 11
     }
-*/
+
 
 }

@@ -27,17 +27,26 @@ class DivisibilityRule {
         def primeFactors = primeFactors(divisor)
         def factors = factors(primeFactors)
         if (isLogEnabled) log.info("FACTORS: {}", factors)
-        return factors.every { calculateDivisibility(dividend, it, divisor) }
+
+        factors.every { factor ->
+            div(dividend, factor.key, factor.value, divisor, 1)
+        }
     }
 
-    def calculateDivisibility(long dividend, long factor, long divisor) {
+    def div(long dividend, long factor, int count, long divisor, Integer iteration) {
+        if (count == 0) return true
+        return div((long) (dividend / factor), factor, count - 1, divisor, iteration) && calculateDivisibility(dividend, factor, divisor, iteration)
+    }
+
+    def calculateDivisibility(long dividend, long factor, long divisor, int iteration) {
+        if (iteration > 50) return false
+
         // formula is selected with the last digit of factor
         def coefficient = 1
         long lastNumberOfDivisor = factor % 10
         if (isLogEnabled) log.info("DIVISIBILITY CHECK FOR [{}/{}]", dividend, factor)
 
         // run the formula and calculate a number of iteration #1
-        def iteration = 1
         long previousCalculated = dividend
 
         def calculated = execute(iteration, lastNumberOfDivisor, dividend, factor, coefficient)
@@ -58,7 +67,8 @@ class DivisibilityRule {
         def divisibilityResult = decideDivisibility(dividend, divisor, factor, calculated, previousCalculated, coefficient)
         if (isLogEnabled) log.info("{} IS {} BY {}. RESULT CALCULATED IN {} {}.", dividend, (divisibilityResult ? "DIVISIBLE" : "NOT DIVISIBLE"), factor, iteration - 1, (iteration - 1 == 1 ? "ITERATION" : "ITERATIONS"))
         if (!divisibilityResult && calculated > factor) {
-            calculateDivisibility(calculated, factor, divisor)
+            calculated = calculated - factor
+            calculateDivisibility(calculated, factor, divisor, iteration)
         }
         return divisibilityResult
     }
@@ -115,7 +125,7 @@ class DivisibilityRule {
             if (calculatedNumberIsEqualToPreviousIteration) log.info("ITERATION STOPS DUE TO \"CALCULATED NUMBER IS EQUAL TO PREVIOUS VERSION\"")
         }
 
-        return !maxIterationLimitExceeded && !calculatedNumberIsEqualToPreviousIteration && !calculatedNumberIsLowerThanDivisor & !calculatedNumberEqualToDividend & !calculatedNumberEqualToDivisor && !calculatedNumberEqualToFactor
+        return !maxIterationLimitExceeded && !calculatedNumberIsEqualToPreviousIteration && !calculatedNumberIsLowerThanDivisor & !calculatedNumberEqualToDividend  && !calculatedNumberEqualToFactor
     }
 
     /**
@@ -131,7 +141,8 @@ class DivisibilityRule {
         if (isLogEnabled) log.info("previousCalculated: {}", previousCalculated)
         //return dividend != calculated && (calculated == 0 || calculated == divisor)
         //return (calculated == divisor || calculated == dividend || calculated == factor)
-        return (calculated == factor || calculated == dividend)
+        //return (calculated == factor || calculated == dividend)
+        return (calculated == factor)
         //return calculated == divisor
     }
 
@@ -157,14 +168,7 @@ class DivisibilityRule {
     }
 
     def factors(List<Long> primeFactors) {
-        def factorCountsMap = primeFactors.countBy { it }
-        def factorsList = []
-        factorCountsMap.forEach { factor, count ->
-            (1..count).forEach {
-                factorsList << (long) Math.pow(factor, it)
-            }
-        }
-        return factorsList as List<Long>
+        return primeFactors.countBy { it }
     }
 
     def coefficient(List<Long> primeFactors, long divisor) {
