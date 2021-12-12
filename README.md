@@ -252,7 +252,7 @@ Lemi's Equation becomes: `(x * a1) + ((y * a2) + 1) * b1`
 
 # The Algorithm
 
-The algorithm of executing the visibility rules is very straightforward. To make it clearer, let's go over a
+The algorithm of executing the divisibility rules is very straightforward. To make it clearer, let's go over a
 sample: `315 / 45`
 
 **1. Find prime factors of the divisor**
