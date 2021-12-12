@@ -26,8 +26,9 @@ that algorithm.
 I had no computers at that time. With a basic calculator, I did thousands of calculations. At some point, I figured out
 that the divisibility rule of 2 is similar to the divisibility rule of 12, and 22, and 32, etc. Interestingly
 divisibility rule of 3 is also similar to the divisibility rule of 13, 23, etc. Then I had a eureka! moment. Clearly,
-the divisibility rules are very similar among numbers sharing the same ones place digit. For instance, the divisibility
-rule of 6 is very similar to the divisibility rule of 45732360346.
+the divisibility rules are very similar among numbers sharing the same ones place digit. For instance, for the prime
+numbers 3, 13, 443 and 7793, since the ones digit is the same (that is 3), the divisibility rules for these numbers are
+very similar.
 
 After working months spending hundreds of hours with my calculator, I found one single formula and an execution
 algorithm covering all possible known divisibility rules. I documented everything with my very-amateur words to a paper,
