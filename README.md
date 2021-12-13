@@ -785,6 +785,10 @@ Since I am not a mathematician, I am not able to prove my formula in an academic
 you can make a mathematical proof, or investigate further and extend the logic for further cases that I don't know for
 today.
 
+# Author
+
+[Lemi Orhan Ergin](http://www.lemiorhanergin.com), co-founder of [Craftgate](https://www.craftgate.io)
+
 # License [![CC BY 4.0][cc-by-shield]][cc-by]
 
 This work is licensed under a
