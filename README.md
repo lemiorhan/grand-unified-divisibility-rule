@@ -79,7 +79,7 @@ For instance, 84 is divisible by 2, but 37 is not.
 The sum of all digits of the number should be divisible by 3.
 
 For instance, 183 is divisible by 3 because 1+8+3 is 12, and 12 is divisible by 3. However, 121 is not divisible by 3,
-because 1+2+1 is 5, and 5 is not divisible by 3.
+because 1+2+1 is 4, and 4 is not divisible by 3.
 
 ### Divisible by 4
 
