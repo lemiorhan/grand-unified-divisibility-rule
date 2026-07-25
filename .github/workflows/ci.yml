@@ -21,9 +21,11 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        # Groovy 3.0.8 and Gradle 7.6.4 are the versions this project pins;
-        # 21 is the current LTS and 17 the previous one.
-        java: ['17', '21']
+        # Gradle 7.6.4 supports Java 8-19, and Groovy 3.0.8 cannot read class
+        # files newer than that either: JDK 21 fails during script compilation
+        # with "Unsupported class file major version 65". Moving to 21 means
+        # upgrading to Gradle 8 and Groovy 4 first.
+        java: ['11', '17']
 
     steps:
       - name: Check out the repository
