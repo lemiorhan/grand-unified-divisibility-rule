@@ -145,25 +145,50 @@ In contrast, the divisibility rules of bigger numbers require extra calculation 
 # The 1997 Discovery: One Formula for Numbers with the Same Ones Place Digit
 
 I noticed that divisibility rules of numbers having the same ones place digit are very similar, so similar that we can
-end up with a formula about it. For example:
+end up with a formula about it. Here are the rules for the numbers between 11 and 50, as I derived them in 1997. Only
+divisors ending in 0 are missing: the equation cannot even be written for them, since `CEIL(10 / 0)` does not exist —
+the generalized rule later in this document covers them like any other divisor.
 
 * Divisible by 11, if `(10 x last digit + 1 x remaining digits)` is divisible by 11
+* Divisible by 12, if `(5 x last digit + 2 x remaining digits)` is divisible by 12
 * Divisible by 13, if `(4 x last digit + 1 x remaining digits)` is divisible by 13
+* Divisible by 14, if `(3 x last digit + 2 x remaining digits)` is divisible by 14
+* Divisible by 15, if `(2 x last digit + 5 x remaining digits)` is divisible by 15
+* Divisible by 16, if `(2 x last digit + 4 x remaining digits)` is divisible by 16 `(*)`
 * Divisible by 17, if `(2 x last digit + 3 x remaining digits)` is divisible by 17
+* Divisible by 18, if `(2 x last digit + 2 x remaining digits)` is divisible by 18 `(*)`
 * Divisible by 19, if `(2 x last digit + 1 x remaining digits)` is divisible by 19
 * Divisible by 21, if `(19 x last digit + 1 x remaining digits)` is divisible by 21
+* Divisible by 22, if `(9 x last digit + 2 x remaining digits)` is divisible by 22
 * Divisible by 23, if `(7 x last digit + 1 x remaining digits)` is divisible by 23
-* Divisible by 27, if `(3 x last digit + 3 x remaining digits)` is divisible by 27 — **keep an eye on this one**: it
-  hides a flaw that stayed invisible for decades, dissected later in this document
+* Divisible by 24, if `(5 x last digit + 2 x remaining digits)` is divisible by 24
+* Divisible by 25, if `(3 x last digit + 5 x remaining digits)` is divisible by 25
+* Divisible by 26, if `(3 x last digit + 4 x remaining digits)` is divisible by 26
+* Divisible by 27, if `(3 x last digit + 3 x remaining digits)` is divisible by 27 `(*)`
+* Divisible by 28, if `(3 x last digit + 2 x remaining digits)` is divisible by 28
 * Divisible by 29, if `(3 x last digit + 1 x remaining digits)` is divisible by 29
 * Divisible by 31, if `(28 x last digit + 1 x remaining digits)` is divisible by 31
+* Divisible by 32, if `(13 x last digit + 2 x remaining digits)` is divisible by 32
 * Divisible by 33, if `(10 x last digit + 1 x remaining digits)` is divisible by 33
+* Divisible by 34, if `(7 x last digit + 2 x remaining digits)` is divisible by 34
+* Divisible by 35, if `(4 x last digit + 5 x remaining digits)` is divisible by 35
+* Divisible by 36, if `(4 x last digit + 4 x remaining digits)` is divisible by 36 `(*)`
 * Divisible by 37, if `(4 x last digit + 3 x remaining digits)` is divisible by 37
+* Divisible by 38, if `(4 x last digit + 2 x remaining digits)` is divisible by 38 `(*)`
 * Divisible by 39, if `(4 x last digit + 1 x remaining digits)` is divisible by 39
 * Divisible by 41, if `(37 x last digit + 1 x remaining digits)` is divisible by 41
+* Divisible by 42, if `(17 x last digit + 2 x remaining digits)` is divisible by 42
 * Divisible by 43, if `(13 x last digit + 1 x remaining digits)` is divisible by 43
+* Divisible by 44, if `(9 x last digit + 2 x remaining digits)` is divisible by 44
+* Divisible by 45, if `(5 x last digit + 5 x remaining digits)` is divisible by 45 `(*)`
+* Divisible by 46, if `(5 x last digit + 4 x remaining digits)` is divisible by 46
 * Divisible by 47, if `(5 x last digit + 3 x remaining digits)` is divisible by 47
+* Divisible by 48, if `(5 x last digit + 2 x remaining digits)` is divisible by 48
 * Divisible by 49, if `(5 x last digit + 1 x remaining digits)` is divisible by 49
+
+`(*)` Keep an eye on the six rules marked with a star: 16, 18, 27, 36, 38 and 45. In 1997 they looked exactly as
+trustworthy as the other thirty, but they are the ones hiding a flaw that stayed invisible for decades — dissected in
+"Why the First Algorithm Needed Prime Factors" below.
 
 There is a pretty obvious pattern among these rules, isn't there? For the given:
 
@@ -250,6 +275,7 @@ being separate tricks and become rows of one table:
 | 12      | 1, 10, 4, 4, 4, ...            | a rule the old algorithm needed prime factors for              |
 | 13      | 1, 10, 9, 12, 3, 4, 1, 10, ... | repeats with period 6, like 7                                  |
 | 16      | 1, 10, 4, 8, 0, 0, ...         | weights die out: last four digits decide                       |
+| 20      | 1, 10, 0, 0, ...               | a divisor the 1997 equation could not even write down          |
 | 27      | 1, 10, 19, 1, 10, 19, ...      | repeats with period 3 — the case that broke the 1997 equation  |
 | 45      | 1, 10, 10, 10, ...             | one more rule that used to require factoring into 3, 3, 5      |
 
@@ -340,7 +366,9 @@ private static long reduceBySubtraction(long value, long divisor) {
 
 `remaining % 10` and `remaining.intdiv(10)` only read and trim digits — the base-ten equivalents of looking at the
 number written on paper. The divisor is never used for division; it is only ever subtracted. The optional `trace`
-parameter receives a line for every single calculation step, so every check can be verified by eye.
+parameter receives a line for every single calculation step, so every check can be verified by eye. Before applying
+the formula, every check first announces the exact variation it is about to apply — the divisor's weight row, one
+weight per digit of the dividend — as a `FORMULA FOR ...` line, and only then do the steps follow.
 
 # Examples
 
@@ -350,6 +378,7 @@ The old algorithm factored 12 into 2 x 2 x 3 and ran three separate checks. The 
 
 ```
 DIVISIBILITY CHECK FOR [1044/12]
+FORMULA FOR 12 => (1 x DIGIT 1) + (10 x DIGIT 2) + (4 x DIGIT 3) + (4 x DIGIT 4) (DIGIT 1 = ONES PLACE)
 STEP 1 => DIGIT 4 x WEIGHT 1 = 4 | TOTAL 4
 WEIGHT FOR STEP 2 => 10 x 1 = 10
 STEP 2 => DIGIT 4 x WEIGHT 10 = 40 | TOTAL 44, REDUCED TO 8 BY SUBTRACTING 12
@@ -364,6 +393,7 @@ FINAL REMAINDER: 0 => 1044 IS DIVISIBLE BY 12
 
 ```
 DIVISIBILITY CHECK FOR [175789/23]
+FORMULA FOR 23 => (1 x DIGIT 1) + (10 x DIGIT 2) + (8 x DIGIT 3) + (11 x DIGIT 4) + (18 x DIGIT 5) + (19 x DIGIT 6) (DIGIT 1 = ONES PLACE)
 STEP 1 => DIGIT 9 x WEIGHT 1 = 9 | TOTAL 9
 WEIGHT FOR STEP 2 => 10 x 1 = 10
 STEP 2 => DIGIT 8 x WEIGHT 10 = 80 | TOTAL 89, REDUCED TO 20 BY SUBTRACTING 23
@@ -388,6 +418,7 @@ A case no last-digit formula can answer, and the old algorithm handled by dividi
 
 ```
 DIVISIBILITY CHECK FOR [24/16]
+FORMULA FOR 16 => (1 x DIGIT 1) + (10 x DIGIT 2) (DIGIT 1 = ONES PLACE)
 STEP 1 => DIGIT 4 x WEIGHT 1 = 4 | TOTAL 4
 WEIGHT FOR STEP 2 => 10 x 1 = 10
 STEP 2 => DIGIT 2 x WEIGHT 10 = 20 | TOTAL 24, REDUCED TO 8 BY SUBTRACTING 16
@@ -402,6 +433,7 @@ The case that silently broke the 1997 equation (which mapped 9 straight onto 27)
 
 ```
 DIVISIBILITY CHECK FOR [9/27]
+FORMULA FOR 27 => (1 x DIGIT 1) (DIGIT 1 = ONES PLACE)
 STEP 1 => DIGIT 9 x WEIGHT 1 = 9 | TOTAL 9
 FINAL REMAINDER: 9 => 9 IS NOT DIVISIBLE BY 27
 ```
@@ -413,6 +445,7 @@ iterations. The rule now answers in eleven steps, one per digit:
 
 ```
 DIVISIBILITY CHECK FOR [25916917952/55456]
+FORMULA FOR 55456 => (1 x DIGIT 1) + (10 x DIGIT 2) + (100 x DIGIT 3) + (1000 x DIGIT 4) + (10000 x DIGIT 5) + (44544 x DIGIT 6) + (1792 x DIGIT 7) + (17920 x DIGIT 8) + (12832 x DIGIT 9) + (17408 x DIGIT 10) + (7712 x DIGIT 11) (DIGIT 1 = ONES PLACE)
 STEP 1 => DIGIT 2 x WEIGHT 1 = 2 | TOTAL 2
 WEIGHT FOR STEP 2 => 10 x 1 = 10
 STEP 2 => DIGIT 5 x WEIGHT 10 = 50 | TOTAL 52
@@ -441,6 +474,7 @@ FINAL REMAINDER: 0 => 25916917952 IS DIVISIBLE BY 55456
 
 ```
 DIVISIBILITY CHECK FOR [74284/11]
+FORMULA FOR 11 => (1 x DIGIT 1) + (10 x DIGIT 2) + (1 x DIGIT 3) + (10 x DIGIT 4) + (1 x DIGIT 5) (DIGIT 1 = ONES PLACE)
 STEP 1 => DIGIT 4 x WEIGHT 1 = 4 | TOTAL 4
 WEIGHT FOR STEP 2 => 10 x 1 = 10
 STEP 2 => DIGIT 8 x WEIGHT 10 = 80 | TOTAL 84, REDUCED TO 7 BY SUBTRACTING 11

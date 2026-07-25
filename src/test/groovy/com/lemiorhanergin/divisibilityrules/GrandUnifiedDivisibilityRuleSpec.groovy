@@ -101,6 +101,28 @@ class GrandUnifiedDivisibilityRuleSpec extends Specification {
         }
     }
 
+    def "should show the formula variation for the divisor before applying it"() {
+        given:
+        def rule = new DivisibilityRule()
+        def trace = new StringBuilder()
+
+        when:
+        rule.isDivisible(dividend, divisor, trace)
+        def lines = trace.toString().readLines()
+
+        then:
+        lines[0] == "DIVISIBILITY CHECK FOR [${dividend}/${divisor}]"
+        lines[1] == expectedFormulaLine
+        lines[2].startsWith("STEP 1")
+
+        where:
+        dividend | divisor | expectedFormulaLine
+        175789L  | 23L     | "FORMULA FOR 23 => (1 x DIGIT 1) + (10 x DIGIT 2) + (8 x DIGIT 3) + (11 x DIGIT 4) + (18 x DIGIT 5) + (19 x DIGIT 6) (DIGIT 1 = ONES PLACE)"
+        74284L   | 11L     | "FORMULA FOR 11 => (1 x DIGIT 1) + (10 x DIGIT 2) + (1 x DIGIT 3) + (10 x DIGIT 4) + (1 x DIGIT 5) (DIGIT 1 = ONES PLACE)"
+        18L      | 3L      | "FORMULA FOR 3 => (1 x DIGIT 1) + (1 x DIGIT 2) (DIGIT 1 = ONES PLACE)"
+        24L      | 16L     | "FORMULA FOR 16 => (1 x DIGIT 1) + (10 x DIGIT 2) (DIGIT 1 = ONES PLACE)"
+    }
+
     def "should log every calculation step of a check for verification by eye"() {
         given:
         def rule = new DivisibilityRule()

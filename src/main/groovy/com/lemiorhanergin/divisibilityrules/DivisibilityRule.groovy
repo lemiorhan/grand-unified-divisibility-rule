@@ -32,6 +32,7 @@ class DivisibilityRule {
         if (dividend < 0) throw new IllegalArgumentException("Dividend must not be negative")
 
         emit(trace, "DIVISIBILITY CHECK FOR [${dividend}/${divisor}]")
+        if (isLogEnabled || trace != null) emit(trace, formulaVariation(dividend, divisor))
 
         long remaining = dividend
         long weight = 1
@@ -58,6 +59,21 @@ class DivisibilityRule {
         emit(trace, "FINAL REMAINDER: ${total} => ${dividend} IS ${divisible ? '' : 'NOT '}DIVISIBLE BY ${divisor}")
         emit(trace, "")
         return divisible
+    }
+
+    /**
+     * Builds the variation of the formula that will be applied to this dividend:
+     * the divisor's weight row, one weight per digit of the dividend.
+     */
+    private static String formulaVariation(long dividend, long divisor) {
+        int digitCount = String.valueOf(dividend).length()
+        List<String> terms = []
+        long weight = 1
+        for (int digit = 1; digit <= digitCount; digit++) {
+            terms << "(${weight} x DIGIT ${digit})".toString()
+            weight = reduceBySubtraction(weight * 10, divisor)
+        }
+        return "FORMULA FOR ${divisor} => ${terms.join(' + ')} (DIGIT 1 = ONES PLACE)"
     }
 
     /**
