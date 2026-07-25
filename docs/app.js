@@ -8,6 +8,8 @@
     var HTML_LANG = { en: 'en', tr: 'tr', zh: 'zh-CN', es: 'es' }
     var currentLang = DEFAULT_LANG
     var lastResult = null
+    // the error on screen is remembered by key, not by rendered text, so it can be re-translated
+    var lastError = null
 
     function store(key, value) {
         try { localStorage.setItem(key, value) } catch (e) { /* private mode */ }
@@ -77,6 +79,8 @@
         langSelect.value = currentLang
 
         if (lastResult) render(lastResult, false)
+        // a validation error already on screen must follow the language switch too
+        if (lastError) errorBox.textContent = errorText(lastError)
     }
 
     function stripMarkup(html) {
@@ -142,10 +146,18 @@
         return node
     }
 
-    function showError(message, field) {
+    // key is null for messages thrown by the algorithm itself, which are not translated
+    function errorText(err) {
+        if (!err) return ''
+        var text = err.key ? stripMarkup(t(err.key)) : ''
+        return text || err.fallback || ''
+    }
+
+    function showError(key, field, fallback) {
         clearTimers()
+        lastError = { key: key, field: field, fallback: fallback }
         errorBox.style.display = 'block'
-        errorBox.textContent = message
+        errorBox.textContent = errorText(lastError)
         output.style.display = 'none'
         dividendInput.removeAttribute('aria-invalid')
         divisorInput.removeAttribute('aria-invalid')
@@ -154,6 +166,7 @@
     }
 
     function clearError() {
+        lastError = null
         errorBox.style.display = 'none'
         errorBox.textContent = ''
         dividendInput.removeAttribute('aria-invalid')
@@ -261,12 +274,12 @@
         var dividendStr = dividendInput.value.replace(/[\s,.]/g, '')
         var divisorStr = divisorInput.value.replace(/[\s,.]/g, '')
 
-        if (!/^\d+$/.test(dividendStr)) return showError(stripMarkup(t('calc.errDividend')), dividendInput)
-        if (!/^\d+$/.test(divisorStr) || BigInt(divisorStr) < 1n) return showError(stripMarkup(t('calc.errDivisor')), divisorInput)
+        if (!/^\d+$/.test(dividendStr)) return showError('calc.errDividend', dividendInput)
+        if (!/^\d+$/.test(divisorStr) || BigInt(divisorStr) < 1n) return showError('calc.errDivisor', divisorInput)
 
         var result
         try { result = DivisibilityRule.check(dividendStr, divisorStr) }
-        catch (e) { return showError(e.message, dividendInput) }
+        catch (e) { return showError(null, dividendInput, e.message) }
 
         clearError()
         lastResult = result

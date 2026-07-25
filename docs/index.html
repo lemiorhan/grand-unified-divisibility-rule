@@ -27,7 +27,6 @@
         <div class="nav-links">
             <a href="#story" data-i18n="nav.story">Story</a>
             <a href="#formula" data-i18n="nav.formula">The 1997 Formula</a>
-            <a href="#flaw" data-i18n="nav.flaw">The Flaw</a>
             <a href="#rule" data-i18n="nav.rule">The Rule</a>
             <a href="#proof" data-i18n="nav.proof">Proof</a>
             <a href="#try" class="nav-cta" data-i18n="nav.try">Try It</a>
@@ -114,8 +113,8 @@
         </p>
         <div class="math-block">
             <span class="nw">f(N) = (x &middot; a1) + ((y &middot; a2) + 1) &middot; b1</span>
-            <span class="nw"><span class="hl">where</span> x = 10 + b2 &minus; b2 &middot; &lceil;10 / b2&rceil;</span>
-            <span class="nw"><span class="hl">and</span> y = &lceil;10 / b2&rceil; &minus; 1</span>
+            <span class="nw"><span class="hl" data-i18n="formula.where">where</span> x = 10 + b2 &minus; b2 &middot; &lceil;10 / b2&rceil;</span>
+            <span class="nw"><span class="hl" data-i18n="formula.and">and</span> y = &lceil;10 / b2&rceil; &minus; 1</span>
         </div>
         <p class="math-note" data-i18n="formula.note">
             Apply <code>f</code> to the dividend, then to the result, and keep going until the number is small.
@@ -149,53 +148,15 @@
         </div>
         <p class="math-note" style="margin-top: 22px;" data-i18n="formula.closing">
             Six of the thirty-six rules — for <b>16, 18, 27, 36, 38 and 45</b> — looked exactly as trustworthy
-            as the rest, but are subtly false. That flaw stayed invisible for decades. Here is why.
+            as the rest, but are subtly false. Every one of those divisors is composite, and factoring the
+            divisor into primes first was silently repairing them — the workaround the generalization below
+            makes unnecessary. The full algebra is in the
+            <a href="https://github.com/lemiorhan/grand-unified-divisibility-rule#why-the-first-algorithm-needed-prime-factors">project README</a>.
         </p>
     </div>
 </section>
 
-<section id="flaw">
-    <div class="container">
-        <div class="section-kicker" data-i18n="flaw.kicker">The Hidden Constraint</div>
-        <h2 data-i18n="flaw.h2">Why the first algorithm needed prime factors</h2>
-        <p class="section-intro" data-i18n="flaw.intro">
-            Rearranging Lemi's Equation reveals an exact identity — and the identity reveals the constraint.
-        </p>
-        <div class="math-block">
-            <span class="nw">f(N) = ((y &middot; a2) + 1) &middot; N &minus; (y &middot; a1) &middot; d</span>
-        </div>
-        <p data-i18n="flaw.p1">
-            So one application of the equation preserves the remainder of <code>N</code> by <code>d</code>
-            <em>scaled by the constant</em> <code>(y&middot;a2)+1</code>. The rule
-            &ldquo;<code>d</code> divides <code>f(N)</code> exactly when <code>d</code> divides <code>N</code>&rdquo;
-            is therefore valid precisely when that scaling constant shares no factor with the divisor:
-        </p>
-        <div class="math-block">
-            <span class="nw">gcd((y &middot; a2) + 1, d) = 1</span>
-        </div>
-        <p data-i18n="flaw.p2">
-            When the criterion fails, the equation breaks. For 16 the constant is 2, and the equation maps 8
-            straight onto 16 — falsely declaring 8 divisible by 16. For 27 the constant is 3, and 9 lands
-            exactly on 27. The divisors below 100 that break the equation are:
-        </p>
-        <div class="chips">
-            <span class="chip broken">16</span><span class="chip broken">18</span><span class="chip broken">27</span>
-            <span class="chip broken">36</span><span class="chip broken">38</span><span class="chip broken">45</span>
-            <span class="chip broken">56</span><span class="chip broken">57</span><span class="chip broken">58</span>
-            <span class="chip broken">76</span><span class="chip broken">78</span><span class="chip broken">87</span>
-            <span class="chip broken">95</span><span class="chip broken">96</span><span class="chip broken">98</span>
-        </div>
-        <p data-i18n="flaw.p3">
-            Every single one of them is <b>composite</b>. The scaling constant always stays strictly between
-            0 and <code>d</code>, so for a prime divisor it can never share a factor with <code>d</code> —
-            <b>the criterion holds automatically for every prime</b>. Factoring the divisor into primes was
-            silently repairing the broken composite cases. For 29 years the primes masked the real constraint
-            of the formula.
-        </p>
-    </div>
-</section>
-
-<section class="alt" id="rule">
+<section id="rule">
     <div class="container">
         <div class="section-kicker" data-i18n="rule.kicker">The Generalization</div>
         <h2 data-i18n="rule.h2">One rule, every divisor</h2>
@@ -222,17 +183,17 @@
                     <th data-i18n="rule.thRule">The classical rule it becomes</th>
                 </tr></thead>
                 <tbody>
-                <tr><td class="d">2</td><td class="w">1, 0, 0, 0, &hellip;</td><td data-i18n="rule.r2">only the last digit matters</td></tr>
-                <tr><td class="d">3</td><td class="w">1, 1, 1, 1, &hellip;</td><td data-i18n="rule.r3">sum of all digits</td></tr>
-                <tr><td class="d">4</td><td class="w">1, 2, 0, 0, &hellip;</td><td data-i18n="rule.r4">last two digits</td></tr>
-                <tr><td class="d">7</td><td class="w">1, 3, 2, 6, 4, 5, &hellip;</td><td data-i18n="rule.r7">the classical weighted rule for 7</td></tr>
-                <tr><td class="d">8</td><td class="w">1, 2, 4, 0, 0, &hellip;</td><td data-i18n="rule.r8">last three digits</td></tr>
-                <tr><td class="d">9</td><td class="w">1, 1, 1, 1, &hellip;</td><td data-i18n="rule.r9">sum of all digits</td></tr>
-                <tr><td class="d">11</td><td class="w">1, 10, 1, 10, &hellip;</td><td data-i18n="rule.r11">alternating sum &mdash; 10 acts as &minus;1</td></tr>
-                <tr><td class="d">12</td><td class="w">1, 10, 4, 4, &hellip;</td><td data-i18n="rule.r12">needed prime factors before</td></tr>
-                <tr><td class="d">20</td><td class="w">1, 10, 0, 0, &hellip;</td><td data-i18n="rule.r20">a divisor the 1997 equation could not even write down</td></tr>
-                <tr><td class="d">27</td><td class="w">1, 10, 19, 1, 10, 19, &hellip;</td><td data-i18n="rule.r27">the case that broke the 1997 equation</td></tr>
-                <tr><td class="d">45</td><td class="w">1, 10, 10, 10, &hellip;</td><td data-i18n="rule.r45">used to require factoring into 3 &times; 3 &times; 5</td></tr>
+                <tr><td class="d">2</td><td class="w">1, 0, 0, 0, &hellip;</td><td data-i18n="rule.r2">Even numbers &mdash; only the last digit decides, and it must be 0, 2, 4, 6 or 8.</td></tr>
+                <tr><td class="d">3</td><td class="w">1, 1, 1, 1, &hellip;</td><td data-i18n="rule.r3">The digit-sum rule &mdash; add every digit and the total must be divisible by 3.</td></tr>
+                <tr><td class="d">4</td><td class="w">1, 2, 0, 0, &hellip;</td><td data-i18n="rule.r4">The last-two-digits rule &mdash; the number formed by the tens and ones digits must be a multiple of 4.</td></tr>
+                <tr><td class="d">7</td><td class="w">1, 3, 2, 6, 4, 5, &hellip;</td><td data-i18n="rule.r7">The classical weighted rule for 7 &mdash; multiply the digits by 1, 3, 2, 6, 4, 5 from the right, repeating the cycle.</td></tr>
+                <tr><td class="d">8</td><td class="w">1, 2, 4, 0, 0, &hellip;</td><td data-i18n="rule.r8">The last-three-digits rule &mdash; the number formed by the last three digits must be a multiple of 8.</td></tr>
+                <tr><td class="d">9</td><td class="w">1, 1, 1, 1, &hellip;</td><td data-i18n="rule.r9">The digit-sum rule again &mdash; the digits must add up to a multiple of 9.</td></tr>
+                <tr><td class="d">11</td><td class="w">1, 10, 1, 10, &hellip;</td><td data-i18n="rule.r11">The alternating-sum rule &mdash; add and subtract the digits in turn, because 10 behaves as &minus;1.</td></tr>
+                <tr><td class="d">12</td><td class="w">1, 10, 4, 4, &hellip;</td><td data-i18n="rule.r12">Divisible by 3 and by 4 at once &mdash; one weight row does the work of both.</td></tr>
+                <tr><td class="d">20</td><td class="w">1, 10, 0, 0, &hellip;</td><td data-i18n="rule.r20">Ends in 00, 20, 40, 60 or 80 &mdash; only the last two digits matter.</td></tr>
+                <tr><td class="d">27</td><td class="w">1, 10, 19, 1, 10, 19, &hellip;</td><td data-i18n="rule.r27">Split the digits into blocks of three from the right and add the blocks, because 1000 leaves remainder 1.</td></tr>
+                <tr><td class="d">45</td><td class="w">1, 10, 10, 10, &hellip;</td><td data-i18n="rule.r45">Divisible by 9 and by 5 &mdash; the digit sum is a multiple of 9 and the last digit is 0 or 5.</td></tr>
                 </tbody>
             </table>
         </div>
@@ -244,7 +205,7 @@
     </div>
 </section>
 
-<section id="proof">
+<section class="alt" id="proof">
     <div class="container">
         <div class="section-kicker" data-i18n="proof.kicker">The Proof</div>
         <h2 data-i18n="proof.h2">Three lines, no hand-waving</h2>
@@ -268,7 +229,7 @@
     </div>
 </section>
 
-<section class="alt" id="try">
+<section id="try">
     <div class="container">
         <div class="section-kicker" data-i18n="calc.kicker">Try It Yourself</div>
         <h2 data-i18n="calc.h2">Watch the algorithm run, step by step</h2>

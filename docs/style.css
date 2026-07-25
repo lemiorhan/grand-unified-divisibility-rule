@@ -174,13 +174,6 @@ a { color: var(--link, var(--accent-2)); }
 .badge-broken { background: color-mix(in srgb, var(--danger) 18%, transparent); color: var(--danger); }
 .badge-ok { background: color-mix(in srgb, var(--good) 16%, transparent); color: var(--good); }
 
-.chips { display: flex; flex-wrap: wrap; gap: 8px; margin: 14px 0; }
-.chip {
-    font-family: var(--mono); font-size: 13.5px; background: var(--card);
-    border: 1px solid var(--card-border); border-radius: 999px; padding: 4px 12px;
-}
-.chip.broken { color: var(--danger); border-color: color-mix(in srgb, var(--danger) 40%, var(--card-border)); }
-
 /* ---------- weights table ---------- */
 .table-wrap { overflow-x: auto; border: 1px solid var(--card-border); border-radius: var(--radius); box-shadow: var(--shadow); }
 table.weights { border-collapse: collapse; width: 100%; background: var(--card); font-size: 14.5px; }
