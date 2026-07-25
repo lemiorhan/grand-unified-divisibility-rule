@@ -1,0 +1,14 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Try the rule in your browser
+    url: https://lemiorhan.github.io/grand-unified-divisibility-rule/
+    about: Run the algorithm step by step before reporting — it shows every digit, multiplication and subtraction.
+  - name: Read the full write-up
+    url: https://github.com/lemiorhan/grand-unified-divisibility-rule#readme
+    about: The history, the 1997 equation, the hidden constraint, the generalized rule and the three-line proof.
+  - name: Report a security issue privately
+    url: https://github.com/lemiorhan/grand-unified-divisibility-rule/security/advisories/new
+    about: Please do not open a public issue for security reports. See SECURITY.md.
+  - name: Code of Conduct
+    url: https://github.com/lemiorhan/grand-unified-divisibility-rule/blob/main/CODE_OF_CONDUCT.md
+    about: How to report unacceptable behavior, privately.

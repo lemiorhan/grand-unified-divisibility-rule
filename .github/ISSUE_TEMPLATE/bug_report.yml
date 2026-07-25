@@ -1,0 +1,74 @@
+name: Bug report
+description: Something is broken in the code, the site, or the build
+title: "[bug] "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        If the rule produced a *wrong mathematical answer*, please use the
+        **Counterexample** template instead — those are handled differently.
+
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened?
+      validations:
+        required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: What did you expect instead?
+    validations:
+      required: true
+
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1. Open …
+        2. Enter …
+        3. …
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Which part?
+      options:
+        - The website (docs/)
+        - The Groovy implementation (src/)
+        - The build or tests
+        - A translation
+        - Documentation or README
+        - Not sure
+    validations:
+      required: true
+
+  - type: dropdown
+    id: language
+    attributes:
+      label: Site language, if relevant
+      options:
+        - Not relevant
+        - English
+        - Türkçe
+        - 中文
+        - Español
+        - All of them
+
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: Browser and version, or JDK and OS.
+      placeholder: "Firefox 128 on macOS 15 — or Temurin 21 on Ubuntu 24.04"
+
+  - type: textarea
+    id: extra
+    attributes:
+      label: Anything else?
+      description: Console errors, screenshots, logs.

@@ -1,4 +1,25 @@
 /*
+ * Copyright 2026 Lemi Orhan Ergin
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ * SPDX-License-Identifier: Apache-2.0
+ *
+ * The prose in this file - the human-readable text shown on the page - is
+ * part of the project documentation and is licensed under CC BY 4.0 instead;
+ * see LICENSE-DOCS. The code and markup around it are Apache-2.0 as above.
+ */
+/*
  * Grand Unified Divisibility Rule — translations.
  *
  * English is also present in index.html as the no-JavaScript default; the keys
@@ -106,7 +127,7 @@ window.I18N = {
         'calc.errDivisor': 'The divisor must be a whole number of at least 1.',
 
         'footer.credit': '<b>Grand Unified Divisibility Rule</b> — discovered by <a href="https://www.lemiorhanergin.com">Lemi Orhan Ergin</a>, co-founder of <a href="https://www.craftgate.io">Craftgate</a>.',
-        'footer.license': 'Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.',
+        'footer.license': 'Code licensed under <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache 2.0</a>, prose under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.',
         'footer.source': 'Source &amp; full story on GitHub',
         'footer.tests': '10,000+ verified test executions'
     },
@@ -209,7 +230,7 @@ window.I18N = {
         'calc.errDivisor': 'Bölen en az 1 olan bir tam sayı olmalı.',
 
         'footer.credit': '<b>Büyük Birleşik Bölünebilme Kuralı</b> — <a href="https://www.craftgate.io">Craftgate</a> kurucu ortağı <a href="https://www.lemiorhanergin.com">Lemi Orhan Ergin</a> tarafından keşfedildi.',
-        'footer.license': '<a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> ile lisanslanmıştır.',
+        'footer.license': 'Kod <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache 2.0</a>, metinler <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> ile lisanslanmıştır.',
         'footer.source': 'GitHub’da kaynak kod ve hikâyenin tamamı',
         'footer.tests': '10.000’den fazla doğrulanmış test çalıştırması'
     },
@@ -312,7 +333,7 @@ window.I18N = {
         'calc.errDivisor': '除数必须是不小于 1 的整数。',
 
         'footer.credit': '<b>大统一整除规则</b> —— 由 <a href="https://www.craftgate.io">Craftgate</a> 联合创始人 <a href="https://www.lemiorhanergin.com">Lemi Orhan Ergin</a> 发现。',
-        'footer.license': '采用 <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> 许可协议。',
+        'footer.license': '代码采用 <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache 2.0</a> 许可协议，文字内容采用 <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a> 许可协议。',
         'footer.source': '在 GitHub 上查看源码与完整故事',
         'footer.tests': '超过 10,000 次已验证的测试执行'
     },
@@ -415,7 +436,7 @@ window.I18N = {
         'calc.errDivisor': 'El divisor debe ser un número entero de al menos 1.',
 
         'footer.credit': '<b>Gran Regla Unificada de Divisibilidad</b> — descubierta por <a href="https://www.lemiorhanergin.com">Lemi Orhan Ergin</a>, cofundador de <a href="https://www.craftgate.io">Craftgate</a>.',
-        'footer.license': 'Publicado bajo licencia <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.',
+        'footer.license': 'Código publicado bajo licencia <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache 2.0</a>; los textos, bajo <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.',
         'footer.source': 'El código y la historia completa en GitHub',
         'footer.tests': 'Más de 10.000 ejecuciones de prueba verificadas'
     }

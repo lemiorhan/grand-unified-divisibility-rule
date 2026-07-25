@@ -1,5 +1,10 @@
 # Grand Unified Divisibility Rule: Lemi's Formula
 
+[![CI](https://github.com/lemiorhan/grand-unified-divisibility-rule/actions/workflows/ci.yml/badge.svg)](https://github.com/lemiorhan/grand-unified-divisibility-rule/actions/workflows/ci.yml)
+[![Code: Apache 2.0][apache-shield]][apache]
+[![Prose: CC BY 4.0][cc-by-shield]][cc-by]
+[![Cite this repository](https://img.shields.io/badge/Cite-CITATION.cff-brightgreen.svg)](CITATION.cff)
+
 > 🌐 **Try it live:** [lemiorhan.github.io/grand-unified-divisibility-rule](https://lemiorhan.github.io/grand-unified-divisibility-rule/) —
 > enter any dividend and divisor, and watch the algorithm run step by step in your browser.
 > Available in English, Türkçe, 中文 and Español.
@@ -534,15 +539,57 @@ I would love to hear about it.
 
 [Lemi Orhan Ergin](http://www.lemiorhanergin.com), co-founder of [Craftgate](https://www.craftgate.io)
 
-# License [![CC BY 4.0][cc-by-shield]][cc-by]
+# Citation
 
-This work is licensed under a
-[Creative Commons Attribution 4.0 International License][cc-by].
+If you use this rule, its proof, or this implementation in academic work, teaching material, an article or a talk,
+please cite it. GitHub's **"Cite this repository"** button generates the citation for you from
+[CITATION.cff](CITATION.cff), in BibTeX or APA.
 
-[![CC BY 4.0][cc-by-image]][cc-by]
+```bibtex
+@software{ergin_grand_unified_divisibility_rule_2026,
+  author  = {Ergin, Lemi Orhan},
+  title   = {Grand Unified Divisibility Rule (Lemi's Formula)},
+  year    = {2026},
+  version = {2.0},
+  url     = {https://github.com/lemiorhan/grand-unified-divisibility-rule}
+}
+```
+
+The mathematics itself is not subject to copyright, so this is a request grounded in academic convention rather than a
+licence condition. The attribution requirement in [NOTICE](NOTICE), which applies when you redistribute these files, is
+a licence condition.
+
+# License
+
+This project is licensed in two parts, because it is two kinds of work.
+
+| What | Licence | Files |
+| ---- | ------- | ----- |
+| **Source code** | [Apache License 2.0](LICENSE) | `src/**`, `docs/algorithm.js`, `docs/app.js`, `docs/style.css`, the markup of `docs/index.html`, `build.gradle`, `settings.gradle`, `gradle/**` |
+| **Prose and documentation** | [CC BY 4.0](LICENSE-DOCS) | `README.md`, `CHANGELOG.md`, the text shown on the website — including the translated strings in `docs/i18n.js` and the page copy in `docs/index.html` — and `images/**` |
+
+**Why two.** Apache 2.0 is a software licence: it carries an express patent grant, a warranty disclaimer written for
+code, and in Section 4(d) a genuine *mandatory* attribution requirement — anyone redistributing this code must carry
+[NOTICE](NOTICE) with it. Creative Commons explicitly advise against using their licences for software, so CC BY would
+be the wrong tool for `src/`. But CC BY is the right tool for the write-up, and it is the only licence here that
+compels credit from someone who quotes or adapts the explanation and the proof. Keeping both means each part of the
+project is governed by the licence designed for it.
+
+**In short:**
+
+- Use the algorithm in your own software, commercially or not — Apache 2.0 permits it. Keep the `NOTICE` attribution.
+- Quote, translate or build on the write-up — CC BY 4.0 permits it. Credit Lemi Orhan Ergin.
+- Publish about the result — please cite it, as above.
+
+[Contributions](CONTRIBUTING.md) are licensed under the same terms; Section 5 of Apache 2.0 handles this for code, so
+there is no CLA to sign.
 
 [cc-by]: http://creativecommons.org/licenses/by/4.0/
 
 [cc-by-image]: https://i.creativecommons.org/l/by/4.0/88x31.png
 
 [cc-by-shield]: https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg
+
+[apache-shield]: https://img.shields.io/badge/Code-Apache%202.0-blue.svg
+
+[apache]: https://www.apache.org/licenses/LICENSE-2.0

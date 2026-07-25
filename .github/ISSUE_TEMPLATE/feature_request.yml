@@ -1,0 +1,57 @@
+name: Idea or improvement
+description: Suggest a change to the rule's presentation, the site, or the tooling
+title: "[idea] "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Before suggesting a change to the algorithm itself, please note the
+        project's one hard constraint: it must never factor the divisor into
+        primes and never perform a division. Only reading digits, small
+        multiplications, addition and subtraction are allowed. See
+        [CONTRIBUTING.md](../blob/main/CONTRIBUTING.md).
+
+  - type: textarea
+    id: idea
+    attributes:
+      label: What would you like to see?
+    validations:
+      required: true
+
+  - type: textarea
+    id: why
+    attributes:
+      label: What problem does it solve?
+      description: >-
+        Who is helped, and how? "The explanation of X confused me" is a
+        perfectly good answer.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: area
+    attributes:
+      label: Which part?
+      options:
+        - The explanation, README or proof
+        - The website
+        - A new translation
+        - A port to another language
+        - Tests or tooling
+        - Something else
+    validations:
+      required: true
+
+  - type: checkboxes
+    id: constraint
+    attributes:
+      label: The hard constraint
+      options:
+        - label: My suggestion does not reintroduce prime factorization or division into the algorithm, or it does not touch the algorithm at all.
+          required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives you considered
