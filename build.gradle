@@ -4,7 +4,7 @@ plugins {
 
 // assignment syntax, not the space syntax: the latter is removed in Gradle 10
 group = 'com.lemiorhanergin'
-version = '2.0'
+version = '2.1'
 description = 'Grand Unified Divisibility Rule — one algorithm generating every divisibility rule, with no prime factors and no division'
 
 repositories {

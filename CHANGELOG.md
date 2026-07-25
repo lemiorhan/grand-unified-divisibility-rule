@@ -12,10 +12,60 @@ account of it.
 
 Nothing yet.
 
+## [2.1] - 2026-07-26
+
+The project is set up as an open-source project, and relicensed so that the code
+carries a software licence.
+
+### Changed
+
+- **License, split by material type.** Source code moved from CC BY 4.0 to the
+  **Apache License 2.0**, which is a software license and carries an express
+  patent grant. Prose and documentation remain under **CC BY 4.0**, now in
+  `LICENSE-DOCS`. Attribution requirements are collected in `NOTICE`, whose
+  contents Section 4(d) of Apache 2.0 requires every redistribution to carry.
+  Source files gained an Apache header with an SPDX identifier, and the site
+  footer names both licenses in all four languages. See the License section of
+  `README.md`.
+- **Toolchain upgraded to support Java 25.** Gradle 7.6.4 → **9.6.1**, Groovy
+  3.0.8 → **5.0.6**, Spock 2.0 → **2.4-groovy-5.0**, SLF4J 1.7.32 → **2.0.18**.
+  Groovy 5 is what carries JDK 25 support, and it moves the Groovy groupId from
+  `org.codehaus.groovy` to `org.apache.groovy`. The explicit `junit-jupiter`
+  dependencies are dropped — every test is a Spock specification, and Spock
+  supplies the JUnit Platform it needs — and `junit-platform-launcher` is now
+  declared, because Gradle 9 no longer adds it implicitly. **JDK 17 is now the
+  minimum**, since Groovy 5 requires it.
+- **Build metadata.** `group` corrected from the placeholder `org.example` to
+  `com.lemiorhanergin`, and the version from `1.0-SNAPSHOT` onward. Property
+  assignment switched to `=` syntax, which Gradle 10 will require; the build is
+  warning-free.
+
+### Added
+
+- **`NOTICE`**, collecting the attribution requirements and separating what is a
+  license condition from what is an academic request — the mathematics itself is
+  not subject to copyright.
+- **`CITATION.cff`**, driving GitHub's "Cite this repository" button, and a
+  Zenodo archive. The concept DOI
+  [10.5281/zenodo.21572577](https://doi.org/10.5281/zenodo.21572577) always
+  resolves to the newest archived version.
+- **Project files**: `CONTRIBUTING.md`, `CODE_OF_CONDUCT.md` (Contributor
+  Covenant 2.0), `SECURITY.md`, this changelog, `.editorconfig`, `CODEOWNERS`,
+  a pull request template, and three issue templates including a Counterexample
+  form, since a wrong answer is the most valuable report this project can get.
+- **CI** on every push and pull request, running the Groovy suite on JDK 17, 21
+  and 25, plus a job that keeps the site in step with the reference
+  implementation: every language must define identical keys, every key used in
+  `index.html` must exist, and the JavaScript port must agree with integer
+  division across all 10,000 dividend/divisor pairs up to 100. **Dependabot** is
+  enabled for Gradle and Actions.
+
 ## [2.0] - 2026-07-25
 
-The rule is generalized, proved, implemented, tested and published, and the
-project is set up as an open-source project.
+The rule is generalized, proved, implemented, tested and published, together
+with the interactive site. Archived on Zenodo as
+[10.5281/zenodo.21572578](https://doi.org/10.5281/zenodo.21572578), which
+predates the relicensing and therefore records CC BY 4.0.
 
 ### Added
 
@@ -41,35 +91,15 @@ project is set up as an open-source project.
   which runs the algorithm step by step in the browser and reproduces the Groovy
   trace exactly. Available in English, Türkçe, 中文 and Español, with light and
   dark themes.
-- **Open-source project files**: `NOTICE`, `CITATION.cff`, `CONTRIBUTING.md`,
-  `CODE_OF_CONDUCT.md`, `SECURITY.md`, this changelog, `.editorconfig`,
-  `CODEOWNERS`, issue and pull request templates, CI on every push and pull
-  request, and Dependabot.
 
 ### Changed
 
-- **License.** Source code moved from CC BY 4.0 to the **Apache License 2.0**,
-  which is a software license and carries an express patent grant. Prose and
-  documentation remain under **CC BY 4.0**, now in `LICENSE-DOCS`. Attribution
-  requirements are collected in `NOTICE`; see the License section of
-  `README.md`. Source files carry an Apache header with an SPDX identifier.
 - **The site's explanation.** The section on why the first algorithm needed
   prime factors is removed; the one fact it carried is folded into the closing
   note of the 1997 Formula section, which links to the README for the algebra.
   The eleven cells of the "classical rule it becomes" column now state the
   classical rule a reader half-remembers from school, instead of terse fragments
   and commentary about the 1997 equation.
-- **Toolchain upgraded to support Java 25.** Gradle 7.6.4 → **9.6.1**, Groovy
-  3.0.8 → **5.0.6**, Spock 2.0 → **2.4-groovy-5.0**, SLF4J 1.7.32 → **2.0.18**.
-  Groovy 5 is what carries JDK 25 support, and it moves the Groovy groupId from
-  `org.codehaus.groovy` to `org.apache.groovy`. The explicit `junit-jupiter`
-  dependencies are dropped — every test is a Spock specification, and Spock
-  supplies the JUnit Platform it needs — and `junit-platform-launcher` is now
-  declared, because Gradle 9 no longer adds it implicitly. **JDK 17 is now the
-  minimum**, since Groovy 5 requires it; CI covers 17, 21 and 25.
-- **Build metadata.** `group` corrected from the placeholder `org.example` to
-  `com.lemiorhanergin`, and the version from `1.0-SNAPSHOT` to `2.0`. Property
-  assignment switched to `=` syntax, which Gradle 10 will require.
 
 ### Fixed
 
@@ -106,6 +136,7 @@ divisors sharing a ones digit have similar divisibility rules led to one
 equation covering them all. Mailed to TÜBİTAK as a mathematics project. Nothing
 came of it for 24 years.
 
-[Unreleased]: https://github.com/lemiorhan/grand-unified-divisibility-rule/compare/v2.0...HEAD
+[Unreleased]: https://github.com/lemiorhan/grand-unified-divisibility-rule/compare/v2.1...HEAD
+[2.1]: https://github.com/lemiorhan/grand-unified-divisibility-rule/compare/v2.0...v2.1
 [2.0]: https://github.com/lemiorhan/grand-unified-divisibility-rule/compare/v1.0...v2.0
 [1.0]: https://github.com/lemiorhan/grand-unified-divisibility-rule/releases/tag/v1.0

@@ -553,7 +553,7 @@ version.
   author  = {Ergin, Lemi Orhan},
   title   = {Grand Unified Divisibility Rule (Lemi's Formula)},
   year    = {2026},
-  version = {2.0},
+  version = {2.1},
   doi     = {10.5281/zenodo.21572577},
   url     = {https://github.com/lemiorhan/grand-unified-divisibility-rule}
 }
