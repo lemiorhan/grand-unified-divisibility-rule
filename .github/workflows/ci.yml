@@ -45,7 +45,7 @@ jobs:
         # the suite writes every calculation step of all ten thousand plus
         # executions here, which is what makes a failure diagnosable
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: divisibility-steps-jdk${{ matrix.java }}
           path: build/divisibility-steps.log
@@ -54,7 +54,7 @@ jobs:
 
       - name: Upload test reports
         if: failure()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: test-report-jdk${{ matrix.java }}
           path: build/reports/tests/test
