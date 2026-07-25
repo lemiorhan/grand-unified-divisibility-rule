@@ -1,0 +1,135 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Test on JDK ${{ matrix.java }}
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        # Groovy 3.0.8 and Gradle 7.6.4 are the versions this project pins;
+        # 21 is the current LTS and 17 the previous one.
+        java: ['17', '21']
+
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK ${{ matrix.java }}
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: ${{ matrix.java }}
+
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+
+      - name: Run the test suite
+        run: ./gradlew clean test --no-daemon
+
+      - name: Upload the step-by-step execution log
+        # the suite writes every calculation step of all ten thousand plus
+        # executions here, which is what makes a failure diagnosable
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: divisibility-steps-jdk${{ matrix.java }}
+          path: build/divisibility-steps.log
+          if-no-files-found: ignore
+          retention-days: 14
+
+      - name: Upload test reports
+        if: failure()
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-report-jdk${{ matrix.java }}
+          path: build/reports/tests/test
+          if-no-files-found: ignore
+          retention-days: 14
+
+  site:
+    name: Check the site stays in step
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out the repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: The site's scripts must parse
+        run: |
+          for f in docs/algorithm.js docs/app.js docs/i18n.js; do
+            node --check "$f"
+          done
+
+      - name: Every language must define exactly the same keys
+        run: |
+          node -e '
+            global.window = {};
+            require("./docs/i18n.js");
+            const I = global.window.I18N;
+            const en = Object.keys(I.en);
+            let bad = 0;
+            for (const lang of Object.keys(I)) {
+              const keys = Object.keys(I[lang]);
+              const missing = en.filter((k) => !(k in I[lang]));
+              const extra = keys.filter((k) => !en.includes(k));
+              if (missing.length || extra.length) {
+                bad++;
+                console.error(`${lang}: missing [${missing}] extra [${extra}]`);
+              }
+            }
+            if (bad) process.exit(1);
+            console.log(`OK - ${Object.keys(I).length} languages, ${en.length} keys each`);
+          '
+
+      - name: Every key used in index.html must exist
+        run: |
+          node -e '
+            global.window = {};
+            require("./docs/i18n.js");
+            const fs = require("fs");
+            const html = fs.readFileSync("docs/index.html", "utf8");
+            const used = [...html.matchAll(/data-i18n(?:-tpl)?="([^"]+)"/g)].map((m) => m[1]);
+            const orphans = used.filter((k) => !(k in global.window.I18N.en));
+            if (orphans.length) {
+              console.error("keys used in index.html with no translation entry:", orphans);
+              process.exit(1);
+            }
+            console.log(`OK - all ${used.length} keys used in index.html are defined`);
+          '
+
+      - name: The JavaScript port must agree with integer division
+        run: |
+          node -e '
+            const DR = require("./docs/algorithm.js");
+            let checked = 0;
+            for (let d = 1; d <= 100; d++) {
+              for (let n = 1; n <= 100; n++) {
+                const got = DR.check(String(n), String(d));
+                if (Number(got.remainder) !== n % d || got.divisible !== (n % d === 0)) {
+                  console.error(`mismatch: ${n} / ${d} -> remainder ${got.remainder}, expected ${n % d}`);
+                  process.exit(1);
+                }
+                checked++;
+              }
+            }
+            console.log(`OK - ${checked} dividend/divisor pairs match integer division`);
+          '

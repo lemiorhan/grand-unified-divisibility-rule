@@ -1,0 +1,85 @@
+name: Counterexample
+description: The rule gave the wrong answer for some dividend and divisor
+title: "[counterexample] <dividend> / <divisor>"
+labels: ["counterexample", "bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        A genuine counterexample is the most valuable report this project can
+        receive. It will be turned into a regression test before anything else
+        happens.
+
+        You can check quickly in the browser at
+        [the live site](https://lemiorhan.github.io/grand-unified-divisibility-rule/).
+
+  - type: input
+    id: dividend
+    attributes:
+      label: Dividend
+      description: The number being tested.
+      placeholder: "1044"
+    validations:
+      required: true
+
+  - type: input
+    id: divisor
+    attributes:
+      label: Divisor
+      description: The number you are testing divisibility by.
+      placeholder: "12"
+    validations:
+      required: true
+
+  - type: input
+    id: expected
+    attributes:
+      label: Correct remainder
+      description: What the remainder actually is, by ordinary division.
+      placeholder: "0"
+    validations:
+      required: true
+
+  - type: input
+    id: actual
+    attributes:
+      label: Remainder the rule produced
+      placeholder: "3"
+    validations:
+      required: true
+
+  - type: dropdown
+    id: where
+    attributes:
+      label: Where did you see it?
+      multiple: true
+      options:
+        - The website
+        - The Groovy implementation
+        - A port of my own
+    validations:
+      required: true
+
+  - type: textarea
+    id: log
+    attributes:
+      label: Execution log
+      description: >-
+        If you have it, paste the step-by-step trace. The site has a "Raw
+        execution log" section with a copy button; the Groovy suite writes
+        build/divisibility-steps.log.
+      render: text
+
+  - type: input
+    id: version
+    attributes:
+      label: Version or commit
+      placeholder: "v1.0.0, or a commit SHA"
+
+  - type: checkboxes
+    id: checks
+    attributes:
+      label: Before submitting
+      options:
+        - label: I double-checked the correct remainder by ordinary division.
+          required: true

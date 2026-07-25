@@ -1,0 +1,42 @@
+cff-version: 1.2.0
+message: >-
+  If you use this rule, its proof, or this implementation, please cite it using
+  the metadata below.
+title: "Grand Unified Divisibility Rule (Lemi's Formula)"
+abstract: >-
+  A single algorithm that generates the divisibility rule of every divisor,
+  using no prime factorization and no division. A number is divisible by d
+  exactly when the weighted sum of its digits is divisible by d, where the
+  weight of the ones digit is 1 and every subsequent weight is the previous one
+  multiplied by 10 and then reduced below d by repeated subtraction; the final
+  total is the exact remainder. The classical rules for 2, 3, 4, 7, 8, 9 and 11
+  are rows of the resulting table. Generalizes an equation discovered by the
+  author in 1997, whose hidden validity criterion -- gcd((y*a2)+1, d) = 1 -- is
+  identified here and shown to be the reason the original formulation required
+  prime factorization.
+type: software
+authors:
+  - family-names: Ergin
+    given-names: Lemi Orhan
+    website: "https://www.lemiorhanergin.com"
+version: 1.0.0
+date-released: "2026-07-25"
+license:
+  - Apache-2.0
+  - CC-BY-4.0
+repository-code: "https://github.com/lemiorhan/grand-unified-divisibility-rule"
+url: "https://lemiorhan.github.io/grand-unified-divisibility-rule/"
+keywords:
+  - divisibility
+  - divisibility-rules
+  - number-theory
+  - modular-arithmetic
+  - digit-sum
+  - algorithm
+  - mathematics
+# After archiving a release with Zenodo, add the minted DOI here and in README.md:
+# doi: 10.5281/zenodo.XXXXXXX
+# identifiers:
+#   - type: doi
+#     value: 10.5281/zenodo.XXXXXXX
+#     description: Concept DOI for all versions
