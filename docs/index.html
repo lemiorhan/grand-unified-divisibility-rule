@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grand Unified Divisibility Rule — Lemi's Formula</title>
+    <meta name="description" content="One formula for every divisibility rule — no prime factors, no division, a three-line proof. Try the algorithm step by step in your browser.">
+    <link rel="canonical" href="https://lemiorhan.github.io/grand-unified-divisibility-rule/">
+    <link rel="alternate" hreflang="en" href="https://lemiorhan.github.io/grand-unified-divisibility-rule/?lang=en">
+    <link rel="alternate" hreflang="tr" href="https://lemiorhan.github.io/grand-unified-divisibility-rule/?lang=tr">
+    <link rel="alternate" hreflang="zh-Hans" href="https://lemiorhan.github.io/grand-unified-divisibility-rule/?lang=zh">
+    <link rel="alternate" hreflang="es" href="https://lemiorhan.github.io/grand-unified-divisibility-rule/?lang=es">
+    <link rel="alternate" hreflang="x-default" href="https://lemiorhan.github.io/grand-unified-divisibility-rule/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Grand Unified Divisibility Rule — Lemi's Formula">
+    <meta property="og:description" content="One formula for every divisibility rule — no prime factors, no division, a three-line proof. Run the algorithm step by step in your browser.">
+    <meta property="og:url" content="https://lemiorhan.github.io/grand-unified-divisibility-rule/">
+    <meta name="twitter:card" content="summary">
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>&#247;</text></svg>">
+</head>
+<body>
+
+<nav class="nav">
+    <div class="nav-inner">
+        <a class="nav-brand" href="#top">&#247; <span>Lemi's Formula</span></a>
+        <div class="nav-links">
+            <a href="#story" data-i18n="nav.story">Story</a>
+            <a href="#formula" data-i18n="nav.formula">The 1997 Formula</a>
+            <a href="#flaw" data-i18n="nav.flaw">The Flaw</a>
+            <a href="#rule" data-i18n="nav.rule">The Rule</a>
+            <a href="#proof" data-i18n="nav.proof">Proof</a>
+            <a href="#try" class="nav-cta" data-i18n="nav.try">Try It</a>
+            <label class="sr-only" for="langSelect" data-i18n="lang.label">Language</label>
+            <select id="langSelect" class="lang-select">
+                <option value="en">English</option>
+                <option value="tr">Türkçe</option>
+                <option value="zh">中文</option>
+                <option value="es">Español</option>
+            </select>
+            <button class="theme-toggle" id="themeToggle">&#9789; / &#9788;</button>
+        </div>
+    </div>
+</nav>
+
+<main id="main">
+
+<header class="hero" id="top">
+    <div class="container">
+        <div class="hero-kicker" data-i18n="hero.kicker">Grand Unified Divisibility Rule</div>
+        <h1 data-i18n="hero.title">Every divisibility rule<br>is one single formula.</h1>
+        <p class="lead" data-i18n="hero.lead">
+            The digit-sum rule for 3, the alternating sum for 11, the last-digits trick for 4 and 8, the
+            weighted rule for 7 — they are all rows of one table, produced by one algorithm that needs
+            no prime factors and no division. Discovered in a Turkish high school in 1997, generalized and
+            proven in 2026.
+        </p>
+        <div class="hero-actions">
+            <a class="btn btn-primary" href="#try" data-i18n="hero.ctaRun">Run the algorithm step by step</a>
+            <a class="btn btn-ghost" href="https://github.com/lemiorhan/grand-unified-divisibility-rule" data-i18n="hero.ctaGithub">View on GitHub</a>
+        </div>
+        <div class="hero-stats">
+            <div class="hero-stat"><div class="num">1</div><div class="cap" data-i18n="hero.stat1">formula for every divisor</div></div>
+            <div class="hero-stat"><div class="num">0</div><div class="cap" data-i18n="hero.stat2">prime factors needed</div></div>
+            <div class="hero-stat"><div class="num">3</div><div class="cap" data-i18n="hero.stat3">lines of proof</div></div>
+            <div class="hero-stat"><div class="num">+ &times; &minus;</div><div class="cap" data-i18n="hero.stat4">the only operations used</div></div>
+        </div>
+    </div>
+</header>
+
+<section id="story">
+    <div class="container">
+        <div class="section-kicker" data-i18n="story.kicker">The Story</div>
+        <h2 data-i18n="story.h2">A notebook, a calculator, and 29 years</h2>
+        <p class="section-intro" data-i18n="story.intro">
+            This is not a textbook result. It is one person’s amateur discovery that slowly grew into a
+            theorem — told in full in the
+            <a href="https://github.com/lemiorhan/grand-unified-divisibility-rule#history">project README</a>.
+        </p>
+        <div class="timeline">
+            <div class="time-card">
+                <div class="year">1997</div>
+                <h3 data-i18n="story.card1.h3">The discovery</h3>
+                <p data-i18n="story.card1.p">A high school student in Izmir spends months with a basic calculator, hunting
+                    for an algorithm to detect prime numbers. The divisibility rules of numbers sharing the
+                    same last digit look alike — and that observation becomes one equation covering them all,
+                    mailed to TUBITAK as a math project. Nothing happens.</p>
+            </div>
+            <div class="time-card">
+                <div class="year">2021</div>
+                <h3 data-i18n="story.card2.h3">The program</h3>
+                <p data-i18n="story.card2.p">24 years later the old papers resurface and a program is written to validate
+                    the formula. It works — but only after factoring the divisor into primes first. The prime
+                    factorization step always felt like a workaround, never part of the idea.</p>
+            </div>
+            <div class="time-card">
+                <div class="year">2026</div>
+                <h3 data-i18n="story.card3.h3">The generalization</h3>
+                <p data-i18n="story.card3.p">The reason the workaround was needed finally becomes clear — a hidden
+                    constraint of the 1997 equation. Generalizing it removes the constraint: one rule for every
+                    divisor, with no factoring, no division, and a three-line proof.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="alt" id="formula">
+    <div class="container">
+        <div class="section-kicker" data-i18n="formula.kicker">The 1997 Discovery</div>
+        <h2 data-i18n="formula.h2">Lemi's Equation</h2>
+        <p class="section-intro" data-i18n="formula.intro">
+            For a dividend <code>N = 10&middot;a1 + b1</code> and a divisor <code>d = 10&middot;a2 + b2</code>,
+            one equation generates the divisibility rule of any divisor from its digits alone:
+        </p>
+        <div class="math-block">
+            <span class="nw">f(N) = (x &middot; a1) + ((y &middot; a2) + 1) &middot; b1</span>
+            <span class="nw"><span class="hl">where</span> x = 10 + b2 &minus; b2 &middot; &lceil;10 / b2&rceil;</span>
+            <span class="nw"><span class="hl">and</span> y = &lceil;10 / b2&rceil; &minus; 1</span>
+        </div>
+        <p class="math-note" data-i18n="formula.note">
+            Apply <code>f</code> to the dividend, then to the result, and keep going until the number is small.
+            The 36 rules it produces for the divisors between 11 and 50 include familiar classics:
+        </p>
+        <div class="rule-grid">
+            <div class="rule-card">
+                <span class="rule-d">12</span><span class="badge badge-ok" data-i18n="formula.badgeValid">valid</span>
+                <div class="rule-f" data-i18n-tpl="formula.ruleFmt" data-a="5" data-b="2">5 &times; last digit + 2 &times; remaining</div>
+            </div>
+            <div class="rule-card">
+                <span class="rule-d">13</span><span class="badge badge-ok" data-i18n="formula.badgeValid">valid</span>
+                <div class="rule-f" data-i18n-tpl="formula.ruleFmt" data-a="4" data-b="1">4 &times; last digit + 1 &times; remaining</div>
+            </div>
+            <div class="rule-card">
+                <span class="rule-d">17</span><span class="badge badge-ok" data-i18n="formula.badgeValid">valid</span>
+                <div class="rule-f" data-i18n-tpl="formula.ruleFmt" data-a="2" data-b="3">2 &times; last digit + 3 &times; remaining</div>
+            </div>
+            <div class="rule-card">
+                <span class="rule-d">23</span><span class="badge badge-ok" data-i18n="formula.badgeValid">valid</span>
+                <div class="rule-f" data-i18n-tpl="formula.ruleFmt" data-a="7" data-b="1">7 &times; last digit + 1 &times; remaining</div>
+            </div>
+            <div class="rule-card broken">
+                <span class="rule-d">27</span><span class="badge badge-broken" data-i18n="formula.badgeBroken">broken</span>
+                <div class="rule-f" data-i18n-tpl="formula.ruleFmt" data-a="3" data-b="3">3 &times; last digit + 3 &times; remaining</div>
+            </div>
+            <div class="rule-card broken">
+                <span class="rule-d">45</span><span class="badge badge-broken" data-i18n="formula.badgeBroken">broken</span>
+                <div class="rule-f" data-i18n-tpl="formula.ruleFmt" data-a="5" data-b="5">5 &times; last digit + 5 &times; remaining</div>
+            </div>
+        </div>
+        <p class="math-note" style="margin-top: 22px;" data-i18n="formula.closing">
+            Six of the thirty-six rules — for <b>16, 18, 27, 36, 38 and 45</b> — looked exactly as trustworthy
+            as the rest, but are subtly false. That flaw stayed invisible for decades. Here is why.
+        </p>
+    </div>
+</section>
+
+<section id="flaw">
+    <div class="container">
+        <div class="section-kicker" data-i18n="flaw.kicker">The Hidden Constraint</div>
+        <h2 data-i18n="flaw.h2">Why the first algorithm needed prime factors</h2>
+        <p class="section-intro" data-i18n="flaw.intro">
+            Rearranging Lemi's Equation reveals an exact identity — and the identity reveals the constraint.
+        </p>
+        <div class="math-block">
+            <span class="nw">f(N) = ((y &middot; a2) + 1) &middot; N &minus; (y &middot; a1) &middot; d</span>
+        </div>
+        <p data-i18n="flaw.p1">
+            So one application of the equation preserves the remainder of <code>N</code> by <code>d</code>
+            <em>scaled by the constant</em> <code>(y&middot;a2)+1</code>. The rule
+            &ldquo;<code>d</code> divides <code>f(N)</code> exactly when <code>d</code> divides <code>N</code>&rdquo;
+            is therefore valid precisely when that scaling constant shares no factor with the divisor:
+        </p>
+        <div class="math-block">
+            <span class="nw">gcd((y &middot; a2) + 1, d) = 1</span>
+        </div>
+        <p data-i18n="flaw.p2">
+            When the criterion fails, the equation breaks. For 16 the constant is 2, and the equation maps 8
+            straight onto 16 — falsely declaring 8 divisible by 16. For 27 the constant is 3, and 9 lands
+            exactly on 27. The divisors below 100 that break the equation are:
+        </p>
+        <div class="chips">
+            <span class="chip broken">16</span><span class="chip broken">18</span><span class="chip broken">27</span>
+            <span class="chip broken">36</span><span class="chip broken">38</span><span class="chip broken">45</span>
+            <span class="chip broken">56</span><span class="chip broken">57</span><span class="chip broken">58</span>
+            <span class="chip broken">76</span><span class="chip broken">78</span><span class="chip broken">87</span>
+            <span class="chip broken">95</span><span class="chip broken">96</span><span class="chip broken">98</span>
+        </div>
+        <p data-i18n="flaw.p3">
+            Every single one of them is <b>composite</b>. The scaling constant always stays strictly between
+            0 and <code>d</code>, so for a prime divisor it can never share a factor with <code>d</code> —
+            <b>the criterion holds automatically for every prime</b>. Factoring the divisor into primes was
+            silently repairing the broken composite cases. For 29 years the primes masked the real constraint
+            of the formula.
+        </p>
+    </div>
+</section>
+
+<section class="alt" id="rule">
+    <div class="container">
+        <div class="section-kicker" data-i18n="rule.kicker">The Generalization</div>
+        <h2 data-i18n="rule.h2">One rule, every divisor</h2>
+        <p class="section-intro" data-i18n="rule.intro">
+            The fix is not to patch the equation but to see what it really is, and run it in the other
+            direction. The result works for every divisor — prime or composite, even or odd — using nothing
+            but reading digits, small multiplications, and subtraction.
+        </p>
+        <div class="math-block wrap" data-i18n="rule.statement">
+            A number is divisible by <span class="hl">d</span> exactly when the <b>weighted sum of its digits</b>
+            is divisible by <span class="hl">d</span>. The ones digit has weight <b>1</b>; every next weight is the
+            previous one times 10, then reduced below <span class="hl">d</span> by subtracting <span class="hl">d</span>.
+            The final total is the exact <b>remainder</b>.
+        </div>
+        <p data-i18n="rule.tableIntro">
+            Compute the weight row of a divisor and you get its divisibility rule. The famous rules stop being
+            separate tricks and become rows of one table:
+        </p>
+        <div class="table-wrap">
+            <table class="weights">
+                <thead><tr>
+                    <th data-i18n="rule.thDivisor">Divisor</th>
+                    <th data-i18n="rule.thWeights">Weights (ones digit first)</th>
+                    <th data-i18n="rule.thRule">The classical rule it becomes</th>
+                </tr></thead>
+                <tbody>
+                <tr><td class="d">2</td><td class="w">1, 0, 0, 0, &hellip;</td><td data-i18n="rule.r2">only the last digit matters</td></tr>
+                <tr><td class="d">3</td><td class="w">1, 1, 1, 1, &hellip;</td><td data-i18n="rule.r3">sum of all digits</td></tr>
+                <tr><td class="d">4</td><td class="w">1, 2, 0, 0, &hellip;</td><td data-i18n="rule.r4">last two digits</td></tr>
+                <tr><td class="d">7</td><td class="w">1, 3, 2, 6, 4, 5, &hellip;</td><td data-i18n="rule.r7">the classical weighted rule for 7</td></tr>
+                <tr><td class="d">8</td><td class="w">1, 2, 4, 0, 0, &hellip;</td><td data-i18n="rule.r8">last three digits</td></tr>
+                <tr><td class="d">9</td><td class="w">1, 1, 1, 1, &hellip;</td><td data-i18n="rule.r9">sum of all digits</td></tr>
+                <tr><td class="d">11</td><td class="w">1, 10, 1, 10, &hellip;</td><td data-i18n="rule.r11">alternating sum &mdash; 10 acts as &minus;1</td></tr>
+                <tr><td class="d">12</td><td class="w">1, 10, 4, 4, &hellip;</td><td data-i18n="rule.r12">needed prime factors before</td></tr>
+                <tr><td class="d">20</td><td class="w">1, 10, 0, 0, &hellip;</td><td data-i18n="rule.r20">a divisor the 1997 equation could not even write down</td></tr>
+                <tr><td class="d">27</td><td class="w">1, 10, 19, 1, 10, 19, &hellip;</td><td data-i18n="rule.r27">the case that broke the 1997 equation</td></tr>
+                <tr><td class="d">45</td><td class="w">1, 10, 10, 10, &hellip;</td><td data-i18n="rule.r45">used to require factoring into 3 &times; 3 &times; 5</td></tr>
+                </tbody>
+            </table>
+        </div>
+        <p class="math-note" style="margin-top: 18px;" data-i18n="rule.note">
+            Divisors made only of 2s and 5s collapse their weights to 0 — that is why only the last few digits
+            matter for them. Divisors sharing no factor with 10 cycle forever. Mixed divisors like 12 and 45 do
+            a little of each. One mechanism, three behaviors.
+        </p>
+    </div>
+</section>
+
+<section id="proof">
+    <div class="container">
+        <div class="section-kicker" data-i18n="proof.kicker">The Proof</div>
+        <h2 data-i18n="proof.h2">Three lines, no hand-waving</h2>
+        <div class="proof-steps">
+            <div class="proof-step"><p data-i18n="proof.s1">
+                Subtracting <code>d</code> never changes a number’s remainder by <code>d</code>. So by induction,
+                every weight has the same remainder as the power of ten it replaced:
+                <code>weight(t) &equiv; 10<sup>t</sup> (mod d)</code>.
+            </p></div>
+            <div class="proof-step"><p data-i18n="proof.s2">
+                Therefore the weighted digit sum is congruent to
+                <code>digit(0)&middot;10<sup>0</sup> + digit(1)&middot;10<sup>1</sup> + &hellip;</code>
+                — which <em>is</em> the number <code>N</code> itself. The weighted sum &equiv; <code>N (mod d)</code>.
+            </p></div>
+            <div class="proof-step"><p data-i18n="proof.s3">
+                The running total is kept below <code>d</code> and stays congruent to <code>N</code>, so the final
+                total is exactly the remainder of <code>N</code> divided by <code>d</code>. It is 0 exactly when
+                <code>d</code> divides <code>N</code>. &#8718;
+            </p></div>
+        </div>
+    </div>
+</section>
+
+<section class="alt" id="try">
+    <div class="container">
+        <div class="section-kicker" data-i18n="calc.kicker">Try It Yourself</div>
+        <h2 data-i18n="calc.h2">Watch the algorithm run, step by step</h2>
+        <p class="section-intro" data-i18n="calc.intro">
+            Enter any dividend and divisor. Before applying the formula, the algorithm announces the exact
+            variation it will use — the divisor’s weight row — and then every digit, every multiplication and
+            every subtraction is shown in full. This is the same algorithm as the
+            <a href="https://github.com/lemiorhan/grand-unified-divisibility-rule/blob/main/src/main/groovy/com/lemiorhanergin/divisibilityrules/DivisibilityRule.groovy">Groovy implementation</a>,
+            producing the identical trace.
+        </p>
+        <div class="calc">
+            <form class="calc-form" id="calcForm">
+                <div class="field">
+                    <label for="dividend" data-i18n="calc.labelDividend">Dividend &mdash; the number to test (up to 24 digits)</label>
+                    <input id="dividend" inputmode="numeric" autocomplete="off" maxlength="24" aria-describedby="calcError" placeholder="1044" value="1044">
+                </div>
+                <div class="field">
+                    <label for="divisor" data-i18n="calc.labelDivisor">Divisor</label>
+                    <input id="divisor" inputmode="numeric" autocomplete="off" maxlength="12" aria-describedby="calcError" placeholder="12" value="12">
+                </div>
+                <button type="submit" class="btn btn-primary" id="runBtn" data-i18n="calc.run">Run the formula</button>
+            </form>
+            <div class="examples" id="examples">
+                <button type="button" class="example-chip" data-n="1044" data-d="12">1044 &divide; 12</button>
+                <button type="button" class="example-chip" data-n="175789" data-d="23">175789 &divide; 23</button>
+                <button type="button" class="example-chip" data-n="24" data-d="16">24 &divide; 16</button>
+                <button type="button" class="example-chip" data-n="9" data-d="27">9 &divide; 27</button>
+                <button type="button" class="example-chip" data-n="74284" data-d="11">74284 &divide; 11</button>
+                <button type="button" class="example-chip" data-n="25916917952" data-d="55456">25916917952 &divide; 55456</button>
+            </div>
+            <div class="calc-error" id="calcError" role="alert"></div>
+
+            <div class="calc-output" id="calcOutput">
+                <div class="out-block">
+                    <div class="out-label" data-i18n="calc.out1">1 &middot; The variation of the formula that will be applied</div>
+                    <div class="formula-chips" id="formulaChips"></div>
+                </div>
+                <div class="out-block digit-row-wrap">
+                    <div class="out-label" data-i18n="calc.out2">2 &middot; The digits of the dividend (read from the ones place)</div>
+                    <div class="digit-row" id="digitRow"></div>
+                </div>
+                <div class="out-block">
+                    <div class="out-label" data-i18n="calc.out3">3 &middot; Every step of the calculation</div>
+                    <div class="steps-list" id="stepsList"></div>
+                </div>
+                <div class="verdict" id="verdict"></div>
+                <details class="rawlog" id="rawlogWrap">
+                    <summary data-i18n="calc.rawSummary">Raw execution log &mdash; identical to the Groovy implementation’s output</summary>
+                    <p class="raw-note" data-i18n="calc.rawNote">The log is always shown in English so that it matches the Groovy output line for line.</p>
+                    <pre id="rawlog"></pre>
+                    <button type="button" class="copy-btn" id="copyLog" data-i18n="calc.copy">Copy log</button>
+                </details>
+            </div>
+            <p class="sr-only" id="srStatus" role="status" aria-live="polite"></p>
+        </div>
+    </div>
+</section>
+
+</main>
+
+<footer>
+    <div class="container">
+        <div>
+            <span data-i18n="footer.credit"><b>Grand Unified Divisibility Rule</b> &mdash; discovered by
+            <a href="https://www.lemiorhanergin.com">Lemi Orhan Ergin</a>, co-founder of
+            <a href="https://www.craftgate.io">Craftgate</a>.</span><br>
+            <span data-i18n="footer.license">Licensed under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</span>
+        </div>
+        <div>
+            <a href="https://github.com/lemiorhan/grand-unified-divisibility-rule" data-i18n="footer.source">Source &amp; full story on GitHub</a><br>
+            <a href="https://github.com/lemiorhan/grand-unified-divisibility-rule#the-tests" data-i18n="footer.tests">10,000+ verified test executions</a>
+        </div>
+    </div>
+</footer>
+
+<script src="algorithm.js"></script>
+<script src="i18n.js"></script>
+<script src="app.js"></script>
+</body>
+</html>

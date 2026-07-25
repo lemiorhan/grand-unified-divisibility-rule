@@ -1,5 +1,9 @@
 # Grand Unified Divisibility Rule: Lemi's Formula
 
+> 🌐 **Try it live:** [lemiorhan.github.io/grand-unified-divisibility-rule](https://lemiorhan.github.io/grand-unified-divisibility-rule/) —
+> enter any dividend and divisor, and watch the algorithm run step by step in your browser.
+> Available in English, Türkçe, 中文 and Español.
+
 `Divisibility rules` are fast and simple calculations to help you to determine whether a given integer is divisible by
 another integer without performing the division, usually by examining its digits in your head.
 
