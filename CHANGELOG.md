@@ -59,8 +59,17 @@ project is set up as an open-source project.
   The eleven cells of the "classical rule it becomes" column now state the
   classical rule a reader half-remembers from school, instead of terse fragments
   and commentary about the 1997 equation.
+- **Toolchain upgraded to support Java 25.** Gradle 7.6.4 → **9.6.1**, Groovy
+  3.0.8 → **5.0.6**, Spock 2.0 → **2.4-groovy-5.0**, SLF4J 1.7.32 → **2.0.18**.
+  Groovy 5 is what carries JDK 25 support, and it moves the Groovy groupId from
+  `org.codehaus.groovy` to `org.apache.groovy`. The explicit `junit-jupiter`
+  dependencies are dropped — every test is a Spock specification, and Spock
+  supplies the JUnit Platform it needs — and `junit-platform-launcher` is now
+  declared, because Gradle 9 no longer adds it implicitly. **JDK 17 is now the
+  minimum**, since Groovy 5 requires it; CI covers 17, 21 and 25.
 - **Build metadata.** `group` corrected from the placeholder `org.example` to
-  `com.lemiorhanergin`, and the version from `1.0-SNAPSHOT` to `2.0`.
+  `com.lemiorhanergin`, and the version from `1.0-SNAPSHOT` to `2.0`. Property
+  assignment switched to `=` syntax, which Gradle 10 will require.
 
 ### Fixed
 

@@ -42,8 +42,9 @@ before you spend real effort.
 
 ## Getting set up
 
-You need a JDK 8 or newer. Gradle comes with the repository via the wrapper, so
-there is nothing else to install.
+You need **JDK 17 or newer** — Groovy 5 requires it. CI runs the suite on 17, 21
+and 25. Gradle comes with the repository via the wrapper, so there is nothing
+else to install.
 
 ```sh
 git clone https://github.com/lemiorhan/grand-unified-divisibility-rule.git

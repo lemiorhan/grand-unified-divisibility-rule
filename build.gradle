@@ -2,24 +2,35 @@ plugins {
     id 'groovy'
 }
 
-group 'com.lemiorhanergin'
-version '2.0'
-description 'Grand Unified Divisibility Rule — one algorithm generating every divisibility rule, with no prime factors and no division'
+// assignment syntax, not the space syntax: the latter is removed in Gradle 10
+group = 'com.lemiorhanergin'
+version = '2.0'
+description = 'Grand Unified Divisibility Rule — one algorithm generating every divisibility rule, with no prime factors and no division'
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    implementation 'org.codehaus.groovy:groovy-all:3.0.8'
-    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
-    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
-    testImplementation 'org.spockframework:spock-core:2.0-groovy-3.0'
+    // Groovy 5 is what supports JDK 25; its groupId is org.apache.groovy, not
+    // the org.codehaus.groovy of Groovy 3 and earlier.
+    implementation 'org.apache.groovy:groovy:5.0.6'
 
-    implementation 'org.slf4j:slf4j-api:1.7.32'
-    implementation 'org.slf4j:jcl-over-slf4j:1.7.32'
-    implementation 'org.slf4j:log4j-over-slf4j:1.7.32'
-    implementation 'org.slf4j:slf4j-simple:1.7.32'
+    // Spock ships one build per Groovy major; this must track the Groovy above.
+    // No junit-jupiter dependency is declared: every test here is a Spock
+    // Specification, and Spock brings the JUnit Platform it needs transitively
+    // (currently the 5.14.1 BOM / platform 1.14.1). Do not bump those to JUnit
+    // 6 independently — Spock 2.4 runs on Platform 1.x.
+    testImplementation 'org.spockframework:spock-core:2.4-groovy-5.0'
+
+    // Gradle 9 no longer puts the launcher on the test runtime classpath
+    // implicitly. Left unversioned so Spock's JUnit BOM picks the matching one.
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+    implementation 'org.slf4j:slf4j-api:2.0.18'
+    implementation 'org.slf4j:jcl-over-slf4j:2.0.18'
+    implementation 'org.slf4j:log4j-over-slf4j:2.0.18'
+    implementation 'org.slf4j:slf4j-simple:2.0.18'
 }
 
 test {
