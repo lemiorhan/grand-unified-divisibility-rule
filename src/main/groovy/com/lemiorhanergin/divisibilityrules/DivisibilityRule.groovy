@@ -3,164 +3,78 @@ package com.lemiorhanergin.divisibilityrules
 import groovy.util.logging.Slf4j
 
 /**
- * Individual formulas that the unified formula is found from.
+ * Grand unified divisibility rule.
  *
- * FOR_1: { params -> (1 * params.a1) + ((9 * params.a2) + 1) * params.b },
- * FOR_2: { params -> (2 * params.a1) + ((4 * params.a2) + 1) * params.b },
- * FOR_3: { params -> (1 * params.a1) + ((3 * params.a2) + 1) * params.b },
- * FOR_4: { params -> (2 * params.a1) + ((2 * params.a2) + 1) * params.b },
- * FOR_5: { params -> (5 * params.a1) + ((1 * params.a2) + 1) * params.b },
- * FOR_6: { params -> (4 * params.a1) + ((1 * params.a2) + 1) * params.b },
- * FOR_7: { params -> (3 * params.a1) + ((1 * params.a2) + 1) * params.b },
- * FOR_8: { params -> (2 * params.a1) + ((1 * params.a2) + 1) * params.b },
- * FOR_9: { params -> (1 * params.a1) + ((1 * params.a2) + 1) * params.b }*
+ * A number N is divisible by d exactly when the weighted sum of N's digits
+ * is divisible by d, where the weight of the ones digit is 1 and every next
+ * weight is derived from the previous one by appending a zero (multiplying
+ * by 10) and then subtracting d until the value drops below d.
  *
- * Each formula can be used too.
+ * Proof: by induction each weight is congruent to the matching power of ten
+ * modulo d, so the weighted digit sum is congruent to N itself modulo d.
+ *
+ * All well-known divisibility rules are rows of this single rule:
+ *   d = 3, 9  -> weights 1,1,1,...        (digit sum)
+ *   d = 11    -> weights 1,10,1,10,...    (alternating sum, since 10 = -1 mod 11)
+ *   d = 2,4,8 -> weights die to 0         (only the last 1, 2, 3 digits matter)
+ *   d = 7     -> weights 1,3,2,6,4,5,...  (the classical rule for 7)
+ *
+ * No prime factors, no division by the divisor. The only operations are
+ * reading digits, multiplying a digit by a weight, and subtraction.
  **/
 @Slf4j
 class DivisibilityRule {
 
     public static boolean isLogEnabled = false
-    public static final int MAX_ITERATION_COUNT_ALLOWED = 50
 
-    def isDivisible(long dividend, long divisor) {
-        def primeFactors = primeFactors(divisor)
-        def factors = groupPrimeFactorsByRepetition(primeFactors)
-        if (isLogEnabled) log.info("FACTORS: {}", factors)
+    boolean isDivisible(long dividend, long divisor, Appendable trace = null) {
+        if (divisor < 1) throw new IllegalArgumentException("Divisor must be a positive number")
+        if (dividend < 0) throw new IllegalArgumentException("Dividend must not be negative")
 
-        factors.every { factor ->
-            calculateDivisibilityForFactorGroup(dividend, factor.key, factor.value, divisor, 1)
-        }
-    }
+        emit(trace, "DIVISIBILITY CHECK FOR [${dividend}/${divisor}]")
 
-    def calculateDivisibilityForFactorGroup(long dividend, long factor, int count, long divisor, Integer iteration) {
-        if (count == 0) return true
-        return calculateDivisibilityForFactorGroup((long) (dividend / factor), factor, count - 1, divisor, iteration) &&
-                calculateDivisibilityForFactor(dividend, factor, divisor, iteration)
-    }
+        long remaining = dividend
+        long weight = 1
+        long total = 0
+        int step = 1
 
-    def calculateDivisibilityForFactor(long dividend, long factor, long divisor, int iteration) {
-        if (iteration > MAX_ITERATION_COUNT_ALLOWED) return false
+        while (true) {
+            long digit = remaining % 10
+            long contribution = digit * weight
+            long unreducedTotal = total + contribution
+            total = reduceBySubtraction(unreducedTotal, divisor)
+            emit(trace, "STEP ${step} => DIGIT ${digit} x WEIGHT ${weight} = ${contribution} | TOTAL ${unreducedTotal}${reductionNote(unreducedTotal, total, divisor)}")
 
-        long lastNumberOfDivisor = factor % 10
-        if (isLogEnabled) log.info("DIVISIBILITY CHECK FOR [{}/{}]", dividend, factor)
+            remaining = remaining.intdiv(10)
+            if (remaining == 0) break
 
-        long previousCalculated = dividend
-
-        def calculation = execute(iteration, lastNumberOfDivisor, dividend, factor)
-        if (calculation == previousCalculated && calculation > factor) calculation = calculation - factor
-        if (isLogEnabled) log.info("1. ITERATION: {}", calculation)
-
-        while (continueIterating(++iteration, dividend, divisor, factor, calculation, previousCalculated)) {
-            previousCalculated = calculation
-
-            calculation = execute(iteration, lastNumberOfDivisor, calculation, factor)
-            if (calculation == previousCalculated && calculation > factor) calculation = calculation - factor
-            if (isLogEnabled) log.info("{}. ITERATION: {}", iteration, calculation)
+            long nextWeightUnreduced = weight * 10
+            weight = reduceBySubtraction(nextWeightUnreduced, divisor)
+            emit(trace, "WEIGHT FOR STEP ${step + 1} => 10 x ${nextWeightUnreduced.intdiv(10)} = ${nextWeightUnreduced}${reductionNote(nextWeightUnreduced, weight, divisor)}")
+            step++
         }
 
-        def divisibilityResult = decideDivisibility(factor, calculation)
-        if (isLogEnabled) log.info("{} IS {} BY {}. RESULT CALCULATED IN {} {}.", dividend, (divisibilityResult ? "DIVISIBLE" : "NOT DIVISIBLE"), factor, iteration - 1, (iteration - 1 == 1 ? "ITERATION" : "ITERATIONS"))
-        if (!divisibilityResult && calculation > factor) {
-            calculation = calculation - factor
-            calculateDivisibilityForFactor(calculation, factor, divisor, iteration)
-        }
-        return divisibilityResult
+        boolean divisible = (total == 0)
+        emit(trace, "FINAL REMAINDER: ${total} => ${dividend} IS ${divisible ? '' : 'NOT '}DIVISIBLE BY ${divisor}")
+        emit(trace, "")
+        return divisible
     }
 
     /**
-     * This is the unified formula to execute
-     *
-     * @param lastNumberOfDivisor the last number of divisor
-     * @param dividend the dividend number
-     * @param divisor the divisor number
-     * @return calculated result as long
+     * Brings a value below the divisor using nothing but subtraction.
      */
-    private long execute(int iteration, long lastNumberOfDivisor, long dividend, long divisor) {
-        // first coefficient
-        def x = (10 + lastNumberOfDivisor - (lastNumberOfDivisor * Math.ceil(10 / lastNumberOfDivisor))) as int
-        // second coefficient
-        def y = (Math.ceil(10 / lastNumberOfDivisor) - 1) as int
-        // remaining first digits of dividend
-        long a1 = (long) (dividend / 10)
-        // remaining first digits of divisor
-        long a2 = (long) (divisor / 10)
-        // last number of dividend
-        long b1 = dividend % 10
-        // constant
-        long b2 = 1
-
-        def calculation = (x * a1) + (((y * a2) + b2) * b1) as long
-        if (isLogEnabled) log.info("ITERATION {} => ({} x {}) + (({} x {}) + {}) x {} = {}", iteration, x, a1, y, a2, b2, b1, calculation)
-        return calculation
+    private static long reduceBySubtraction(long value, long divisor) {
+        long reduced = value
+        while (reduced >= divisor) reduced -= divisor
+        return reduced
     }
 
-    /**
-     * Decides if it is ok to continue iterating or not
-     *
-     * @param iteration , current number of iteration
-     * @param calculated , calculated number after each iteration
-     * @param previousExecutionResult , calculated number of previous iteration
-     * @param divisor
-     * @return boolean, true if continue iterating, false if stop iterating and continue
-     */
-    private boolean continueIterating(int iteration, long dividend, long divisor, long factor, long calculated, long previousCalculated) {
-        def maxIterationLimitExceeded = iteration >= MAX_ITERATION_COUNT_ALLOWED
-        def calculatedNumberEqualToFactor = calculated == factor
-        def calculatedNumberIsLowerThanFactor = calculated < factor
-        def calculatedNumberEqualToDivisor = calculated == divisor
-        def calculatedNumberEqualToDividend = calculated == dividend
-        def calculatedNumberIsEqualToPreviousIteration = calculated == previousCalculated
-        def calculatedNumberIsGreaterThanPreviousIteration = calculated > previousCalculated
-
-        if (isLogEnabled) {
-            if (calculatedNumberEqualToFactor) log.info("ITERATION STOPS DUE TO \"CALCULATED NUMBER IS EQUAL TO FACTOR\"")
-            if (calculatedNumberIsLowerThanFactor) log.info("ITERATION STOPS DUE TO \"CALCULATED NUMBER IS LOWER THAN FACTOR\"")
-            if (calculatedNumberEqualToDivisor) log.info("ITERATION STOPS DUE TO \"CALCULATED NUMBER IS EQUAL TO DIVISOR\"")
-            if (calculatedNumberEqualToDividend) log.info("ITERATION STOPS DUE TO \"CALCULATED NUMBER IS EQUAL TO DIVIDEND\"")
-            if (calculatedNumberIsEqualToPreviousIteration) log.info("ITERATION STOPS DUE TO \"CALCULATED NUMBER IS EQUAL TO PREVIOUS VERSION\"")
-            if (calculatedNumberIsGreaterThanPreviousIteration) log.info("ITERATION STOPS DUE TO \"CALCULATED NUMBER IS GREATER THAN PREVIOUS VERSION\"")
-        }
-
-        return !maxIterationLimitExceeded && !calculatedNumberIsEqualToPreviousIteration && !calculatedNumberIsLowerThanFactor & !calculatedNumberEqualToDividend && !calculatedNumberEqualToFactor & !calculatedNumberIsGreaterThanPreviousIteration
+    private static String reductionNote(long before, long after, long divisor) {
+        return before == after ? "" : ", REDUCED TO ${after} BY SUBTRACTING ${divisor}"
     }
 
-    /**
-     * Defines if the dividend is divided to divisor with zero reminder
-     *
-     * @param factor
-     * @param calculation , calculation number after each iteration
-     * @return boolean, true if divisible, false if not divisible
-     */
-    private boolean decideDivisibility(long factor, long calculation) {
-        return (calculation == factor)
-    }
-
-    /**
-     * Detects prime factors
-     *
-     * @param number , the given number
-     * @return list of prime factors (a prime factor can be available multiple times)
-     */
-    def primeFactors(long number) {
-        long n = number;
-        List<Integer> factors = new ArrayList<Integer>()
-        for (int i = 2; i <= n; i++) {
-            while (n % i == 0) {
-                factors.add(i)
-                n /= i
-            }
-        }
-        return factors
-    }
-
-    /**
-     * Groups prime factors and creates a [primeFactor, number of repetition] map
-     *
-     * @param primeFactors , list of prime factors
-     * @return Map of
-     */
-    def groupPrimeFactorsByRepetition(List<Long> primeFactors) {
-        return primeFactors.countBy { it }
+    private void emit(Appendable trace, String line) {
+        if (isLogEnabled) log.info(line)
+        trace?.append(line)?.append(System.lineSeparator())
     }
 }

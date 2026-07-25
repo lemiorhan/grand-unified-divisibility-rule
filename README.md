@@ -10,7 +10,9 @@ the world.
 
 With the work I did in 1997 when I was in high school, I can tell you that divisibility rules for any numbers can be
 derived from one single formula. All divisibility rules are very similar, like the rule for 2 and 42, and even 692 are
-the same. This document explains the root formula from where each divisibility rule derives.
+the same. This document explains the root formula from where each divisibility rule derives — and how the formula
+matured into a single rule that works for **every** divisor, with no prime factors, no division, and a three-line
+proof.
 
 I have no concerns about practicality, performance, or simplicity. My main concern is showing how divisibility rules
 share a common algorithm and each one can be derived from the main formula.
@@ -41,8 +43,14 @@ After 24 years, in 2021, I remembered the old good days of divisibility rules. I
 a [simple program](https://github.com/lemiorhan/grand-unified-divisibility-rule) for validating my findings by executing
 the algorithm. Guess the result: It works!
 
+That first program had one thing that always bothered me: it needed the prime factors of the divisor before it could
+run the formula. That was a workaround, not part of the idea. In 2026 I finally understood *why* the workaround was
+needed, and generalized the formula so that the algorithm works for any divisor directly — no prime factors, no
+division, nothing but digits, small multiplications and subtraction. This document tells the whole story: the original
+formula, the reason it needed primes, and the generalized rule that doesn't.
+
 If you are here reading my words, thanks for your interest! As of
-2021, [I am a software crafter](https://www.linkedin.com/in/lemiorhan/) living in Istanbul. I am the co-founder
+2026, [I am a software crafter](https://www.linkedin.com/in/lemiorhan/) living in Istanbul. I am the co-founder
 of [Craftgate, the cloud-based payment gateway](https://www.craftgate.io). I am neither a mathematician, not an
 academician. This post is not in academic paper standards. However, it contains a true story of my passion and my
 amateur findings of Grand Unified Divisibility Rule. I have already given the formula my name, `Lemi's Formula`.
@@ -58,8 +66,8 @@ amateur findings of Grand Unified Divisibility Rule. I have already given the fo
 * `Divisor` is the factor that divides the dividend. For instance, for division 75 / 20, 20 is the divisor.
 * `Quotient` is the result of the division. For instance, for division 75 / 20, 3 is the quotient.
 * `Remainder` is the number that is left after division. For instance, for division 75 / 20, 15 is the remainder.
-* `Prime Factor` is any of the prime numbers that can be multiplied to give the original number. For instance, prime
-  factors of 12 is 3, 2 and 2. Prime factors of 85 is 17 and 5.
+* `Weight` is the number a digit is multiplied with in the generalized rule. The ones place digit has weight 1, and
+  every next digit gets its weight derived from the previous weight.
 
 # Well-Known Divisibility Rules for One-Digit Numbers
 
@@ -134,111 +142,30 @@ not 0.
 As you see the divisibility rules for one-digit numbers are pretty practical. All can be done in your head in seconds.
 In contrast, the divisibility rules of bigger numbers require extra calculation and are not very practical in reality.
 
-# Divisibility Rules for Other Numbers
+# The 1997 Discovery: One Formula for Numbers with the Same Ones Place Digit
 
 I noticed that divisibility rules of numbers having the same ones place digit are very similar, so similar that we can
-end up with a formula about it. Let's deep dive into it by giving examples.
-
-### For 11:
-
-Adding 10 times the last digit of the number with the remaining digit gives a multiple of 11.
-
-For instance, 352 is divisible by 11, because 10 x 2 is 20 and 20 + 35 is 55 and 55 is divisible by 11. 232 is not
-divisible by 11, because 10 x 2 = 20 and 23 + 20 is 43 and 43 is not divisible by 11.
-
-### For 17:
-
-Adding twice the last digit of the number with 3 times the remaining digit gives a multiple of 17.
-
-For instance, 391 is divisible by 17, because 1 x 2 is 2 and 39 x 3 is 117 and 2 + 117 is 119, and 119 is divisible by
-
-17.
-
-### For 21:
-
-Adding 19 times the last digit of the number with the remaining digit gives a multiple of 21.
-
-For instance, 777 is divisible by 21, because 19 x 7 is 133 and 133 + 77 is 210 and 210 is divisible by 21. 377 is not
-divisible by 21, because 19 x 7 = 133 and 133 + 37 is 170 and 170 is not divisible by 21.
-
-Wait a minute! How do I know 170 is not divisible by 21? If not sure about divisibility, then we should re-run the same
-rule for the result of the first calculation. For 170, 19 x 0 is 0 and 17 + 0 is 17 and 17 is not divisible by 21.
-Therefore 377 is not divisible by 21.
-
-### For 33:
-
-Adding 10 times the last digit of the number with the remaining digit gives a multiple of 33.
-
-For instance, 396 is divisible by 33, because 6 x 10 is 60 and 39 + 60 is 99, and 99 is divisible by 33.
-
-### For numbers between 11 and 50:
+end up with a formula about it. For example:
 
 * Divisible by 11, if `(10 x last digit + 1 x remaining digits)` is divisible by 11
-* Divisible by 12, if `(5 x last digit + 2 x remaining digits)` is divisible by 12
 * Divisible by 13, if `(4 x last digit + 1 x remaining digits)` is divisible by 13
-* Divisible by 14, if `(3 x last digit + 2 x remaining digits)` is divisible by 14
-* Divisible by 15, if `(2 x last digit + 5 x remaining digits)` is divisible by 15
-* Divisible by 16, if `(2 x last digit + 4 x remaining digits)` is divisible by 16
 * Divisible by 17, if `(2 x last digit + 3 x remaining digits)` is divisible by 17
-* Divisible by 18, if `(2 x last digit + 2 x remaining digits)` is divisible by 18
 * Divisible by 19, if `(2 x last digit + 1 x remaining digits)` is divisible by 19
 * Divisible by 21, if `(19 x last digit + 1 x remaining digits)` is divisible by 21
-* Divisible by 22, if `(9 x last digit + 2 x remaining digits)` is divisible by 22
 * Divisible by 23, if `(7 x last digit + 1 x remaining digits)` is divisible by 23
-* Divisible by 24, if `(5 x last digit + 2 x remaining digits)` is divisible by 24
-* Divisible by 25, if `(3 x last digit + 5 x remaining digits)` is divisible by 25
-* Divisible by 26, if `(3 x last digit + 4 x remaining digits)` is divisible by 26
-* Divisible by 27, if `(3 x last digit + 3 x remaining digits)` is divisible by 27
-* Divisible by 28, if `(3 x last digit + 2 x remaining digits)` is divisible by 28
+* Divisible by 27, if `(3 x last digit + 3 x remaining digits)` is divisible by 27 — **keep an eye on this one**: it
+  hides a flaw that stayed invisible for decades, dissected later in this document
 * Divisible by 29, if `(3 x last digit + 1 x remaining digits)` is divisible by 29
 * Divisible by 31, if `(28 x last digit + 1 x remaining digits)` is divisible by 31
-* Divisible by 32, if `(13 x last digit + 2 x remaining digits)` is divisible by 32
 * Divisible by 33, if `(10 x last digit + 1 x remaining digits)` is divisible by 33
-* Divisible by 34, if `(7 x last digit + 2 x remaining digits)` is divisible by 34
-* Divisible by 35, if `(4 x last digit + 5 x remaining digits)` is divisible by 35
-* Divisible by 36, if `(4 x last digit + 4 x remaining digits)` is divisible by 36
 * Divisible by 37, if `(4 x last digit + 3 x remaining digits)` is divisible by 37
-* Divisible by 38, if `(4 x last digit + 2 x remaining digits)` is divisible by 38
 * Divisible by 39, if `(4 x last digit + 1 x remaining digits)` is divisible by 39
 * Divisible by 41, if `(37 x last digit + 1 x remaining digits)` is divisible by 41
-* Divisible by 42, if `(17 x last digit + 2 x remaining digits)` is divisible by 42
 * Divisible by 43, if `(13 x last digit + 1 x remaining digits)` is divisible by 43
-* Divisible by 44, if `(9 x last digit + 2 x remaining digits)` is divisible by 44
-* Divisible by 45, if `(5 x last digit + 5 x remaining digits)` is divisible by 45
-* Divisible by 46, if `(5 x last digit + 4 x remaining digits)` is divisible by 46
 * Divisible by 47, if `(5 x last digit + 3 x remaining digits)` is divisible by 47
-* Divisible by 48, if `(5 x last digit + 2 x remaining digits)` is divisible by 48
 * Divisible by 49, if `(5 x last digit + 1 x remaining digits)` is divisible by 49
 
-Hmm that's interesting:) It seems a pretty obvious pattern among these rules, isn't it?
-
-# Divisibility Rules Formula for Numbers with Same Ones Place Digit
-
-For the given:
-
-* `a1`: Remaining digits of the dividend
-* `a2`: Remaining digits of divisor
-* `b1`: Ones place digit of the dividend
-
-The formula:
-
-* When ones digit of divisor is 1: `(1 x a1) + ((9 x a2) + 1) x b1`
-* When ones digit of divisor is 2: `(2 x a1) + ((4 x a2) + 1) x b1`
-* When ones digit of divisor is 3: `(1 x a1) + ((3 x a2) + 1) x b1`
-* When ones digit of divisor is 4: `(2 x a1) + ((2 x a2) + 1) x b1`
-* When ones digit of divisor is 5: `(5 x a1) + ((1 x a2) + 1) x b1`
-* When ones digit of divisor is 6: `(4 x a1) + ((1 x a2) + 1) x b1`
-* When ones digit of divisor is 7: `(3 x a1) + ((1 x a2) + 1) x b1`
-* When ones digit of divisor is 8: `(2 x a1) + ((1 x a2) + 1) x b1`
-* When ones digit of divisor is 9: `(1 x a1) + ((1 x a2) + 1) x b1`
-
-If the calculated number with the formula in the first iteration is not equal to itself or the divisor, use it as the
-new dividend and apply the same formula again in a new iteration. When iterations stop, check if the last calculated
-number is divisible by the divisor or not.
-
-# Lemi's Equation: Grand Unified Divisibility Rule For Any Numbers
-
-For the given:
+There is a pretty obvious pattern among these rules, isn't there? For the given:
 
 * `CEIL`: Mathematical ceil operator
 * `a1`: Remaining digits of the dividend
@@ -250,540 +177,320 @@ For the given:
 
 Lemi's Equation becomes: `(x * a1) + ((y * a2) + 1) * b1`
 
+Apply the equation to the dividend, then apply it again to the result, and keep going until the number is small. If
+you end up on a multiple of the divisor, the dividend is divisible — or so I concluded in 1997. The next section shows
+exactly where that conclusion breaks.
+
+# Why the First Algorithm Needed Prime Factors
+
+The 2021 implementation of the equation had a preprocessing step: find the prime factors of the divisor, and run the
+formula for each prime factor separately. It always felt like a workaround. Here is the actual mathematics behind it.
+
+Take the divisor `d = 10 x a2 + b2` and the dividend `N = 10 x a1 + b1`, and call the equation's result `f(N)`. The
+definitions of `x` and `y` guarantee `x + (y · b2) = 10`, and rearranging the equation with that fact reveals an exact
+identity:
+
+```
+f(N) = ((y · a2) + 1) · N - (y · a1) · d
+```
+
+In modular-arithmetic terms: `f(N)` is congruent to `N` multiplied by the constant `(y · a2) + 1` modulo `d`. So one
+application of the equation does not preserve "the remainder of N by d" — it preserves it *scaled by that constant*.
+The conclusion "d divides f(N) exactly when d divides N" is valid exactly when the scaling constant shares no factor
+with the divisor:
+
+```
+gcd((y · a2) + 1, d) = 1
+```
+
+When the criterion fails, the equation breaks:
+
+1. For d = 16 the scaling constant is `(1 x 1) + 1 = 2`, and 2 shares a factor with 16: the equation maps 8 to
+   `(4 x 0) + 2 x 8 = 16`, landing exactly on the divisor and falsely declaring 8 divisible by 16.
+2. For d = 27 the scaling constant is `(1 x 2) + 1 = 3`, and 3 shares a factor with 27: the equation maps 9 to
+   `(3 x 0) + 3 x 9 = 27` — again landing exactly on the divisor, falsely declaring 9 divisible by 27.
+
+Leaving aside divisors ending in 0, where the equation is not even defined, the divisors below 100 that break the
+equation are 16, 18, 27, 36, 38, 45, 56, 57, 58, 76, 78, 87, 95, 96 and 98 — every single one of them composite. Now
+the workaround explains itself: **the criterion holds automatically for every prime**. The scaling constant always
+stays strictly between 0 and d (for one-digit divisors it is simply 1), so for a prime divisor it can never share a
+factor with d. Factoring the divisor into primes was silently repairing the broken composite cases. For 29 years the
+primes masked the real constraint of the formula.
+
+So the fix is not to patch the equation. The fix is to see what the equation actually is — and generalize it.
+
+# The Grand Unified Divisibility Rule
+
+Here is the rule that works for **every** divisor, prime or composite, even or odd, with no factoring and no division:
+
+> A number is divisible by `d` exactly when the **weighted sum of its digits** is divisible by `d`.
+> The weight of the ones place digit is **1**. Every next weight is the previous weight with a zero appended
+> (multiplied by 10), then **reduced below d by subtracting d** as many times as needed.
+
+The full toolkit of the rule is: read a digit, multiply a digit by a weight, subtract. Exactly the operations the
+classical divisibility rules allow. While summing, the running total is also reduced below `d` by subtraction, so all
+numbers stay small. And as a bonus, the final total is not just a yes/no signal — it is precisely the **remainder** of
+the division.
+
+### Every classical rule is a row of this rule
+
+Compute the weight sequence for a divisor and you get the divisibility rule for that divisor. The famous rules stop
+being separate tricks and become rows of one table:
+
+| divisor | weights (ones digit first)     | the classical rule it becomes                                 |
+|---------|--------------------------------|---------------------------------------------------------------|
+| 2       | 1, 0, 0, 0, ...                | only the last digit matters                                    |
+| 3       | 1, 1, 1, 1, ...                | sum of all digits                                              |
+| 4       | 1, 2, 0, 0, ...                | last two digits (as `2 x tens + ones`)                         |
+| 5       | 1, 0, 0, 0, ...                | only the last digit matters                                    |
+| 7       | 1, 3, 2, 6, 4, 5, 1, 3, ...    | the classical weighted rule for 7                              |
+| 8       | 1, 2, 4, 0, 0, ...             | last three digits                                              |
+| 9       | 1, 1, 1, 1, ...                | sum of all digits                                              |
+| 11      | 1, 10, 1, 10, ...              | alternating sum, because 10 acts as -1                         |
+| 12      | 1, 10, 4, 4, 4, ...            | a rule the old algorithm needed prime factors for              |
+| 13      | 1, 10, 9, 12, 3, 4, 1, 10, ... | repeats with period 6, like 7                                  |
+| 16      | 1, 10, 4, 8, 0, 0, ...         | weights die out: last four digits decide                       |
+| 27      | 1, 10, 19, 1, 10, 19, ...      | repeats with period 3 — the case that broke the 1997 equation  |
+| 45      | 1, 10, 10, 10, ...             | one more rule that used to require factoring into 3, 3, 5      |
+
+Divisors made only of 2s and 5s — 2, 4, 5, 8, 10, 16 and so on — make their weights collapse to 0; that is exactly why
+only the last few digits matter for them. Divisors sharing no factor with 10 make their weights cycle forever. Divisors
+mixing both kinds, like 12 and 45, do a little of each: after a short lead-in the weights settle into a nonzero cycle,
+so every digit still matters. One mechanism explains all three behaviors.
+
+### The proof
+
+This time there is a proof, and it fits in three lines:
+
+1. Subtracting `d` from a number never changes its remainder by `d`. So by induction, every weight has the same
+   remainder by `d` as the power of ten it replaced: `weight(t)` is congruent to `10^t (mod d)`.
+2. Therefore the weighted digit sum is congruent to `digit(0) x 10^0 + digit(1) x 10^1 + ...` which *is* the number
+   `N` itself: the weighted sum is congruent to `N (mod d)`.
+3. The running total is kept below `d` and stays congruent to `N`, so the final total is exactly the remainder of `N`
+   divided by `d`. It is 0 exactly when `d` divides `N`. ∎
+
+### Where the 1997 equation fits
+
+Lemi's Equation is this same rule executed in the opposite direction. Trimming the ones digit and folding it back with
+a multiplier is walking the digits right-to-left with weights that are powers of the **inverse of 10 modulo d** — and
+an inverse of 10 exists only when d shares no factor with 10. That is the deep reason the old algorithm had to fall
+back to prime factors. The generalized rule walks left with plain powers of 10, which exist for every divisor, so the
+constraint disappears.
+
+The equation itself survives as the elegant special case for divisors ending in 1, 3, 7 and 9 — with one correction.
+The exact "fold the last digit back" multiplier `m` satisfying `10 x m = k x d + 1` is:
+
+| divisor ends in | multiplier m     | k (the digit making k x d end in 9) |
+|-----------------|------------------|--------------------------------------|
+| 1               | `9 x a2 + 1`     | 9                                    |
+| 3               | `3 x a2 + 1`     | 3                                    |
+| 7               | `7 x a2 + 5`     | 7                                    |
+| 9               | `1 x a2 + 1`     | 1                                    |
+
+For divisors ending in 1, 3 and 9 these are exactly the coefficients `(y x a2) + 1` of the 1997 equation — the high
+school formulas were already the exact inverses. Only the row for 7 differed, and that single row was the other crack
+that prime factorization was papering over. With `m` in hand, `N = 10 x a1 + b1` is divisible by `d` exactly when
+`a1 + m x b1` is divisible by `d`, for any `d` coprime to 10, composite or prime.
+
 # The Algorithm
 
-The algorithm of executing the divisibility rules is very straightforward. To make it clearer, let's go over a
-sample: `315 / 45`
+The algorithm is now a single pass over the digits of the dividend. For divisor `d`:
 
-**1. Find prime factors of the divisor**
+1. Start with `weight = 1` and `total = 0`.
+2. Take the next digit of the dividend, starting from the ones place. Add `digit x weight` to the total. If the total
+   reached `d` or more, subtract `d` until it drops below `d`.
+3. Compute the next weight: multiply the current weight by 10, and subtract `d` until it drops below `d`.
+4. When the digits are consumed, the total is the remainder. The dividend is divisible exactly when it is 0.
 
-It is important to find the prime factors of the divisor. If dividend is divisible by every prime factor of the divisor,
-we can conclude that the dividend is divisible by the divisor. For instance, if a number is divisible by both 5 and 7,
-we can say that it is divided by 35.
-
-**2. For each prime factor, calculate divisibility.**
-
-If a prime factor repeats (like prime factor 2 repeats 4 times for number 16 and 3 times for number 40), then algorithm
-changes a little bit. Assume a prime factor PF repeats 3 times for the divisor. Then in order to say the dividend is
-divisible by `PF^3`, we have to validate first the dividend is divided by PF, then the `dividend / PF` is divided by PF
-and at last the `(dividend / PF) / PF` is divided by PR. For instance for validating 16 / 2, both 16 should be divisible
-by 2, and 8 should be divisible by 2, and 4 should be divisible by 2.
-
-As the sample we follow, prime factors of the divisor 45 is 3, 3 and 5. So if the dividend 315 is divisible by 3 and 5,
-and (the dividend / 3) is divisible by 3, then we can assume that 315 is divisible by 45.
+No prime factors. No division. No iteration limit — the algorithm finishes in exactly as many steps as the dividend
+has digits.
 
 # The Implementation
 
-The following code is written in Groovy. You can find the code
-from [DivisibilityRule.groovy file](https://github.com/lemiorhan/grand-unified-divisibility-rule/blob/main/src/main/groovy/com/lemiorhanergin/divisibilityrules/DivisibilityRule.groovy)
-.
+The code is written in Groovy. You can find it in
+[DivisibilityRule.groovy](https://github.com/lemiorhan/grand-unified-divisibility-rule/blob/main/src/main/groovy/com/lemiorhanergin/divisibilityrules/DivisibilityRule.groovy).
+The whole algorithm is one loop — input validation and the `trace` output lines are elided here, see the full source
+for them:
 
-Let's review the code line by line.
+```groovy
+boolean isDivisible(long dividend, long divisor, Appendable trace = null) {
+    long remaining = dividend
+    long weight = 1
+    long total = 0
 
-```
-01:  def isDivisible(long dividend, long divisor) {
-02:      def primeFactors = primeFactors(divisor)
-03:      def factors = groupPrimeFactorsByRepetition(primeFactors)
-04:      factors.every { factor ->
-05:          calculateDivisibilityForFactorGroup(dividend, factor.key, factor.value, divisor, 1)
-06:      }
-07:  }
-08:  
-09:  def calculateDivisibilityForFactorGroup(long dividend, long factor, int count, long divisor, Integer iteration) {
-10:      if (count == 0) return true
-11:      return calculateDivisibilityForFactorGroup((long) (dividend / factor), factor, count - 1, divisor, iteration) &&
-12:              calculateDivisibilityForFactor(dividend, factor, divisor, iteration)
-13:  }
-```
+    while (true) {
+        long digit = remaining % 10
+        total = reduceBySubtraction(total + (digit * weight), divisor)
 
-* **Line 01:** isDivisible is the only public method to call in order to decide the divisibility.
-* **Line 02:** Prime factors are detected. A prime factor can repeat several times as in 16 (prime factor 2 repeats 4
-  times)
-* **Line 03:** Prime factors are grouped by its repetition count.
-* **Line 04-05:** Calculation is triggered with the factor and the repetition count.
-* **Line 11-12:** This method uses recursion to do logical-AND for the divisibility results of each prime factor.
+        remaining = remaining.intdiv(10)
+        if (remaining == 0) break
 
-```
-01:  def calculateDivisibilityForFactor(long dividend, long factor, long divisor, int iteration) {
-02:      if (iteration > MAX_ITERATION_COUNT_ALLOWED) return false
-03:  
-04:      long lastNumberOfDivisor = factor % 10
-05:      long previousCalculated = dividend
-06:  
-07:      def calculation = execute(iteration, lastNumberOfDivisor, dividend, factor)
-08:      if (calculation == previousCalculated && calculation > factor) calculation = calculation - factor
-09:  
-10:      while (continueIterating(++iteration, dividend, divisor, factor, calculation, previousCalculated)) {
-11:          previousCalculated = calculation
-12:          calculation = execute(iteration, lastNumberOfDivisor, calculation, factor)
-13:          if (calculation == previousCalculated && calculation > factor) calculation = calculation - factor
-14:      }
-15:  
-16:      def divisibilityResult = decideDivisibility(factor, calculation)
-17:      if (!divisibilityResult && calculation > factor) {
-18:          calculation = calculation - factor
-19:          calculateDivisibilityForFactor(calculation, factor, divisor, iteration)
-20:      }
-21:      return divisibilityResult
-22:  }
+        weight = reduceBySubtraction(weight * 10, divisor)
+    }
+
+    return total == 0
+}
+
+private static long reduceBySubtraction(long value, long divisor) {
+    long reduced = value
+    while (reduced >= divisor) reduced -= divisor
+    return reduced
+}
 ```
 
-* **Line 02:** We have to limit iteration count since in some cases, the algorithm goes into loops.
-* **Line 04:** Ones place digit of the divisor is very important. It is used to identify two coefficients in the
-  formula.
-* **Line 05:** Since we need to compare the calculated numbers of two latest consecutive iterations, we need to keep the
-  calculated number of the previous iteration. That is the dividend at the beginning.
-* **Line 07:** First iteration is executed.
-* **Line 08:** if two consecutive iterations end up with the same number, factor is subtracted from the calculation
-  result.
-* **Line 10:** We need to determine if we have to run for an additional iteration or not. We will cover the conditions
-  to skip iterating later.
-* **Line 11:** Calculated number from the previous iteration is set.
-* **Line 12:** New calculation is done in the new iteration.
-* **Line 13:** If the last two consecutive iterations has the same calculated number and the number is still greater
-  than divisor, we subtract divisor from the calculated number. That is a normalization step for iterating.
-* **Line 16:** When iterations stop, we have to determine whether dividend is divided by the divisor or not. We will
-  cover the logic behind later.
-* **Line 17-20:** If divisibility is decided as false but the value of the calculation has not reached the value of the
-  factor, when we do the normalization and subtract the factor from calculation again.
-
-```
-01:  private long execute(int iteration, long lastNumberOfDivisor, long dividend, long divisor) {
-02:      // first coefficient
-03:      def x = (10 + lastNumberOfDivisor - (lastNumberOfDivisor * Math.ceil(10 / lastNumberOfDivisor))) as int
-04:      // second coefficient
-05:      def y = (Math.ceil(10 / lastNumberOfDivisor) - 1) as int
-06:      // remaining first digits of dividend
-07:      long a1 = (long) (dividend / 10)
-08:      // remaining first digits of divisor
-09:      long a2 = (long) (divisor / 10)
-10:      // last number of dividend
-11:      long b1 = dividend % 10
-12:      // constant
-13:      long b2 = 1
-14:
-15:      def calculation = (x * a1) + (((y * a2) + b2) * b1) as long
-16:      return calculation
-17:  }
-```
-
-In order to execute Lemi's formula, we need to know the ones place digit of divisor, the dividend and the divisor. All
-coefficients and variables can easily be calculated from definitions.
-
-```
-01:  private boolean continueIterating(int iteration, long dividend, long divisor, long factor, long calculated, long previousCalculated) {
-02:      def maxIterationLimitExceeded = iteration >= MAX_ITERATION_COUNT_ALLOWED
-03:      def calculatedNumberEqualToFactor = calculated == factor
-04:      def calculatedNumberIsLowerThanFactor = calculated < factor
-05:      def calculatedNumberEqualToDivisor = calculated == divisor
-06:      def calculatedNumberEqualToDividend = calculated == dividend
-07:      def calculatedNumberIsEqualToPreviousIteration = calculated == previousCalculated
-08:      def calculatedNumberIsGreaterThanPreviousIteration = calculated > previousCalculated
-09:      return !maxIterationLimitExceeded && !calculatedNumberIsEqualToPreviousIteration && !calculatedNumberIsLowerThanFactor & !calculatedNumberEqualToDividend && !calculatedNumberEqualToFactor & !calculatedNumberIsGreaterThanPreviousIteration
-10:  }
-```
-
-There exists 7 different conditions to stop iterations. These are:
-
-* **Line 02:** Max iteration limit should exceed. That is 50 by default.
-* **Line 03:** Calculated number is equals to the factor.
-* **Line 04:** Calculated number is lower than the factor.
-* **Line 05:** Calculated number is equals to the divisor.
-* **Line 06:** Calculated number is equals to the dividend.
-* **Line 07:** Calculated number is equal to the calculated number of the previous iteration.
-* **Line 08:** Calculated number is greater than the calculated number of the previous iteration.
-
-If any of these happens, iterations stop.
-
-```
-01:  def boolean calculateDivisibility(long calculated, long factor) {
-02:      return calculated == factor
-03:  }
-```
-
-At the end of execution, we need to determine whether dividend is divisible by divisor or not. At the end of the
-iterations, if the calculated number is equals to the factor, then we can assume that divisibility result for the given
-factor is true.
-
-```
-01: def primeFactors(long number) {
-02:     long n = number;
-03:     List<Integer> factors = new ArrayList<Integer>()
-04:     for (int i = 2; i <= n; i++) {
-05:         while (n % i == 0) {
-06:             factors.add(i)
-07:             n /= i
-08:         }
-09:     }
-10:     return factors
-11: }
-```
-
-We used the most basic algorithm for detecting prime factors. That would be improved for better performance for sure.
+`remaining % 10` and `remaining.intdiv(10)` only read and trim digits — the base-ten equivalents of looking at the
+number written on paper. The divisor is never used for division; it is only ever subtracted. The optional `trace`
+parameter receives a line for every single calculation step, so every check can be verified by eye.
 
 # Examples
 
-You can run your own tests too. Just open and
-update [DivisibilityRuleExecutionTest.groovy file](https://github.com/lemiorhan/grand-unified-divisibility-rule/blob/main/src/test/groovy/com/lemiorhanergin/divisibilityrules/DivisibilityRuleExecutionTest.groovy)
-and run.
+### Is 1044 divisible by 12?
 
-I used [Groovy](https://groovy-lang.org/) for coding and [Spock Framework](https://spockframework.org/) for writing unit
-tests. I used [Gradle](https://gradle.org/) for building the project. You can build and run the tests with the following
-command from command line.
+The old algorithm factored 12 into 2 x 2 x 3 and ran three separate checks. The rule now answers directly:
 
 ```
- > ./gradlew build
+DIVISIBILITY CHECK FOR [1044/12]
+STEP 1 => DIGIT 4 x WEIGHT 1 = 4 | TOTAL 4
+WEIGHT FOR STEP 2 => 10 x 1 = 10
+STEP 2 => DIGIT 4 x WEIGHT 10 = 40 | TOTAL 44, REDUCED TO 8 BY SUBTRACTING 12
+WEIGHT FOR STEP 3 => 10 x 10 = 100, REDUCED TO 4 BY SUBTRACTING 12
+STEP 3 => DIGIT 0 x WEIGHT 4 = 0 | TOTAL 8
+WEIGHT FOR STEP 4 => 10 x 4 = 40, REDUCED TO 4 BY SUBTRACTING 12
+STEP 4 => DIGIT 1 x WEIGHT 4 = 4 | TOTAL 12, REDUCED TO 0 BY SUBTRACTING 12
+FINAL REMAINDER: 0 => 1044 IS DIVISIBLE BY 12
 ```
 
-### Is 18 divisible by 3 ?
-
-18 / 3 is divisible, so it is divisible
+### Is 175789 divisible by 23?
 
 ```
-PRIME FACTORS: 3 FOR ONCE
-DIVISIBILITY CHECK FOR [18/3]
-ITERATION 1 => (1 x 1) + ((3 x 0) + 1) x 8 = 9
-ITERATION 2 => (1 x 0) + ((3 x 0) + 1) x 9 = 9
-ITERATION 3 => (1 x 0) + ((3 x 0) + 1) x 6 = 6
-LAST CALCULATION: 3
-ITERATION STOPS DUE TO "CALCULATED NUMBER IS EQUAL TO FACTOR"
-18 IS DIVISIBLE BY 3. RESULT CALCULATED IN 3 ITERATIONS.
-```
-
-### Is 1044 divisible by 12 ?
-
-1044 / 2 is divisible, 522 / 2 is divisible, 1044 / 3 is divisible, so it is divisible
-
-```
-PRIME FACTORS: 2 FOR TWICE, 3 FOR ONCE
-
-DIVISIBILITY CHECK FOR [1044/2]
-ITERATION 1 => (2 x 104) + ((4 x 0) + 1) x 4 = 212
-ITERATION 2 => (2 x 21) + ((4 x 0) + 1) x 2 = 44
-ITERATION 3 => (2 x 4) + ((4 x 0) + 1) x 4 = 12
-ITERATION 4 => (2 x 1) + ((4 x 0) + 1) x 2 = 4
-ITERATION 5 => (2 x 0) + ((4 x 0) + 1) x 4 = 4
-LAST CALCULATION: 2
-ITERATION STOPS DUE TO "CALCULATED NUMBER IS EQUAL TO FACTOR"
-1044 IS DIVISIBLE BY 2. RESULT CALCULATED IN 5 ITERATIONS.
-
-DIVISIBILITY CHECK FOR [522/2]
-ITERATION 1 => (2 x 52) + ((4 x 0) + 1) x 2 = 106
-ITERATION 2 => (2 x 10) + ((4 x 0) + 1) x 6 = 26
-ITERATION 3 => (2 x 2) + ((4 x 0) + 1) x 6 = 10
-ITERATION 4 => (2 x 1) + ((4 x 0) + 1) x 0 = 2
-LAST CALCULATION: 2
-ITERATION STOPS DUE TO "CALCULATED NUMBER IS EQUAL TO FACTOR"
-522 IS DIVISIBLE BY 2. RESULT CALCULATED IN 4 ITERATIONS.
-
-DIVISIBILITY CHECK FOR [1044/3]
-ITERATION 1 => (1 x 104) + ((3 x 0) + 1) x 4 = 108
-ITERATION 2 => (1 x 10) + ((3 x 0) + 1) x 8 = 18
-ITERATION 3 => (1 x 1) + ((3 x 0) + 1) x 8 = 9
-ITERATION 4 => (1 x 0) + ((3 x 0) + 1) x 9 = 9
-ITERATION 5 => (1 x 0) + ((3 x 0) + 1) x 6 = 6
-LAST CALCULATION 3
-ITERATION STOPS DUE TO "CALCULATED NUMBER IS EQUAL TO FACTOR"
-1044 IS DIVISIBLE BY 3. RESULT CALCULATED IN 5 ITERATIONS.
-```
-
-### Is 175789 divisible by 23 ?
-
-175789 / 23 is divisible, so it is divisible
-
-```
-PRIME FACTORS: 23 FOR ONCE
-
 DIVISIBILITY CHECK FOR [175789/23]
-ITERATION 1 => (1 x 17578) + ((3 x 2) + 1) x 9 = 17641
-ITERATION 2 => (1 x 1764) + ((3 x 2) + 1) x 1 = 1771
-ITERATION 3 => (1 x 177) + ((3 x 2) + 1) x 1 = 184
-ITERATION 4 => (1 x 18) + ((3 x 2) + 1) x 4 = 46
-ITERATION 5 => (1 x 4) + ((3 x 2) + 1) x 6 = 46
-LAST CALCULATION: 23
-ITERATION STOPS DUE TO "CALCULATED NUMBER IS EQUAL TO FACTOR"
-175789 IS DIVISIBLE BY 23. RESULT CALCULATED IN 5 ITERATIONS.
+STEP 1 => DIGIT 9 x WEIGHT 1 = 9 | TOTAL 9
+WEIGHT FOR STEP 2 => 10 x 1 = 10
+STEP 2 => DIGIT 8 x WEIGHT 10 = 80 | TOTAL 89, REDUCED TO 20 BY SUBTRACTING 23
+WEIGHT FOR STEP 3 => 10 x 10 = 100, REDUCED TO 8 BY SUBTRACTING 23
+STEP 3 => DIGIT 7 x WEIGHT 8 = 56 | TOTAL 76, REDUCED TO 7 BY SUBTRACTING 23
+WEIGHT FOR STEP 4 => 10 x 8 = 80, REDUCED TO 11 BY SUBTRACTING 23
+STEP 4 => DIGIT 5 x WEIGHT 11 = 55 | TOTAL 62, REDUCED TO 16 BY SUBTRACTING 23
+WEIGHT FOR STEP 5 => 10 x 11 = 110, REDUCED TO 18 BY SUBTRACTING 23
+STEP 5 => DIGIT 7 x WEIGHT 18 = 126 | TOTAL 142, REDUCED TO 4 BY SUBTRACTING 23
+WEIGHT FOR STEP 6 => 10 x 18 = 180, REDUCED TO 19 BY SUBTRACTING 23
+STEP 6 => DIGIT 1 x WEIGHT 19 = 19 | TOTAL 23, REDUCED TO 0 BY SUBTRACTING 23
+FINAL REMAINDER: 0 => 175789 IS DIVISIBLE BY 23
 ```
 
-### Is 24 divisible by 8 ?
+Notice the weights of 23 running as 1, 10, 8, 11, 18, 19 — the opening of the weight sequence that *is* the
+divisibility rule of 23. Unlike the weights of 13, they do not repeat after six steps: the cycle of 23 runs through 22
+different weights before returning to 1.
 
-24 / 2 is divisible, 12 / 2 is divisible, 6 / 2 is divisible, so it is divisible
+### Is 24 divisible by 16?
 
-```
-PRIME FACTORS: 2 FOR 3 TIMES
-
-DIVISIBILITY CHECK FOR [24/2]
-ITERATION 1 => (2 x 2) + ((4 x 0) + 1) x 4 = 8
-ITERATION STOPS DUE TO "CALCULATED NUMBER IS EQUAL TO DIVISOR"
-ITERATION 2 => (2 x 0) + ((4 x 0) + 1) x 8 = 8
-ITERATION 3 => (2 x 0) + ((4 x 0) + 1) x 6 = 6
-ITERATION 4 => (2 x 0) + ((4 x 0) + 1) x 4 = 4
-LAST CALCULATION: 2
-ITERATION STOPS DUE TO "CALCULATED NUMBER IS EQUAL TO FACTOR"
-24 IS DIVISIBLE BY 2. RESULT CALCULATED IN 4 ITERATIONS.
-
-DIVISIBILITY CHECK FOR [12/2]
-ITERATION 1 => (2 x 1) + ((4 x 0) + 1) x 2 = 4
-ITERATION 2 => (2 x 0) + ((4 x 0) + 1) x 4 = 4
-LAST CALCULATION: 2
-ITERATION STOPS DUE TO "CALCULATED NUMBER IS EQUAL TO FACTOR"
-12 IS DIVISIBLE BY 2. RESULT CALCULATED IN 2 ITERATIONS.
-
-DIVISIBILITY CHECK FOR [6/2]
-ITERATION 1 => (2 x 0) + ((4 x 0) + 1) x 6 = 6
-ITERATION 2 => (2 x 0) + ((4 x 0) + 1) x 4 = 4
-LAST CALCULATION: 2
-ITERATION STOPS DUE TO "CALCULATED NUMBER IS EQUAL TO FACTOR"
-6 IS DIVISIBLE BY 2. RESULT CALCULATED IN 2 ITERATIONS.
+A case no last-digit formula can answer, and the old algorithm handled by dividing by 2 four times:
 
 ```
-
-### Is 19 divisible by 3 ?
-
-19 / 3 is NOT divisible so it is NOT divisible
-
-```
-PRIME FACTORS: 3 FOR ONCE
-
-DIVISIBILITY CHECK FOR [19/3]
-ITERATION 1 => (1 x 1) + ((3 x 0) + 1) x 9 = 10
-ITERATION 2 => (1 x 1) + ((3 x 0) + 1) x 0 = 1
-LAST CALCULATION: 1
-ITERATION STOPS DUE TO "CALCULATED NUMBER IS LOWER THAN FACTOR"
-19 IS NOT DIVISIBLE BY 3. RESULT CALCULATED IN 2 ITERATIONS.
+DIVISIBILITY CHECK FOR [24/16]
+STEP 1 => DIGIT 4 x WEIGHT 1 = 4 | TOTAL 4
+WEIGHT FOR STEP 2 => 10 x 1 = 10
+STEP 2 => DIGIT 2 x WEIGHT 10 = 20 | TOTAL 24, REDUCED TO 8 BY SUBTRACTING 16
+FINAL REMAINDER: 8 => 24 IS NOT DIVISIBLE BY 16
 ```
 
-### Is 41490 divisible by 45 ?
+The final total 8 is the true remainder of 24 / 16.
 
-41490 / 3 is divisible, 13830 / 3 is divisible, 41490 / 5 is divisible, so it is divisible
+### Is 9 divisible by 27?
 
-```
-PRIME FACTORS: 3 FOR TWICE, 5 FOR ONCE
-
-DIVISIBILITY CHECK FOR [41490/3]
-ITERATION 1 => (1 x 4149) + ((3 x 0) + 1) x 0 = 4149
-ITERATION 2 => (1 x 414) + ((3 x 0) + 1) x 9 = 423
-ITERATION 3 => (1 x 42) + ((3 x 0) + 1) x 3 = 45
-ITERATION 4 => (1 x 4) + ((3 x 0) + 1) x 5 = 9
-ITERATION 5 => (1 x 0) + ((3 x 0) + 1) x 9 = 9
-ITERATION 6 => (1 x 0) + ((3 x 0) + 1) x 6 = 6
-LAST CALCULATION:: 3
-ITERATION STOPS DUE TO "CALCULATED NUMBER IS EQUAL TO FACTOR"
-41490 IS DIVISIBLE BY 3. RESULT CALCULATED IN 6 ITERATIONS.
-
-DIVISIBILITY CHECK FOR [13830/3]
-ITERATION 1 => (1 x 1383) + ((3 x 0) + 1) x 0 = 1383
-ITERATION 2 => (1 x 138) + ((3 x 0) + 1) x 3 = 141
-ITERATION 3 => (1 x 14) + ((3 x 0) + 1) x 1 = 15
-ITERATION 4 => (1 x 1) + ((3 x 0) + 1) x 5 = 6
-ITERATION 5 => (1 x 0) + ((3 x 0) + 1) x 6 = 6
-LAST CALCULATION: 3
-ITERATION STOPS DUE TO "CALCULATED NUMBER IS EQUAL TO FACTOR"
-13830 IS DIVISIBLE BY 3. RESULT CALCULATED IN 5 ITERATIONS.
-
-DIVISIBILITY CHECK FOR [41490/5]
-ITERATION 1 => (5 x 4149) + ((1 x 0) + 1) x 0 = 20745
-ITERATION 2 => (5 x 2074) + ((1 x 0) + 1) x 5 = 10375
-ITERATION 3 => (5 x 1037) + ((1 x 0) + 1) x 5 = 5190
-ITERATION 4 => (5 x 519) + ((1 x 0) + 1) x 0 = 2595
-ITERATION 5 => (5 x 259) + ((1 x 0) + 1) x 5 = 1300
-ITERATION 6 => (5 x 130) + ((1 x 0) + 1) x 0 = 650
-ITERATION 7 => (5 x 65) + ((1 x 0) + 1) x 0 = 325
-ITERATION 8 => (5 x 32) + ((1 x 0) + 1) x 5 = 165
-ITERATION 9 => (5 x 16) + ((1 x 0) + 1) x 5 = 85
-ITERATION 10 => (5 x 8) + ((1 x 0) + 1) x 5 = 45
-ITERATION 11 => (5 x 4) + ((1 x 0) + 1) x 5 = 25
-ITERATION 12 => (5 x 2) + ((1 x 0) + 1) x 5 = 15
-ITERATION 13 => (5 x 1) + ((1 x 0) + 1) x 5 = 10
-ITERATION 14 => (5 x 1) + ((1 x 0) + 1) x 0 = 5
-LAST CALCULATION: 5
-ITERATION STOPS DUE TO "CALCULATED NUMBER IS EQUAL TO FACTOR"
-41490 IS DIVISIBLE BY 5. RESULT CALCULATED IN 14 ITERATIONS.
-```
-
-### Is 74284 divisible by 11 ?
-
-74284 / 11 is NOT divisible so it is NOT divisible
+The case that silently broke the 1997 equation (which mapped 9 straight onto 27):
 
 ```
-PRIME FACTORS: 11 FOR ONCE
+DIVISIBILITY CHECK FOR [9/27]
+STEP 1 => DIGIT 9 x WEIGHT 1 = 9 | TOTAL 9
+FINAL REMAINDER: 9 => 9 IS NOT DIVISIBLE BY 27
+```
 
+### Is 25916917952 divisible by 55456?
+
+The old algorithm needed the prime factorization 2 x 2 x 2 x 2 x 2 x 1733, six separate checks and around eighty
+iterations. The rule now answers in eleven steps, one per digit:
+
+```
+DIVISIBILITY CHECK FOR [25916917952/55456]
+STEP 1 => DIGIT 2 x WEIGHT 1 = 2 | TOTAL 2
+WEIGHT FOR STEP 2 => 10 x 1 = 10
+STEP 2 => DIGIT 5 x WEIGHT 10 = 50 | TOTAL 52
+WEIGHT FOR STEP 3 => 10 x 10 = 100
+STEP 3 => DIGIT 9 x WEIGHT 100 = 900 | TOTAL 952
+WEIGHT FOR STEP 4 => 10 x 100 = 1000
+STEP 4 => DIGIT 7 x WEIGHT 1000 = 7000 | TOTAL 7952
+WEIGHT FOR STEP 5 => 10 x 1000 = 10000
+STEP 5 => DIGIT 1 x WEIGHT 10000 = 10000 | TOTAL 17952
+WEIGHT FOR STEP 6 => 10 x 10000 = 100000, REDUCED TO 44544 BY SUBTRACTING 55456
+STEP 6 => DIGIT 9 x WEIGHT 44544 = 400896 | TOTAL 418848, REDUCED TO 30656 BY SUBTRACTING 55456
+WEIGHT FOR STEP 7 => 10 x 44544 = 445440, REDUCED TO 1792 BY SUBTRACTING 55456
+STEP 7 => DIGIT 6 x WEIGHT 1792 = 10752 | TOTAL 41408
+WEIGHT FOR STEP 8 => 10 x 1792 = 17920
+STEP 8 => DIGIT 1 x WEIGHT 17920 = 17920 | TOTAL 59328, REDUCED TO 3872 BY SUBTRACTING 55456
+WEIGHT FOR STEP 9 => 10 x 17920 = 179200, REDUCED TO 12832 BY SUBTRACTING 55456
+STEP 9 => DIGIT 9 x WEIGHT 12832 = 115488 | TOTAL 119360, REDUCED TO 8448 BY SUBTRACTING 55456
+WEIGHT FOR STEP 10 => 10 x 12832 = 128320, REDUCED TO 17408 BY SUBTRACTING 55456
+STEP 10 => DIGIT 5 x WEIGHT 17408 = 87040 | TOTAL 95488, REDUCED TO 40032 BY SUBTRACTING 55456
+WEIGHT FOR STEP 11 => 10 x 17408 = 174080, REDUCED TO 7712 BY SUBTRACTING 55456
+STEP 11 => DIGIT 2 x WEIGHT 7712 = 15424 | TOTAL 55456, REDUCED TO 0 BY SUBTRACTING 55456
+FINAL REMAINDER: 0 => 25916917952 IS DIVISIBLE BY 55456
+```
+
+### Is 74284 divisible by 11?
+
+```
 DIVISIBILITY CHECK FOR [74284/11]
-ITERATION 1 => (1 x 7428) + ((9 x 1) + 1) x 4 = 7468
-ITERATION 2 => (1 x 746) + ((9 x 1) + 1) x 8 = 826
-ITERATION 3 => (1 x 82) + ((9 x 1) + 1) x 6 = 142
-ITERATION 4 => (1 x 14) + ((9 x 1) + 1) x 2 = 34
-ITERATION 5 => (1 x 3) + ((9 x 1) + 1) x 4 = 43
-ITERATION 6 => (1 x 3) + ((9 x 1) + 1) x 2 = 23
-ITERATION 7 => (1 x 2) + ((9 x 1) + 1) x 3 = 32
-ITERATION 8 => (1 x 2) + ((9 x 1) + 1) x 1 = 12
-ITERATION 9 => (1 x 1) + ((9 x 1) + 1) x 2 = 21
-ITERATION 10 => (1 x 1) + ((9 x 1) + 1) x 0 = 1
-LAST CALCULATION: 1
-ITERATION STOPS DUE TO "CALCULATED NUMBER IS LOWER THAN FACTOR"
-10 IS NOT DIVISIBLE BY 11. RESULT CALCULATED IN 10 ITERATIONS.
+STEP 1 => DIGIT 4 x WEIGHT 1 = 4 | TOTAL 4
+WEIGHT FOR STEP 2 => 10 x 1 = 10
+STEP 2 => DIGIT 8 x WEIGHT 10 = 80 | TOTAL 84, REDUCED TO 7 BY SUBTRACTING 11
+WEIGHT FOR STEP 3 => 10 x 10 = 100, REDUCED TO 1 BY SUBTRACTING 11
+STEP 3 => DIGIT 2 x WEIGHT 1 = 2 | TOTAL 9
+WEIGHT FOR STEP 4 => 10 x 1 = 10
+STEP 4 => DIGIT 4 x WEIGHT 10 = 40 | TOTAL 49, REDUCED TO 5 BY SUBTRACTING 11
+WEIGHT FOR STEP 5 => 10 x 10 = 100, REDUCED TO 1 BY SUBTRACTING 11
+STEP 5 => DIGIT 7 x WEIGHT 1 = 7 | TOTAL 12, REDUCED TO 1 BY SUBTRACTING 11
+FINAL REMAINDER: 1 => 74284 IS NOT DIVISIBLE BY 11
 ```
 
-### Is 25916917952 divisible by 55456 ?
+The weights of 11 alternate between 1 and 10 — and since 10 behaves as -1, this is the well-known alternating sum
+rule, falling out of the general rule by itself.
 
-25916917952 / 2 is divisible, 12958458976 / 2 is divisible, 6479229488 / 2 is divisible, 3239614744 / 2 is divisible,
-1619807372 / 2 is divisible, 25916917952 / 1733 is divisible, so it is divisible
+# The Tests
 
-```
-PRIME FACTORS: 2 FOR 5 TIMES, 1733 FOR ONCE
-
-DIVISIBILITY CHECK FOR [25916917952/2]
-ITERATION 1 => (2 x 2591691795) + ((4 x 0) + 1) x 2 = 5183383592
-ITERATION 2 => (2 x 518338359) + ((4 x 0) + 1) x 2 = 1036676720
-ITERATION 3 => (2 x 103667672) + ((4 x 0) + 1) x 0 = 207335344
-ITERATION 4 => (2 x 20733534) + ((4 x 0) + 1) x 4 = 41467072
-ITERATION 5 => (2 x 4146707) + ((4 x 0) + 1) x 2 = 8293416
-ITERATION 6 => (2 x 829341) + ((4 x 0) + 1) x 6 = 1658688
-ITERATION 7 => (2 x 165868) + ((4 x 0) + 1) x 8 = 331744
-ITERATION 8 => (2 x 33174) + ((4 x 0) + 1) x 4 = 66352
-ITERATION 9 => (2 x 6635) + ((4 x 0) + 1) x 2 = 13272
-ITERATION 10 => (2 x 1327) + ((4 x 0) + 1) x 2 = 2656
-ITERATION 11 => (2 x 265) + ((4 x 0) + 1) x 6 = 536
-ITERATION 12 => (2 x 53) + ((4 x 0) + 1) x 6 = 112
-ITERATION 13 => (2 x 11) + ((4 x 0) + 1) x 2 = 24
-ITERATION 14 => (2 x 2) + ((4 x 0) + 1) x 4 = 8
-ITERATION 15 => (2 x 0) + ((4 x 0) + 1) x 8 = 8
-ITERATION 16 => (2 x 0) + ((4 x 0) + 1) x 6 = 6
-ITERATION 17 => (2 x 0) + ((4 x 0) + 1) x 4 = 4
-LAST CALCULATION: 2
-ITERATION STOPS DUE TO "CALCULATED NUMBER IS EQUAL TO FACTOR"
-25916917952 IS DIVISIBLE BY 2. RESULT CALCULATED IN 17 ITERATIONS.
-
-DIVISIBILITY CHECK FOR [12958458976/2]
-ITERATION 1 => (2 x 1295845897) + ((4 x 0) + 1) x 6 = 2591691800
-ITERATION 2 => (2 x 259169180) + ((4 x 0) + 1) x 0 = 518338360
-ITERATION 3 => (2 x 51833836) + ((4 x 0) + 1) x 0 = 103667672
-ITERATION 4 => (2 x 10366767) + ((4 x 0) + 1) x 2 = 20733536
-ITERATION 5 => (2 x 2073353) + ((4 x 0) + 1) x 6 = 4146712
-ITERATION 6 => (2 x 414671) + ((4 x 0) + 1) x 2 = 829344
-ITERATION 7 => (2 x 82934) + ((4 x 0) + 1) x 4 = 165872
-ITERATION 8 => (2 x 16587) + ((4 x 0) + 1) x 2 = 33176
-ITERATION 9 => (2 x 3317) + ((4 x 0) + 1) x 6 = 6640
-ITERATION 10 => (2 x 664) + ((4 x 0) + 1) x 0 = 1328
-ITERATION 11 => (2 x 132) + ((4 x 0) + 1) x 8 = 272
-ITERATION 12 => (2 x 27) + ((4 x 0) + 1) x 2 = 56
-ITERATION 13 => (2 x 5) + ((4 x 0) + 1) x 6 = 16
-ITERATION 14 => (2 x 1) + ((4 x 0) + 1) x 6 = 8
-ITERATION 15 => (2 x 0) + ((4 x 0) + 1) x 8 = 8
-ITERATION 16 => (2 x 0) + ((4 x 0) + 1) x 6 = 6
-ITERATION 17 => (2 x 0) + ((4 x 0) + 1) x 4 = 4
-LAST CALCULATION: 2
-ITERATION STOPS DUE TO "CALCULATED NUMBER IS EQUAL TO FACTOR"
-12958458976 IS DIVISIBLE BY 2. RESULT CALCULATED IN 17 ITERATIONS.
-
-DIVISIBILITY CHECK FOR [6479229488/2]
-ITERATION 1 => (2 x 647922948) + ((4 x 0) + 1) x 8 = 1295845904
-ITERATION 2 => (2 x 129584590) + ((4 x 0) + 1) x 4 = 259169184
-ITERATION 3 => (2 x 25916918) + ((4 x 0) + 1) x 4 = 51833840
-ITERATION 4 => (2 x 5183384) + ((4 x 0) + 1) x 0 = 10366768
-ITERATION 5 => (2 x 1036676) + ((4 x 0) + 1) x 8 = 2073360
-ITERATION 6 => (2 x 207336) + ((4 x 0) + 1) x 0 = 414672
-ITERATION 7 => (2 x 41467) + ((4 x 0) + 1) x 2 = 82936
-ITERATION 8 => (2 x 8293) + ((4 x 0) + 1) x 6 = 16592
-ITERATION 9 => (2 x 1659) + ((4 x 0) + 1) x 2 = 3320
-ITERATION 10 => (2 x 332) + ((4 x 0) + 1) x 0 = 664
-ITERATION 11 => (2 x 66) + ((4 x 0) + 1) x 4 = 136
-ITERATION 12 => (2 x 13) + ((4 x 0) + 1) x 6 = 32
-ITERATION 13 => (2 x 3) + ((4 x 0) + 1) x 2 = 8
-ITERATION 14 => (2 x 0) + ((4 x 0) + 1) x 8 = 8
-ITERATION 15 => (2 x 0) + ((4 x 0) + 1) x 6 = 6
-ITERATION 16 => (2 x 0) + ((4 x 0) + 1) x 4 = 4
-LAST CALCULATION: 2
-ITERATION STOPS DUE TO "CALCULATED NUMBER IS EQUAL TO FACTOR"
-6479229488 IS DIVISIBLE BY 2. RESULT CALCULATED IN 16 ITERATIONS.
-
-DIVISIBILITY CHECK FOR [3239614744/2]
-ITERATION 1 => (2 x 323961474) + ((4 x 0) + 1) x 4 = 647922952
-ITERATION 2 => (2 x 64792295) + ((4 x 0) + 1) x 2 = 129584592
-ITERATION 3 => (2 x 12958459) + ((4 x 0) + 1) x 2 = 25916920
-ITERATION 4 => (2 x 2591692) + ((4 x 0) + 1) x 0 = 5183384
-ITERATION 5 => (2 x 518338) + ((4 x 0) + 1) x 4 = 1036680
-ITERATION 6 => (2 x 103668) + ((4 x 0) + 1) x 0 = 207336
-ITERATION 7 => (2 x 20733) + ((4 x 0) + 1) x 6 = 41472
-ITERATION 8 => (2 x 4147) + ((4 x 0) + 1) x 2 = 8296
-ITERATION 9 => (2 x 829) + ((4 x 0) + 1) x 6 = 1664
-ITERATION 10 => (2 x 166) + ((4 x 0) + 1) x 4 = 336
-ITERATION 11 => (2 x 33) + ((4 x 0) + 1) x 6 = 72
-ITERATION 12 => (2 x 7) + ((4 x 0) + 1) x 2 = 16
-ITERATION 13 => (2 x 1) + ((4 x 0) + 1) x 6 = 8
-ITERATION 14 => (2 x 0) + ((4 x 0) + 1) x 8 = 8
-ITERATION 15 => (2 x 0) + ((4 x 0) + 1) x 6 = 6
-ITERATION 16 => (2 x 0) + ((4 x 0) + 1) x 4 = 4
-LAST CALCULATION: 2
-ITERATION STOPS DUE TO "CALCULATED NUMBER IS EQUAL TO FACTOR"
-3239614744 IS DIVISIBLE BY 2. RESULT CALCULATED IN 16 ITERATIONS.
-
-DIVISIBILITY CHECK FOR [1619807372/2]
-ITERATION 1 => (2 x 161980737) + ((4 x 0) + 1) x 2 = 323961476
-ITERATION 2 => (2 x 32396147) + ((4 x 0) + 1) x 6 = 64792300
-ITERATION 3 => (2 x 6479230) + ((4 x 0) + 1) x 0 = 12958460
-ITERATION 4 => (2 x 1295846) + ((4 x 0) + 1) x 0 = 2591692
-ITERATION 5 => (2 x 259169) + ((4 x 0) + 1) x 2 = 518340
-ITERATION 6 => (2 x 51834) + ((4 x 0) + 1) x 0 = 103668
-ITERATION 7 => (2 x 10366) + ((4 x 0) + 1) x 8 = 20740
-ITERATION 8 => (2 x 2074) + ((4 x 0) + 1) x 0 = 4148
-ITERATION 9 => (2 x 414) + ((4 x 0) + 1) x 8 = 836
-ITERATION 10 => (2 x 83) + ((4 x 0) + 1) x 6 = 172
-ITERATION 11 => (2 x 17) + ((4 x 0) + 1) x 2 = 36
-ITERATION 12 => (2 x 3) + ((4 x 0) + 1) x 6 = 12
-ITERATION 13 => (2 x 1) + ((4 x 0) + 1) x 2 = 4
-ITERATION 14 => (2 x 0) + ((4 x 0) + 1) x 4 = 4
-LAST CALCULATION: 2
-ITERATION STOPS DUE TO "CALCULATED NUMBER IS EQUAL TO FACTOR"
-1619807372 IS DIVISIBLE BY 2. RESULT CALCULATED IN 14 ITERATIONS.
-
-DIVISIBILITY CHECK FOR [25916917952/1733]
-ITERATION 1 => (1 x 2591691795) + ((3 x 173) + 1) x 2 = 2591692835
-ITERATION 2 => (1 x 259169283) + ((3 x 173) + 1) x 5 = 259171883
-ITERATION 3 => (1 x 25917188) + ((3 x 173) + 1) x 3 = 25918748
-ITERATION 4 => (1 x 2591874) + ((3 x 173) + 1) x 8 = 2596034
-ITERATION 5 => (1 x 259603) + ((3 x 173) + 1) x 4 = 261683
-ITERATION 6 => (1 x 26168) + ((3 x 173) + 1) x 3 = 27728
-ITERATION 7 => (1 x 2772) + ((3 x 173) + 1) x 8 = 6932
-ITERATION 8 => (1 x 693) + ((3 x 173) + 1) x 2 = 1733
-LAST CALCULATION: 1733
-ITERATION STOPS DUE TO "CALCULATED NUMBER IS EQUAL TO FACTOR"
-25916917952 IS DIVISIBLE BY 1733. RESULT CALCULATED IN 8 ITERATIONS.
-```
-
-### Is 23021493430 divisible by 49251 ?
-
-23021493430 / 3 is NOT divisible, so it is NOT divisible
+I used [Groovy](https://groovy-lang.org/) for coding, [Spock Framework](https://spockframework.org/) for the tests and
+[Gradle](https://gradle.org/) for building. Run everything with:
 
 ```
-PRIME FACTORS: 3 FOR ONCE, 16417 FOR ONCE
-
-DIVISIBILITY CHECK FOR [23021493430/3]
-ITERATION 1 => (1 x 2302149343) + ((3 x 0) + 1) x 0 = 2302149343
-ITERATION 2 => (1 x 230214934) + ((3 x 0) + 1) x 3 = 230214937
-ITERATION 3 => (1 x 23021493) + ((3 x 0) + 1) x 7 = 23021500
-ITERATION 4 => (1 x 2302150) + ((3 x 0) + 1) x 0 = 2302150
-ITERATION 5 => (1 x 230215) + ((3 x 0) + 1) x 0 = 230215
-ITERATION 6 => (1 x 23021) + ((3 x 0) + 1) x 5 = 23026
-ITERATION 7 => (1 x 2302) + ((3 x 0) + 1) x 6 = 2308
-ITERATION 8 => (1 x 230) + ((3 x 0) + 1) x 8 = 238
-ITERATION 9 => (1 x 23) + ((3 x 0) + 1) x 8 = 31
-ITERATION 10 => (1 x 3) + ((3 x 0) + 1) x 1 = 4
-ITERATION 11 => (1 x 0) + ((3 x 0) + 1) x 4 = 4
-LAST CALCULATION: 1
-ITERATION STOPS DUE TO "CALCULATED NUMBER IS LOWER THAN FACTOR"
-23021493430 IS NOT DIVISIBLE BY 3. RESULT CALCULATED IN 11 ITERATIONS.
+ > ./gradlew clean test
 ```
+
+The main suite
+is [GrandUnifiedDivisibilityRuleSpec.groovy](https://github.com/lemiorhan/grand-unified-divisibility-rule/blob/main/src/test/groovy/com/lemiorhanergin/divisibilityrules/GrandUnifiedDivisibilityRuleSpec.groovy),
+which verifies that:
+
+* the rule matches real division for **every dividend and divisor pair from 1 to 100** — all 10,000 combinations,
+  including the even divisors and multiples of 10 that the old algorithm could only reach through prime factors,
+* the rule matches real division for **25 random dividends of 3 to 9 digits** (with a fixed random seed, so every run
+  checks the same numbers),
+* the implementation contains **no prime factor detection** — the suite fails if any method whose name mentions
+  primes or factors ever sneaks back into `DivisibilityRule`,
+* **every calculation step of every check** is written to `build/divisibility-steps.log`, so all ten thousand plus
+  executions can be double-checked by eye, line by line.
+
+The older suites from 2021 are kept and pass unchanged against the generalized rule: `DivisibilityRuleExecutionTest`
+is a data-table regression suite of 120 fixed dividend/divisor cases, and `DivisibilityRuleAllExecutionTest` sweeps
+every divisor up to each dividend from 2 to 1000, logging any mismatch it finds.
 
 # So, What's Next?
 
-As I mentioned at the beginning, the divisibility rules of divisors greater than 12 is not practical. My main motivation
-has always been showing that all divisibility rules are derived from one single formula and an algorithm. Practicality
-has never been my main concern.
+My main motivation has always been showing that all divisibility rules derive from one single formula and an
+algorithm. What started as a high school notebook full of calculator experiments is now a single rule with a
+three-line proof, covering every divisor without knowing anything about its factors. The rules for 3, 7, 9, 11 and all
+the others are no longer separate tricks to memorize — they are rows of one table.
 
-Since I am not a mathematician, I am not able to prove my formula in an academic way. So, I will be pleased if either
-you can make a mathematical proof, or investigate further and extend the logic for further cases that I don't know for
-today.
+If you extend the idea further — other number bases, or the mental-arithmetic shortcuts hiding in the weight cycles —
+I would love to hear about it.
 
 # Author
 
