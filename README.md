@@ -3,6 +3,7 @@
 [![CI](https://github.com/lemiorhan/grand-unified-divisibility-rule/actions/workflows/ci.yml/badge.svg)](https://github.com/lemiorhan/grand-unified-divisibility-rule/actions/workflows/ci.yml)
 [![Code: Apache 2.0][apache-shield]][apache]
 [![Prose: CC BY 4.0][cc-by-shield]][cc-by]
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21572577.svg)](https://doi.org/10.5281/zenodo.21572577)
 [![Cite this repository](https://img.shields.io/badge/Cite-CITATION.cff-brightgreen.svg)](CITATION.cff)
 
 > 🌐 **Try it live:** [lemiorhan.github.io/grand-unified-divisibility-rule](https://lemiorhan.github.io/grand-unified-divisibility-rule/) —
@@ -543,7 +544,9 @@ I would love to hear about it.
 
 If you use this rule, its proof, or this implementation in academic work, teaching material, an article or a talk,
 please cite it. GitHub's **"Cite this repository"** button generates the citation for you from
-[CITATION.cff](CITATION.cff), in BibTeX or APA.
+[CITATION.cff](CITATION.cff), in BibTeX or APA. Releases are archived on Zenodo, and DOI
+[10.5281/zenodo.21572577](https://doi.org/10.5281/zenodo.21572577) always resolves to the most recent archived
+version.
 
 ```bibtex
 @software{ergin_grand_unified_divisibility_rule_2026,
@@ -551,6 +554,7 @@ please cite it. GitHub's **"Cite this repository"** button generates the citatio
   title   = {Grand Unified Divisibility Rule (Lemi's Formula)},
   year    = {2026},
   version = {2.0},
+  doi     = {10.5281/zenodo.21572577},
   url     = {https://github.com/lemiorhan/grand-unified-divisibility-rule}
 }
 ```

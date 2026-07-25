@@ -34,9 +34,11 @@ keywords:
   - digit-sum
   - algorithm
   - mathematics
-# After archiving a release with Zenodo, add the minted DOI here and in README.md:
-# doi: 10.5281/zenodo.XXXXXXX
-# identifiers:
-#   - type: doi
-#     value: 10.5281/zenodo.XXXXXXX
-#     description: Concept DOI for all versions
+doi: 10.5281/zenodo.21572577
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.21572577
+    description: Concept DOI, always resolving to the latest archived version
+  - type: doi
+    value: 10.5281/zenodo.21572578
+    description: DOI of the v2.0 archive
