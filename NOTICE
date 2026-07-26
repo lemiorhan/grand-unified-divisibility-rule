@@ -1,12 +1,37 @@
-Grand Unified Divisibility Rule ("Lemi's Formula")
+Grand Unified Divisibility Rule
 Copyright 2026 Lemi Orhan Ergin
 
 This product includes software developed by Lemi Orhan Ergin
 (https://www.lemiorhanergin.com).
 
-The Grand Unified Divisibility Rule and the 1997 equation it generalizes were
-discovered by Lemi Orhan Ergin: the equation in 1997, the generalization and its
-proof in 2026. See https://github.com/lemiorhan/grand-unified-divisibility-rule
+PRIOR ART
+
+The divisibility criterion implemented by this software is not original to this
+project. It is Pascal's divisibility criterion, described by Blaise Pascal in
+"De numeris multiplicibus ex sola characterum numericorum additione
+agnoscendis" (written c. 1654, published 1665). The trimming test this project
+calls "the 1997 equation" belongs to the family published by A. Zbikowski in
+"Note sur la divisibilite des nombres" (Bulletin de l'Academie imperiale des
+sciences de St. Petersbourg, 3:151-153, 1861), and is one member of the
+two-parameter family of A. A. Grinberg and S. Luryi, "General Divisibility
+Criteria" (arXiv:1401.5486, 2014). The equivalence of the trimming and summing
+families of tests is due to E. O'Shea, "Divisibility Tests Unified: Stacking
+the Trimmings for Sums" (Mathematics Magazine; arXiv:1903.04903, 2019).
+
+Lemi Orhan Ergin arrived at the 1997 equation independently, as a high school
+student in Izmir in 1997, and at the generalized rule independently in 2026,
+in both cases without knowledge of the works above. This is an independent
+rediscovery, not a discovery.
+
+What this project contributes is: a closed form for the trimming coefficients
+read off the divisor's last digit alone; the exactness criterion
+gcd((y*a2)+1, d) = 1 for that parametrization and the list of divisors below
+100 where it fails; and this division-free, fully traced, exhaustively tested
+implementation together with its four-language interactive presentation.
+
+A claim-by-claim mapping to the literature is in the "Prior Art and Related
+Work" section of README.md.
+See https://github.com/lemiorhan/grand-unified-divisibility-rule
 
 --------------------------------------------------------------------------------
 
@@ -38,10 +63,16 @@ CITATION.cff in this repository.
 
 Plain text:
 
-  Ergin, Lemi Orhan. Grand Unified Divisibility Rule (Lemi's Formula):
-  one algorithm generating every divisibility rule, with no prime factors
-  and no division. 2026.
+  Ergin, Lemi Orhan. Grand Unified Divisibility Rule: a traceable, division-free
+  implementation of Pascal's divisibility criterion. 2026.
   https://github.com/lemiorhan/grand-unified-divisibility-rule
+
+If what you are using is the mathematics rather than this implementation, cite
+the prior art named above instead -- Pascal for the general criterion,
+Zbikowski or Grinberg and Luryi for the trimming tests, O'Shea for the
+equivalence of the two families. Cite this project for the implementation, the
+trace format, the website, or the closed form and failure set listed under
+PRIOR ART above.
 
 Note that the mathematical result itself is not subject to copyright, so this
 citation request is a matter of academic convention rather than a license

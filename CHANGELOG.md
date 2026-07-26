@@ -12,6 +12,61 @@ account of it.
 
 Nothing yet.
 
+## [2.2] - 2026-07-26
+
+A literature search, done properly for the first time, established that the
+mathematics in this project is not new. This release makes the project say so.
+No code changed; every claim did.
+
+### Added
+
+- **`Prior Art and Related Work` section in `README.md`**, mapping every
+  mathematical claim in the document to its published source, with the exact
+  point of overlap named for each. Sixteen references, from Pascal (c. 1654) to
+  O'Shea (2019).
+- **`What This Project Adds` section in `README.md`**, stating the four things
+  that do appear to be original — a closed form for the trimming coefficients,
+  its exactness criterion and failure set, the 1997 rediscovery itself, and the
+  implementation and its presentation — and stating them as small.
+- **`References` section in `README.md`** with anchored, fully cited entries,
+  linked from every claim throughout the document.
+- **`references:` block in `CITATION.cff`**, so that tooling which reads the
+  citation metadata also sees the prior art.
+- **`PRIOR ART` section in `NOTICE`**, naming Pascal, Zbikowski, Grinberg &
+  Luryi and O'Shea, and stating plainly that this is an independent rediscovery.
+- **`Prior Art` section on the website**, in all four languages, with links to
+  every source.
+
+### Changed
+
+- **The name `Lemi's Formula` is retired**, everywhere: `README.md`,
+  `CITATION.cff`, `NOTICE`, the page title, the site navigation and all four
+  translations. `Lemi's Equation` is now `The 1997 Equation`. The result is
+  Pascal's, and keeping a personal name on it was wrong.
+- **The generalized rule is now attributed to Pascal**, *De numeris
+  multiplicibus* (c. 1654): the weights, the coverage of every divisor, the base
+  independence and the remainder property were all already there. The three-line
+  proof is identified as the standard proof of Pascal's criterion.
+- **The prime-factor story is corrected.** The 1997 equation is exactly Grinberg
+  & Luryi's restricted rule at the parameter choice `q = CEIL(10/b2) − 1`,
+  verified algebraically for every divisor from 2 to 99. The failures at 16, 18,
+  27 and the rest are an artifact of hard-wiring that parameter, not a fact
+  about composite divisors — those divisors have perfectly good rules in
+  Grinberg & Luryi's Table 1. "Primes are special here" was a coincidence of one
+  coefficient choice.
+- **The multiplier table for divisors ending in 1, 3, 7, 9 is no longer
+  presented as a correction discovered in 2026.** The multipliers are
+  `10⁻¹ mod d` — Zbikowski's `ω_q`, and the osculators of Vedic arithmetic. The
+  `m = 5` row for divisors ending in 7 is Kordemsky's puzzle 320.
+- **The claim that the trimming and summing rules are "the same rule in opposite
+  directions" is attributed to O'Shea (2019)**, whose paper in *Mathematics
+  Magazine* proves exactly this.
+- **The citation guidance now points elsewhere first.** `README.md` and `NOTICE`
+  ask that the mathematics be cited to its authors, and this repository only for
+  the implementation and the narrow original parts.
+- **`CITATION.cff` title and abstract rewritten** to describe the project as a
+  traceable implementation and an independent rediscovery.
+
 ## [2.1] - 2026-07-26
 
 The project is set up as an open-source project, and relicensed so that the code

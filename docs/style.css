@@ -152,7 +152,7 @@ h2 { font-size: clamp(26px, 4vw, 36px); margin: 8px 0 14px; line-height: 1.15; }
 a { color: var(--link, var(--accent-2)); }
 
 /* ---------- timeline ---------- */
-.timeline { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.timeline { display: grid; grid-template-columns: repeat(auto-fit, minmax(225px, 1fr)); gap: 18px; }
 @media (max-width: 820px) { .timeline { grid-template-columns: 1fr; } }
 .time-card {
     background: var(--card); border: 1px solid var(--card-border); border-radius: var(--radius);
@@ -199,6 +199,37 @@ table.weights th { font-size: 12.5px; text-transform: uppercase; letter-spacing:
 table.weights tr:last-child td { border-bottom: none; }
 table.weights td.w { font-family: var(--mono); white-space: nowrap; color: var(--accent-2); }
 table.weights td.d { font-weight: 700; }
+
+/* ---------- prior art ---------- */
+.notice-box {
+    background: color-mix(in srgb, var(--accent-2) 8%, var(--card));
+    border: 1px solid color-mix(in srgb, var(--accent-2) 32%, var(--card-border));
+    border-left-width: 4px; border-radius: var(--radius);
+    padding: 18px 22px; margin: 22px 0; font-size: 14.5px; line-height: 1.65;
+    color: var(--text-soft);
+}
+.notice-box b { color: var(--text); }
+.hero-notice { margin: 26px auto 0; max-width: 760px; text-align: left; }
+
+table.weights.prior { font-size: 13.5px; }
+table.weights.prior td { vertical-align: top; }
+table.weights.prior td:first-child { min-width: 190px; color: var(--text); }
+table.weights.prior td.src { min-width: 150px; font-family: var(--mono); font-size: 12.5px; color: var(--accent-2); }
+table.weights.prior td.src a { color: inherit; }
+table.weights.prior td:last-child { color: var(--text-soft); min-width: 260px; }
+
+.prior-h3 { margin: 44px 0 6px; font-size: 20px; }
+.adds-list { margin: 18px 0 0; padding-left: 26px; display: grid; gap: 14px; }
+.adds-list li { color: var(--text-soft); font-size: 14.5px; line-height: 1.7; }
+.adds-list li b { color: var(--text); }
+
+.refs { margin: 18px 0 22px; padding-left: 0; list-style: none; display: grid; gap: 12px; }
+.refs li {
+    color: var(--text-soft); font-size: 13.5px; line-height: 1.65;
+    padding-left: 16px; border-left: 2px solid var(--card-border);
+}
+.refs li:target { border-left-color: var(--accent-2); background: color-mix(in srgb, var(--accent-2) 7%, transparent); }
+.refs li b { color: var(--accent-2); font-family: var(--mono); }
 
 /* ---------- proof ---------- */
 .proof-steps { counter-reset: proof; display: grid; gap: 14px; margin-top: 26px; }

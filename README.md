@@ -1,4 +1,4 @@
-# Grand Unified Divisibility Rule: Lemi's Formula
+# Grand Unified Divisibility Rule
 
 [![CI](https://github.com/lemiorhan/grand-unified-divisibility-rule/actions/workflows/ci.yml/badge.svg)](https://github.com/lemiorhan/grand-unified-divisibility-rule/actions/workflows/ci.yml)
 [![Code: Apache 2.0][apache-shield]][apache]
@@ -26,6 +26,28 @@ proof.
 
 I have no concerns about practicality, performance, or simplicity. My main concern is showing how divisibility rules
 share a common algorithm and each one can be derived from the main formula.
+
+> ### On novelty: this is a rediscovery, not a discovery
+>
+> After finishing this write-up I searched the literature properly, and the mathematics here turns out not to be new.
+> It is a rediscovery, and in one case a rediscovery of something 372 years old:
+>
+> * The **generalized rule** in this document is **Pascal's divisibility criterion**, described by Blaise Pascal in
+>   *De numeris multiplicibus* (written around 1654, published 1665). Pascal already had the weights, the coverage of
+>   every divisor, the base independence, and the fact that the result is the remainder itself.
+>   [[P]](#ref-pascal) [[M]](#ref-mcdowell)
+> * The **1997 equation** belongs to the family of trimming tests published by **A. Zbikowski** in 1861, and is exactly
+>   one member of the two-parameter family **Grinberg & Luryi** describe in 2014 — I verified the algebra, see
+>   [Prior Art](#prior-art-and-related-work). [[Z]](#ref-zbikowski) [[GL]](#ref-grinberg)
+> * The **2026 insight** that the trimming rule and the weighted-sum rule are the same rule run in opposite directions
+>   is the subject of **O'Shea's 2019 paper** in *Mathematics Magazine*. [[O]](#ref-oshea)
+>
+> I found these independently, decades apart, without knowing they existed — but independent rediscovery is not
+> invention. Every claim in this document is mapped to its published source in
+> [Prior Art and Related Work](#prior-art-and-related-work), and the small part that does appear to be mine is set out
+> honestly in [What This Project Adds](#what-this-project-adds). I have kept the story exactly as it was and added the
+> references around it, because a rediscovery that names its predecessors is worth more than a discovery claim that
+> does not survive a literature search.
 
 # History
 
@@ -63,7 +85,10 @@ If you are here reading my words, thanks for your interest! As of
 2026, [I am a software crafter](https://www.linkedin.com/in/lemiorhan/) living in Istanbul. I am the co-founder
 of [Craftgate, the cloud-based payment gateway](https://www.craftgate.io). I am neither a mathematician, not an
 academician. This post is not in academic paper standards. However, it contains a true story of my passion and my
-amateur findings of Grand Unified Divisibility Rule. I have already given the formula my name, `Lemi's Formula`.
+amateur findings of Grand Unified Divisibility Rule. For years I called the equation by my own name. I have dropped
+that: the literature search I finally did in 2026 showed the result had been published long before I was born, and it
+would be wrong to keep my name on someone else's theorem. What the name is attached to now is the write-up, the
+implementation and the website — not the mathematics.
 
 # Terminology
 
@@ -159,6 +184,12 @@ end up with a formula about it. Here are the rules for the numbers between 11 an
 divisors ending in 0 are missing: the equation cannot even be written for them, since `CEIL(10 / 0)` does not exist —
 the generalized rule later in this document covers them like any other divisor.
 
+> **Prior art for this section.** What follows is a *trimming test* in the standard terminology, and the family it
+> belongs to was published by A. Zbikowski in 1861 [[Z]](#ref-zbikowski) — see Cherniavsky & Mouftakhov for a modern
+> treatment [[CM]](#ref-cherniavsky). The particular closed form below, which reads the coefficients off the divisor's
+> last digit, is the one thing here I have not found in print; the coefficients it produces, however, are the classical
+> ones. Details in [Prior Art](#prior-art-and-related-work).
+
 * Divisible by 11, if `(10 x last digit + 1 x remaining digits)` is divisible by 11
 * Divisible by 12, if `(5 x last digit + 2 x remaining digits)` is divisible by 12
 * Divisible by 13, if `(4 x last digit + 1 x remaining digits)` is divisible by 13
@@ -210,7 +241,7 @@ There is a pretty obvious pattern among these rules, isn't there? For the given:
 * `x`: First coefficient as `(10 + b2 - (b2 * CEIL(10 / b2)))`
 * `y`: Second coefficient as `(CEIL(10 / b2) - 1)`
 
-Lemi's Equation becomes: `(x * a1) + ((y * a2) + 1) * b1`
+The 1997 equation becomes: `(x * a1) + ((y * a2) + 1) * b1`
 
 Apply the equation to the dividend, then apply it again to the result, and keep going until the number is small. If
 you end up on a multiple of the divisor, the dividend is divisible — or so I concluded in 1997. The next section shows
@@ -252,6 +283,23 @@ stays strictly between 0 and d (for one-digit divisors it is simply 1), so for a
 factor with d. Factoring the divisor into primes was silently repairing the broken composite cases. For 29 years the
 primes masked the real constraint of the formula.
 
+> **Prior art for this section.** There is a sharper way to say what went wrong, and it comes from Grinberg & Luryi
+> [[GL]](#ref-grinberg). They study exactly this shape of rule — they call `R = u·B + w·b` a *restricted rule*, with `B`
+> the remaining digits and `b` the ones digit — and their validity condition is that `N = 10w − u` must be a multiple of
+> the divisor. Substituting the coefficients above gives
+>
+> ```
+> 10·((y·a2) + 1) − x = 10·(y·a2) + 10 − (10 − y·b2) = y·(10·a2 + b2) = y·d
+> ```
+>
+> so the 1997 equation is precisely their restricted rule for the choice `q = y = CEIL(10 / b2) − 1`. I verified this
+> for every divisor from 2 to 99 with no mismatches. The important consequence: **`q` is a free parameter, and 1997-me
+> hard-wired one particular value of it.** Grinberg & Luryi's Table 1 lists working rules for 16, 18 and 27 — the very
+> divisors that break here — by picking a different `q` (for 16 they take `N = −32`, giving `2B − 3b`). So the failures
+> were never about primality. They were about a fixed coefficient choice that happens to share a factor with certain
+> composite divisors. Prime factorization repaired the symptom; choosing `q` per divisor would have repaired the cause;
+> and the generalization below sidesteps the parameter entirely.
+
 So the fix is not to patch the equation. The fix is to see what the equation actually is — and generalize it.
 
 # The Grand Unified Divisibility Rule
@@ -266,6 +314,20 @@ The full toolkit of the rule is: read a digit, multiply a digit by a weight, sub
 classical divisibility rules allow. While summing, the running total is also reduced below `d` by subtraction, so all
 numbers stay small. And as a bonus, the final total is not just a yes/no signal — it is precisely the **remainder** of
 the division.
+
+> **Prior art for this section — this rule is Pascal's.** This is the point where the literature search stopped being
+> comfortable. The rule above is **Pascal's divisibility criterion**, from *De numeris multiplicibus*, written around
+> 1654 and published in 1665 [[P]](#ref-pascal). Pascal's statement is that you may replace each power of ten in the
+> number's representation by its remainder modulo `D`, and *"le nombre obtenu aura toujours même reste que A dans la
+> division par D"* — the resulting number always has the same remainder as `A` divided by `D` [[FR]](#ref-frwiki). That
+> single sentence already contains everything I present above as new: the weights are the remainders of the powers of
+> ten, it applies to **every** positive integer divisor with no coprimality condition, and the output is the remainder
+> itself rather than a yes/no answer. Pascal also noted it works in any base. McDowell's history of divisibility tests
+> covers this directly [[M]](#ref-mcdowell). In modern terms the same rule is the *binomial test*
+> `B_q(a) = Σ (10 − q)^j · a_j` [[O]](#ref-oshea), and Pal's paper is a good place to see the contrast — his
+> trimming-style test explicitly *cannot* recover the remainder, which is exactly the advantage Pascal's form has
+> [[Pal]](#ref-pal). What I contributed here is a division-free way to *generate* the weights and a traceable
+> implementation of it, not the criterion.
 
 ### Every classical rule is a row of this rule
 
@@ -296,7 +358,9 @@ so every digit still matters. One mechanism explains all three behaviors.
 
 ### The proof
 
-This time there is a proof, and it fits in three lines:
+This time there is a proof, and it fits in three lines. It is the standard proof of Pascal's criterion — the same
+argument found in any elementary number theory treatment [[P]](#ref-pascal) [[M]](#ref-mcdowell) — written out in the
+vocabulary of this document:
 
 1. Subtracting `d` from a number never changes its remainder by `d`. So by induction, every weight has the same
    remainder by `d` as the power of ten it replaced: `weight(t)` is congruent to `10^t (mod d)`.
@@ -307,7 +371,7 @@ This time there is a proof, and it fits in three lines:
 
 ### Where the 1997 equation fits
 
-Lemi's Equation is this same rule executed in the opposite direction. Trimming the ones digit and folding it back with
+The 1997 equation is this same rule executed in the opposite direction. Trimming the ones digit and folding it back with
 a multiplier is walking the digits right-to-left with weights that are powers of the **inverse of 10 modulo d** — and
 an inverse of 10 exists only when d shares no factor with 10. That is the deep reason the old algorithm had to fall
 back to prime factors. The generalized rule walks left with plain powers of 10, which exist for every divisor, so the
@@ -327,6 +391,24 @@ For divisors ending in 1, 3 and 9 these are exactly the coefficients `(y x a2) +
 school formulas were already the exact inverses. Only the row for 7 differed, and that single row was the other crack
 that prime factorization was papering over. With `m` in hand, `N = 10 x a1 + b1` is divisible by `d` exactly when
 `a1 + m x b1` is divisible by `d`, for any `d` coprime to 10, composite or prime.
+
+> **Prior art for this section — and a correction.** Two things need naming here.
+>
+> First, "the two rules are the same rule run in opposite directions" is the result of O'Shea's 2019 paper in
+> *Mathematics Magazine*, whose entire subject is unifying the trimming and summing families [[O]](#ref-oshea). It
+> proves `(Stack ∘ T_q)^n(a) = S_q(a)` — iterating Zbikowski's right-trimming yields Khare's summing test — and
+> `(LStack ∘ LT_q)^n(a) = B_q(a)` — left-trimming yields the binomial test, which is Pascal's rule. The right-to-left
+> direction with inverse-of-10 weights is Khare's 1997 test [[K]](#ref-khare); O'Shea notes that "Khare's `γ_q` equals
+> Zbikowski's `ω_q`". So both directions and the bridge between them were already in print.
+>
+> Second, the table above is **not a correction I discovered** — `m` is simply the inverse of 10 modulo `d`, which is
+> Zbikowski's `ω_q` [[Z]](#ref-zbikowski) and, in the Vedic arithmetic tradition, the *osculator* obtained by the
+> `Ekādhikena Pūrvena` recipe: multiply the divisor until it ends in 9, then take one more than the leading part
+> [[V]](#ref-vedic). The row for 7 gives `m = 5`, and multiplying by 5 while walking the digits of a number to test
+> divisibility by 7 is Kordemsky's puzzle from *The Moscow Puzzles* [[Ko]](#ref-kordemsky), reproduced as the opening
+> example of Pal's paper [[Pal]](#ref-pal). I checked all four rows of the table against `pow(10, -1, d)` for sixteen
+> divisors and they agree exactly — which is the point: they agree because they are the classical multipliers, not
+> because 2026-me fixed something.
 
 # The Algorithm
 
@@ -526,15 +608,168 @@ The older suites from 2021 are kept and pass unchanged against the generalized r
 is a data-table regression suite of 120 fixed dividend/divisor cases, and `DivisibilityRuleAllExecutionTest` sweeps
 every divisor up to each dividend from 2 to 1000, logging any mismatch it finds.
 
+# Prior Art and Related Work
+
+In July 2026, after this document had been written, I finally ran a proper literature search instead of assuming that
+"nobody seems to have written this down" meant nobody had. The result is unambiguous: **every mathematical claim in
+this document already exists in the literature**, some of it for centuries. This section maps each claim to its
+source and says precisely where the overlap lies. Nothing below is hedged — where a source contains my result outright,
+it says so.
+
+If you want the field rather than my particular corner of it, start with three surveys: McDowell's history of
+divisibility tests [[M]](#ref-mcdowell), Ganzell's *Divisibility Tests, Old and New* [[G]](#ref-ganzell), and Volume I
+of Dickson's *History of the Theory of Numbers* [[D]](#ref-dickson), which catalogues divisibility criteria back to
+antiquity.
+
+### Claim-by-claim mapping
+
+| What this document presents | Where it already exists | Exactly how they overlap |
+|---|---|---|
+| The generalized rule: weights are the powers of ten reduced modulo `d`, and the weighted digit sum is congruent to `N` | **Pascal, ~1654** [[P]](#ref-pascal), via McDowell [[M]](#ref-mcdowell) | Complete overlap. Pascal's criterion *is* "replace each power of 10 by its remainder mod `D`". Same weights, same rule. |
+| The final total is the exact remainder, not just a yes/no signal — presented above as "a bonus" | **Pascal, ~1654** [[P]](#ref-pascal) [[FR]](#ref-frwiki) | Complete overlap. Pascal's own statement is that the reduced number *"aura toujours même reste que A"* — has the same remainder as `A`. The remainder property is the original formulation, not a bonus on top of it. |
+| The rule needs no coprimality condition and covers 2, 4, 8, 16, 20, 45 and every other divisor | **Pascal, ~1654** [[P]](#ref-pascal); the binomial test [[O]](#ref-oshea) | Complete overlap. `a ≡ Σ (10 − q)^j · a_j (mod q)` holds unconditionally for every `q`, which is why the criterion never needed a coprimality hypothesis in the first place. |
+| Every classical rule (2, 3, 4, 8, 9, 11) is a row of one table | **Pascal** [[P]](#ref-pascal); **Grinberg & Luryi, 2014** [[GL]](#ref-grinberg) | Complete overlap. Grinberg & Luryi's abstract states it in as many words: *"Well-known divisibility rules for exemplary divisors in the decimal system follow from the universal expression as special cases."* |
+| Weights of 2/5-only divisors collapse to 0; coprime-to-10 divisors cycle; mixed divisors do both | Standard consequence of Pascal's criterion [[M]](#ref-mcdowell); Wikipedia [[W]](#ref-wikipedia) | Complete overlap. This is the textbook explanation of *why* the rules for 4 and 8 look at the last digits. |
+| The three-line proof | Standard proof of Pascal's criterion [[P]](#ref-pascal) [[M]](#ref-mcdowell) | Complete overlap. Steps 1–3 are the usual induction on `10^t ≡ weight(t) (mod d)`. |
+| The 1997 trimming equation `(x·a1) + ((y·a2)+1)·b1` | **Zbikowski, 1861** [[Z]](#ref-zbikowski); **Cherniavsky & Mouftakhov, 2014** [[CM]](#ref-cherniavsky) | Same family. Zbikowski's test is `T_q(a) = ā + ω_q·a₀` with `ω_q = 10⁻¹ mod q`, for divisors ending in 1, 3, 7, 9 — the 1997 equation with the classical multiplier. |
+| …and specifically as a member of a two-parameter family | **Grinberg & Luryi, 2014** [[GL]](#ref-grinberg) | Exact identification, verified. Their restricted rule is `R = u·B + w·b`, valid when `N = 10w − u` is a multiple of `d`. Substituting gives `10w − x = y·d`, so the 1997 equation is their rule at `q = y = CEIL(10/b2) − 1`. Checked for all `d` in 2..99: zero mismatches. |
+| The corrected multiplier table (`m` for divisors ending in 1, 3, 7, 9) | **Zbikowski, 1861** [[Z]](#ref-zbikowski); Vedic osculators [[V]](#ref-vedic); **Kordemsky** [[Ko]](#ref-kordemsky) | Complete overlap. `m = 10⁻¹ mod d` throughout — verified against `pow(10, -1, d)` for 16 divisors. The `m = 5` for divisors ending in 7 is the classical positive osculator, and the ×5 walk for testing 7 is Kordemsky's problem 320. |
+| The trimming rule and the weighted-sum rule are the same rule in opposite directions | **O'Shea, 2019**, *Mathematics Magazine* [[O]](#ref-oshea) | Complete overlap; this is the paper's thesis. Theorem 2: `(Stack ∘ T_q)^n(a) = S_q(a)`. Theorem 3: `(LStack ∘ LT_q)^n(a) = B_q(a)`. Trimming → summing, in both directions. |
+| The right-to-left direction uses powers of the inverse of 10 | **Khare, 1997** [[K]](#ref-khare); **Pal, 2005** [[Pal]](#ref-pal) | Complete overlap. Khare's summing test is `S_q(a) = Σ ω_q^j · a_{n−j}` with `ω_q = 10⁻¹ mod q`. Pal gives the same test in Horner form with proof. |
+| The trimming rule requires `gcd(d, 10) = 1`, which is why it cannot reach even divisors | Textbook; Wikipedia [[W]](#ref-wikipedia); Sathaye [[S]](#ref-sathaye); Pal's Lemma 2 [[Pal]](#ref-pal) | Complete overlap. Wikipedia states it directly: the rule *"is really a rule for divisibility by any integer relatively prime to 10"*. |
+| "One unified framework from which all classical rules follow" as a research goal | **Grinberg & Luryi, 2014** [[GL]](#ref-grinberg); **O'Shea, 2019** [[O]](#ref-oshea); also attempted in [[U]](#ref-udf) | Same goal, reached earlier and more generally — Grinberg & Luryi cover arbitrary bases and give an octal table alongside the decimal one. |
+
+### The two sources that matter most
+
+If you read only two things from the list, read these.
+
+**Pascal, *De numeris multiplicibus* (~1654).** This is the generalized rule of this document, in full, 372 years
+earlier — weights, universality, base independence, and the remainder property. There is no meaningful gap between
+Pascal's criterion and "The Grand Unified Divisibility Rule" section above. My write-up adds a division-free procedure
+for producing the weights and a step-by-step trace; the mathematics is Pascal's.
+
+**Grinberg & Luryi, *General Divisibility Criteria* (2014).** This is the paper that explains the 1997 equation to me
+better than I ever explained it myself. It shows the equation was one arbitrary member of a family with a free
+parameter, and that the same family covers 16, 18 and 27 perfectly well once you stop hard-wiring that parameter. The
+"failing divisors are all composite / primes are special" story in this document is therefore a *coincidence of my
+parameter choice*, not a fact about divisibility. It is the single most useful correction the literature search
+produced, and it is the reason the section above now reads the way it does.
+
+# What This Project Adds
+
+With the above on the table, here is what I believe is genuinely mine — stated small, because it is small.
+
+1. **A closed form for the trimming coefficients read off the divisor's last digit alone.**
+   `x = 10 + b2 − b2·CEIL(10/b2)` and `y = CEIL(10/b2) − 1`. Zbikowski's `ω_q` and Grinberg & Luryi's `(u, w)` are
+   obtained by a recipe or chosen from a table; this is a formula in `b2` that needs no search and no table lookup. I
+   have not found this particular parametrization in print. It is a convenience, not a theorem.
+2. **The exactness criterion for that parametrization.** The identity `f(N) = ((y·a2)+1)·N − (y·a1)·d` and the
+   criterion `gcd((y·a2)+1, d) = 1`, together with the complete list of divisors below 100 where it fails — 16, 18, 27,
+   36, 38, 45, 56, 57, 58, 76, 78, 87, 95, 96, 98. Because the parametrization in (1) is not in the literature, its
+   failure set is not either. Verified two independent ways: by the gcd criterion, and by brute force over all
+   dividends below 3000. Both give the identical set. In the language of [[GL]](#ref-grinberg) this answers "which
+   members of the family does the choice `q = y` land on, and when is that choice legal".
+3. **An independent rediscovery, 1997, on paper, with a pocket calculator.** Not a contribution to mathematics. Still
+   the part of this story I am most attached to, and the reason the repository exists.
+4. **The engineering and the pedagogy.** A division-free implementation whose only operations on the divisor are
+   subtraction, a full trace of every step, exhaustive verification over all 10,000 dividend/divisor pairs from 1 to
+   100, and a live four-language visualization of the algorithm. Pascal's criterion is in every number theory book;
+   a working, traceable, tested presentation of it that a curious person can run in a browser is rarer, and that is
+   what this repository actually offers.
+
+# References
+
+<a id="ref-pascal"></a>
+**[P]** Pascal, B. *De numeris multiplicibus ex sola characterum numericorum additione agnoscendis.* Written c. 1654,
+presented to the Académie Parisienne in 1654, published 1665 in *Traité du triangle arithmétique*. — The general
+divisibility criterion: replace each power of ten by its remainder modulo the divisor.
+
+<a id="ref-zbikowski"></a>
+**[Z]** Zbikowski, A. (1861). *Note sur la divisibilité des nombres.* Bulletin de l'Académie impériale des sciences de
+St. Pétersbourg, Classe physico-mathématique, **3**: 151–153. — The family of trimming tests.
+
+<a id="ref-cherniavsky"></a>
+**[CM]** Cherniavsky, Y., Mouftakhov, A. (2014). *Zbikowski's Divisibility Criterion.* The College Mathematics Journal
+**45**(1): 17–21. <https://doi.org/10.4169/college.math.j.45.1.017> — Modern treatment of [[Z]](#ref-zbikowski).
+
+<a id="ref-khare"></a>
+**[K]** Khare, A. (1997). *Divisibility Tests.* Furman University Electronic Journal of Undergraduate Mathematics
+**3**: 1–5. <https://scholarexchange.furman.edu/fuejum/vol3/iss1/1/> — The summing tests with inverse-of-10 weights.
+
+<a id="ref-pal"></a>
+**[Pal]** Pal, P. B. (2005). *Divisibility tests with weighted digital sums.* arXiv:math/0507011.
+<https://arxiv.org/abs/math/0507011> — Horner-form test for divisors ending in 1, 3, 7, 9, with proof; notes
+explicitly that it does *not* yield the remainder.
+
+<a id="ref-grinberg"></a>
+**[GL]** Grinberg, A. A., Luryi, S. (2014). *General Divisibility Criteria.* arXiv:1401.5486.
+<https://arxiv.org/abs/1401.5486> — The two-parameter universal criterion; contains the 1997 equation as one member.
+
+<a id="ref-mcdowell"></a>
+**[M]** McDowell, E. L. (2018). *Divisibility Tests: A History and User's Guide.* MAA Convergence, May 2018.
+<https://old.maa.org/press/periodicals/convergence/divisibility-tests-a-history-and-users-guide> — History of the
+field, with dedicated sections on the Pascal and Zbikowski tests.
+
+<a id="ref-oshea"></a>
+**[O]** O'Shea, E. (2019). *Divisibility Tests Unified: Stacking the Trimmings for Sums.* Mathematics Magazine;
+arXiv:1903.04903. <https://arxiv.org/abs/1903.04903> — Proves that the trimming and summing families are the same
+tests, in both directions.
+
+<a id="ref-ganzell"></a>
+**[G]** Ganzell, S. (2017). *Divisibility Tests, Old and New.* The College Mathematics Journal **48**(1): 36–40.
+<https://doi.org/10.4169/college.math.j.48.1.36> — Survey of the landscape.
+
+<a id="ref-vedic"></a>
+**[V]** Tirthaji, B. K. (1965). *Vedic Mathematics.* Motilal Banarsidass. — The *osculator* (`Ekādhikena Pūrvena`)
+construction, which produces the same multipliers as [[Z]](#ref-zbikowski). See also
+<https://instavm.org/wp-content/uploads/2021/05/M33.pdf>.
+
+<a id="ref-kordemsky"></a>
+**[Ko]** Kordemsky, B. A. *The Moscow Puzzles: 359 Mathematical Recreations.* Ed. Martin Gardner, Dover, 1992,
+problem 320. — The ×5 walk for testing divisibility by 7.
+
+<a id="ref-wikipedia"></a>
+**[W]** *Divisibility rule.* Wikipedia. <https://en.wikipedia.org/wiki/Divisibility_rule> — Documents the
+inverse-of-10 construction and the `gcd(d, 10) = 1` requirement.
+
+<a id="ref-frwiki"></a>
+**[FR]** *Critères de divisibilité.* Wikipédia (French).
+<https://fr.wikipedia.org/wiki/Crit%C3%A8res_de_divisibilit%C3%A9> — Statement of Pascal's criterion, including the
+remainder-preserving property quoted above.
+
+<a id="ref-sathaye"></a>
+**[S]** Sathaye, A. *A universal divisibility test.* University of Kentucky, MA330 course notes.
+<https://www.ms.uky.edu/~sohum/ma330/files/note2.pdf> — The trimming test and its coprimality requirement.
+
+<a id="ref-dickson"></a>
+**[D]** Dickson, L. E. *History of the Theory of Numbers, Volume I: Divisibility and Primality.* Dover, 2005. —
+Historical survey of divisibility criteria.
+
+<a id="ref-udf"></a>
+**[U]** Mathur, A. (2025). *Universal Divisibility Framework: A Unified Theory of Divisibility.* viXra:2512.0030.
+<https://vixra.org/abs/2512.0030> — A recent attempt at the same unification goal. Listed for completeness; viXra is
+not peer reviewed.
+
 # So, What's Next?
 
-My main motivation has always been showing that all divisibility rules derive from one single formula and an
-algorithm. What started as a high school notebook full of calculator experiments is now a single rule with a
-three-line proof, covering every divisor without knowing anything about its factors. The rules for 3, 7, 9, 11 and all
-the others are no longer separate tricks to memorize — they are rows of one table.
+My motivation has always been showing that all divisibility rules derive from one single formula and an algorithm. That
+turned out to be true, and also to have been known since Pascal — which is a better outcome than it sounds, because the
+literature search replaced a private conviction with a proper map of the territory, and corrected two things I had
+wrong (see [Prior Art](#prior-art-and-related-work)). What started as a high school notebook full of calculator
+experiments is now a rediscovery I can name, with a three-line proof, a division-free implementation and 10,000
+verified executions behind it.
 
-If you extend the idea further — other number bases, or the mental-arithmetic shortcuts hiding in the weight cycles —
-I would love to hear about it.
+The open ends I would still like to chase, and would love to hear about if you get there first:
+
+* Other number bases. Pascal's criterion is base-independent and Grinberg & Luryi tabulate the octal case
+  [[GL]](#ref-grinberg); the closed form in [What This Project Adds](#what-this-project-adds) is decimal-only, and I do
+  not know what its base-`t` analogue looks like.
+* The mental-arithmetic shortcuts hiding in the weight cycles — the cycle length of the weights of `d` is the
+  multiplicative order of 10 modulo `d`, and short cycles are what make a rule memorable.
+* Whether the closed form in (1) has a principled reason to exist, or is a numerical accident of base ten.
+
+If you find that any part of [What This Project Adds](#what-this-project-adds) is also already in print, please open an
+issue. I would rather have a correct map than a flattering one.
 
 # Author
 
@@ -551,13 +786,25 @@ version.
 ```bibtex
 @software{ergin_grand_unified_divisibility_rule_2026,
   author  = {Ergin, Lemi Orhan},
-  title   = {Grand Unified Divisibility Rule (Lemi's Formula)},
+  title   = {Grand Unified Divisibility Rule: a traceable implementation of
+             Pascal's divisibility criterion, with an independently rediscovered
+             closed form for the trimming coefficients},
   year    = {2026},
-  version = {2.1},
+  version = {2.2},
   doi     = {10.5281/zenodo.21572577},
-  url     = {https://github.com/lemiorhan/grand-unified-divisibility-rule}
+  url     = {https://github.com/lemiorhan/grand-unified-divisibility-rule},
+  note    = {Independent rediscovery; see the Prior Art section for the
+             underlying results of Pascal (c. 1654), Zbikowski (1861),
+             Khare (1997), Grinberg and Luryi (2014) and O'Shea (2019)}
 }
 ```
+
+**Please cite the mathematics, not this repository, when the mathematics is what you are using.** If you need the
+general criterion itself, the citation you want is Pascal [[P]](#ref-pascal) — or McDowell [[M]](#ref-mcdowell) for an
+accessible modern account. For the trimming tests, cite Zbikowski [[Z]](#ref-zbikowski) or Grinberg & Luryi
+[[GL]](#ref-grinberg); for the equivalence of the two families, O'Shea [[O]](#ref-oshea). Cite this repository for the
+implementation, the trace format, the website, or the closed form and failure set described in
+[What This Project Adds](#what-this-project-adds).
 
 The mathematics itself is not subject to copyright, so this is a request grounded in academic convention rather than a
 licence condition. The attribution requirement in [NOTICE](NOTICE), which applies when you redistribute these files, is

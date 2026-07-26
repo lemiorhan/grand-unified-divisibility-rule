@@ -13,8 +13,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grand Unified Divisibility Rule — Lemi's Formula</title>
-    <meta name="description" content="One formula for every divisibility rule — no prime factors, no division, a three-line proof. Try the algorithm step by step in your browser.">
+    <title>Grand Unified Divisibility Rule</title>
+    <meta name="description" content="One formula for every divisibility rule — no prime factors, no division, a three-line proof. An independent rediscovery of Pascal's divisibility criterion, with every source credited. Try the algorithm step by step in your browser.">
     <link rel="canonical" href="https://lemiorhan.github.io/grand-unified-divisibility-rule/">
     <link rel="alternate" hreflang="en" href="https://lemiorhan.github.io/grand-unified-divisibility-rule/?lang=en">
     <link rel="alternate" hreflang="tr" href="https://lemiorhan.github.io/grand-unified-divisibility-rule/?lang=tr">
@@ -22,8 +22,8 @@
     <link rel="alternate" hreflang="es" href="https://lemiorhan.github.io/grand-unified-divisibility-rule/?lang=es">
     <link rel="alternate" hreflang="x-default" href="https://lemiorhan.github.io/grand-unified-divisibility-rule/">
     <meta property="og:type" content="website">
-    <meta property="og:title" content="Grand Unified Divisibility Rule — Lemi's Formula">
-    <meta property="og:description" content="One formula for every divisibility rule — no prime factors, no division, a three-line proof. Run the algorithm step by step in your browser.">
+    <meta property="og:title" content="Grand Unified Divisibility Rule">
+    <meta property="og:description" content="One formula for every divisibility rule — no prime factors, no division, a three-line proof. An independent rediscovery of Pascal's divisibility criterion, with every source credited. Run the algorithm step by step in your browser.">
     <meta property="og:url" content="https://lemiorhan.github.io/grand-unified-divisibility-rule/">
     <meta name="twitter:card" content="summary">
     <link rel="stylesheet" href="style.css">
@@ -33,12 +33,13 @@
 
 <nav class="nav">
     <div class="nav-inner">
-        <a class="nav-brand" href="#top">&#247; <span>Lemi's Formula</span></a>
+        <a class="nav-brand" href="#top">&#247; <span data-i18n="nav.brand">Divisibility Rule</span></a>
         <div class="nav-links">
             <a href="#story" data-i18n="nav.story">Story</a>
             <a href="#formula" data-i18n="nav.formula">The 1997 Formula</a>
             <a href="#rule" data-i18n="nav.rule">The Rule</a>
             <a href="#proof" data-i18n="nav.proof">Proof</a>
+            <a href="#prior-art" data-i18n="nav.prior">Prior Art</a>
             <a href="#try" class="nav-cta" data-i18n="nav.try">Try It</a>
             <label class="sr-only" for="langSelect" data-i18n="lang.label">Language</label>
             <select id="langSelect" class="lang-select">
@@ -61,9 +62,16 @@
         <p class="lead" data-i18n="hero.lead">
             The digit-sum rule for 3, the alternating sum for 11, the last-digits trick for 4 and 8, the
             weighted rule for 7 — they are all rows of one table, produced by one algorithm that needs
-            no prime factors and no division. Discovered in a Turkish high school in 1997, generalized and
+            no prime factors and no division. Worked out in a Turkish high school in 1997, generalized and
             proven in 2026.
         </p>
+        <div class="notice-box hero-notice" data-i18n="hero.notice">
+            <b>This is a rediscovery, not a discovery.</b> The rule on this page is
+            <b>Pascal's divisibility criterion</b>, described by Blaise Pascal in <i>De numeris multiplicibus</i>
+            around 1654, and the 1997 equation belongs to a family of tests published by A. Zbikowski in 1861.
+            Both were found here independently and without knowing they existed. Every claim is mapped to its
+            published source in <a href="#prior-art">Prior Art</a>.
+        </div>
         <div class="hero-actions">
             <a class="btn btn-primary" href="#try" data-i18n="hero.ctaRun">Run the algorithm step by step</a>
             <a class="btn btn-ghost" href="https://github.com/lemiorhan/grand-unified-divisibility-rule" data-i18n="hero.ctaGithub">View on GitHub</a>
@@ -109,6 +117,14 @@
                     constraint of the 1997 equation. Generalizing it removes the constraint: one rule for every
                     divisor, with no factoring, no division, and a three-line proof.</p>
             </div>
+            <div class="time-card">
+                <div class="year">2026</div>
+                <h3 data-i18n="story.card4.h3">The literature search</h3>
+                <p data-i18n="story.card4.p">Done properly at last, and it settles the question: Pascal had the
+                    generalized rule in 1654, Zbikowski had the 1997 equation's family in 1861, and O'Shea proved
+                    the two are the same rule in 2019. Twenty-nine years of private conviction, replaced by a map
+                    of the territory — and two things I had wrong, corrected.</p>
+            </div>
         </div>
     </div>
 </section>
@@ -116,11 +132,17 @@
 <section class="alt" id="formula">
     <div class="container">
         <div class="section-kicker" data-i18n="formula.kicker">The 1997 Discovery</div>
-        <h2 data-i18n="formula.h2">Lemi's Equation</h2>
+        <h2 data-i18n="formula.h2">The 1997 Equation</h2>
         <p class="section-intro" data-i18n="formula.intro">
             For a dividend <code>N = 10&middot;a1 + b1</code> and a divisor <code>d = 10&middot;a2 + b2</code>,
             one equation generates the divisibility rule of any divisor from its digits alone:
         </p>
+        <div class="notice-box" data-i18n="formula.priorArt">
+            <b>Prior art.</b> This is a <i>trimming test</i>, and the family it belongs to was published by
+            <a href="#prior-art">A. Zbikowski in 1861</a>. It is also exactly one member of the two-parameter family
+            of <a href="#prior-art">Grinberg &amp; Luryi (2014)</a> — the member with the parameter hard-wired, which
+            is what breaks the six rules below.
+        </div>
         <div class="math-block">
             <span class="nw">f(N) = (x &middot; a1) + ((y &middot; a2) + 1) &middot; b1</span>
             <span class="nw"><span class="hl" data-i18n="formula.where">where</span> x = 10 + b2 &minus; b2 &middot; &lceil;10 / b2&rceil;</span>
@@ -158,9 +180,12 @@
         </div>
         <p class="math-note" style="margin-top: 22px;" data-i18n="formula.closing">
             Six of the thirty-six rules — for <b>16, 18, 27, 36, 38 and 45</b> — looked exactly as trustworthy
-            as the rest, but are subtly false. Every one of those divisors is composite, and factoring the
-            divisor into primes first was silently repairing them — the workaround the generalization below
-            makes unnecessary. The full algebra is in the
+            as the rest, but are subtly false. The equation is valid exactly when
+            <code>gcd((y&middot;a2)+1, d) = 1</code>, and factoring the divisor into primes first was silently
+            repairing the cases where that fails. It is tempting to conclude that primes are special here. They are
+            not: those six divisors have perfectly good rules in Grinberg &amp; Luryi's table, reached by choosing the
+            free parameter differently — for 16, <code>2B &minus; 3b</code>. The failures come from hard-wiring one
+            coefficient, not from composite divisors. The full algebra is in the
             <a href="https://github.com/lemiorhan/grand-unified-divisibility-rule#why-the-first-algorithm-needed-prime-factors">project README</a>.
         </p>
     </div>
@@ -180,6 +205,15 @@
             is divisible by <span class="hl">d</span>. The ones digit has weight <b>1</b>; every next weight is the
             previous one times 10, then reduced below <span class="hl">d</span> by subtracting <span class="hl">d</span>.
             The final total is the exact <b>remainder</b>.
+        </div>
+        <div class="notice-box" data-i18n="rule.priorArt">
+            <b>Prior art — this rule is Pascal's.</b> The statement above is
+            <a href="#prior-art">Pascal's divisibility criterion</a>, from <i>De numeris multiplicibus</i>, written
+            around 1654. Pascal's own words are that you may replace each power of ten by its remainder modulo
+            <code>D</code>, and the resulting number <i>“aura toujours même reste que A dans la division par D”</i> —
+            will always have the same remainder as <code>A</code> divided by <code>D</code>. The weights, the coverage
+            of every divisor with no coprimality condition, the independence of the number base and the fact that the
+            output is the remainder itself were all already there, 372 years ago.
         </div>
         <p data-i18n="rule.tableIntro">
             Compute the weight row of a divisor and you get its divisibility rule. The famous rules stop being
@@ -219,6 +253,10 @@
     <div class="container">
         <div class="section-kicker" data-i18n="proof.kicker">The Proof</div>
         <h2 data-i18n="proof.h2">Three lines, no hand-waving</h2>
+        <p class="section-intro" data-i18n="proof.intro">
+            This is the standard proof of <a href="#prior-art">Pascal's criterion</a> — the same induction found in any
+            elementary number theory treatment — written out in the vocabulary of this page.
+        </p>
         <div class="proof-steps">
             <div class="proof-step"><p data-i18n="proof.s1">
                 Subtracting <code>d</code> never changes a number’s remainder by <code>d</code>. So by induction,
@@ -239,7 +277,162 @@
     </div>
 </section>
 
-<section id="try">
+<section id="prior-art">
+    <div class="container">
+        <div class="section-kicker" data-i18n="prior.kicker">Prior Art</div>
+        <h2 data-i18n="prior.h2">Everything above already existed</h2>
+        <p class="section-intro" data-i18n="prior.intro">
+            In July 2026, after all of the above had been written, a proper literature search finally happened. The
+            result is unambiguous: <b>every mathematical claim on this page already exists in the literature</b>, some
+            of it for centuries. Rather than quietly rewrite the page, here is the map — each claim next to its source,
+            with the point of overlap named.
+        </p>
+        <div class="table-wrap">
+            <table class="weights prior">
+                <thead><tr>
+                    <th data-i18n="prior.thClaim">What this page presents</th>
+                    <th data-i18n="prior.thSource">Where it already exists</th>
+                    <th data-i18n="prior.thOverlap">Exactly how they overlap</th>
+                </tr></thead>
+                <tbody>
+                <tr>
+                    <td data-i18n="prior.r1c">The generalized rule: weights are the powers of ten reduced modulo <code>d</code>, and the weighted digit sum is congruent to <code>N</code>.</td>
+                    <td class="src" data-i18n="prior.rPascalSrc">Pascal, c. 1654 <a href="#ref-pascal">[P]</a></td>
+                    <td data-i18n="prior.r1o"><b>Complete overlap.</b> Pascal's criterion <i>is</i> “replace each power of 10 by its remainder mod <code>D</code>”. Same weights, same rule.</td>
+                </tr>
+                <tr>
+                    <td data-i18n="prior.r2c">The final total is the exact remainder, not merely a yes/no signal — presented above as a bonus.</td>
+                    <td class="src" data-i18n="prior.rPascalSrc">Pascal, c. 1654 <a href="#ref-pascal">[P]</a></td>
+                    <td data-i18n="prior.r2o"><b>Complete overlap.</b> The remainder-preserving property is Pascal's original formulation, not something added on top of it.</td>
+                </tr>
+                <tr>
+                    <td data-i18n="prior.r3c">The rule needs no coprimality condition and covers 2, 4, 8, 16, 20, 45 and every other divisor.</td>
+                    <td class="src" data-i18n="prior.r3s">Pascal <a href="#ref-pascal">[P]</a>; binomial test <a href="#ref-oshea">[O]</a></td>
+                    <td data-i18n="prior.r3o"><b>Complete overlap.</b> <code>a &equiv; &Sigma; (10 &minus; q)<sup>j</sup>&middot;a<sub>j</sub> (mod q)</code> holds unconditionally for every <code>q</code>, which is why no coprimality hypothesis was ever needed.</td>
+                </tr>
+                <tr>
+                    <td data-i18n="prior.r4c">Every classical rule — 2, 3, 4, 8, 9, 11 — is a row of one table.</td>
+                    <td class="src">Grinberg &amp; Luryi, 2014 <a href="#ref-grinberg">[GL]</a></td>
+                    <td data-i18n="prior.r4o"><b>Complete overlap.</b> Their abstract says it outright: <i>“Well-known divisibility rules for exemplary divisors in the decimal system follow from the universal expression as special cases.”</i></td>
+                </tr>
+                <tr>
+                    <td data-i18n="prior.r5c">Weights of divisors built only from 2s and 5s collapse to 0; divisors coprime to 10 cycle; mixed divisors do both.</td>
+                    <td class="src" data-i18n="prior.r5s">Standard consequence <a href="#ref-mcdowell">[M]</a> <a href="#ref-wikipedia">[W]</a></td>
+                    <td data-i18n="prior.r5o"><b>Complete overlap.</b> This is the textbook explanation of why the rules for 4 and 8 look only at the last digits.</td>
+                </tr>
+                <tr>
+                    <td data-i18n="prior.r6c">The three-line proof.</td>
+                    <td class="src" data-i18n="prior.r6s">Standard proof <a href="#ref-pascal">[P]</a> <a href="#ref-mcdowell">[M]</a></td>
+                    <td data-i18n="prior.r6o"><b>Complete overlap.</b> The three steps are the usual induction on <code>10<sup>t</sup> &equiv; weight(t) (mod d)</code>.</td>
+                </tr>
+                <tr>
+                    <td data-i18n="prior.r7c">The 1997 trimming equation <code>(x&middot;a1) + ((y&middot;a2)+1)&middot;b1</code>.</td>
+                    <td class="src">Zbikowski, 1861 <a href="#ref-zbikowski">[Z]</a> <a href="#ref-cherniavsky">[CM]</a></td>
+                    <td data-i18n="prior.r7o"><b>Same family.</b> Zbikowski's test is <code>T<sub>q</sub>(a) = ā + &omega;<sub>q</sub>&middot;a<sub>0</sub></code> with <code>&omega;<sub>q</sub> = 10<sup>&minus;1</sup> mod q</code>, for divisors ending in 1, 3, 7, 9 — the 1997 equation with the classical multiplier.</td>
+                </tr>
+                <tr>
+                    <td data-i18n="prior.r8c">…and specifically as one member of a two-parameter family.</td>
+                    <td class="src">Grinberg &amp; Luryi, 2014 <a href="#ref-grinberg">[GL]</a></td>
+                    <td data-i18n="prior.r8o"><b>Exact identification, verified.</b> Their restricted rule <code>R = u&middot;B + w&middot;b</code> is valid when <code>N = 10w &minus; u</code> is a multiple of <code>d</code>. Substituting gives <code>10w &minus; x = y&middot;d</code>, so the 1997 equation is their rule at <code>q = y</code>. Checked for every <code>d</code> from 2 to 99: zero mismatches.</td>
+                </tr>
+                <tr>
+                    <td data-i18n="prior.r9c">The corrected multiplier table <code>m</code> for divisors ending in 1, 3, 7, 9.</td>
+                    <td class="src" data-i18n="prior.r9s">Zbikowski <a href="#ref-zbikowski">[Z]</a>; osculators <a href="#ref-vedic">[V]</a>; Kordemsky <a href="#ref-kordemsky">[Ko]</a></td>
+                    <td data-i18n="prior.r9o"><b>Complete overlap.</b> <code>m = 10<sup>&minus;1</sup> mod d</code> throughout — verified against <code>pow(10, -1, d)</code> for sixteen divisors. The <code>m = 5</code> row is the classical positive osculator, and the &times;5 walk for testing 7 is Kordemsky's problem 320.</td>
+                </tr>
+                <tr>
+                    <td data-i18n="prior.r10c">The trimming rule and the weighted-sum rule are the same rule run in opposite directions.</td>
+                    <td class="src">O'Shea, 2019 <a href="#ref-oshea">[O]</a>; Khare, 1997 <a href="#ref-khare">[K]</a></td>
+                    <td data-i18n="prior.r10o"><b>Complete overlap; it is the paper's thesis.</b> Theorem 2: <code>(Stack &compfn; T<sub>q</sub>)<sup>n</sup>(a) = S<sub>q</sub>(a)</code>. Theorem 3: <code>(LStack &compfn; LT<sub>q</sub>)<sup>n</sup>(a) = B<sub>q</sub>(a)</code>. Trimming becomes summing, in both directions.</td>
+                </tr>
+                <tr>
+                    <td data-i18n="prior.r11c">The trimming rule requires <code>gcd(d, 10) = 1</code>, which is why it cannot reach even divisors.</td>
+                    <td class="src" data-i18n="prior.r11s">Textbook <a href="#ref-wikipedia">[W]</a> <a href="#ref-sathaye">[S]</a> <a href="#ref-pal">[Pal]</a></td>
+                    <td data-i18n="prior.r11o"><b>Complete overlap.</b> Wikipedia states it directly: the rule <i>“is really a rule for divisibility by any integer relatively prime to 10”</i>.</td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3 class="prior-h3" data-i18n="prior.addsH3">What this project does add</h3>
+        <p data-i18n="prior.addsIntro">
+            With the above on the table, here is what appears to be genuinely original — stated small, because it is
+            small.
+        </p>
+        <ol class="adds-list">
+            <li data-i18n="prior.add1"><b>A closed form for the trimming coefficients, read off the divisor's last digit alone.</b>
+                <code>x = 10 + b2 &minus; b2&middot;&lceil;10/b2&rceil;</code> and <code>y = &lceil;10/b2&rceil; &minus; 1</code>.
+                Zbikowski's <code>&omega;<sub>q</sub></code> comes from a recipe and Grinberg &amp; Luryi's
+                <code>(u, w)</code> from a table; this is a formula in <code>b2</code> needing neither. Not found in
+                print — but a convenience, not a theorem.</li>
+            <li data-i18n="prior.add2"><b>The exactness criterion for that parametrization.</b> The identity
+                <code>f(N) = ((y&middot;a2)+1)&middot;N &minus; (y&middot;a1)&middot;d</code>, the criterion
+                <code>gcd((y&middot;a2)+1, d) = 1</code>, and the complete failure set below 100: 16, 18, 27, 36, 38,
+                45, 56, 57, 58, 76, 78, 87, 95, 96, 98. Verified two independent ways — by the criterion and by brute
+                force — which agree exactly.</li>
+            <li data-i18n="prior.add3"><b>An independent rediscovery in 1997, on paper, with a pocket calculator.</b>
+                Not a contribution to mathematics. Still the reason this project exists.</li>
+            <li data-i18n="prior.add4"><b>The engineering and the pedagogy.</b> A division-free implementation whose
+                only operation on the divisor is subtraction, a full trace of every step, exhaustive verification over
+                all 10,000 dividend/divisor pairs from 1 to 100, and this four-language visualization. Pascal's
+                criterion is in every number theory book; a runnable, traceable, tested presentation of it is rarer.</li>
+        </ol>
+
+        <h3 class="prior-h3" data-i18n="prior.refsH3">References</h3>
+        <p data-i18n="prior.refsIntro">
+            If you need to cite the mathematics rather than this implementation, these are the citations you want.
+        </p>
+        <ul class="refs">
+            <li id="ref-pascal"><b>[P]</b> Pascal, B. <i>De numeris multiplicibus ex sola characterum numericorum
+                additione agnoscendis.</i> Written c. 1654, presented to the Académie Parisienne in 1654, published
+                1665 in <i>Traité du triangle arithmétique</i>.</li>
+            <li id="ref-zbikowski"><b>[Z]</b> Zbikowski, A. (1861). <i>Note sur la divisibilité des nombres.</i>
+                Bulletin de l'Académie impériale des sciences de St. Pétersbourg, Classe physico-mathématique,
+                <b>3</b>: 151–153.</li>
+            <li id="ref-cherniavsky"><b>[CM]</b> Cherniavsky, Y., Mouftakhov, A. (2014). <i>Zbikowski's Divisibility
+                Criterion.</i> The College Mathematics Journal <b>45</b>(1): 17–21.
+                <a href="https://doi.org/10.4169/college.math.j.45.1.017">doi:10.4169/college.math.j.45.1.017</a></li>
+            <li id="ref-khare"><b>[K]</b> Khare, A. (1997). <i>Divisibility Tests.</i> Furman University Electronic
+                Journal of Undergraduate Mathematics <b>3</b>: 1–5.
+                <a href="https://scholarexchange.furman.edu/fuejum/vol3/iss1/1/">scholarexchange.furman.edu</a></li>
+            <li id="ref-pal"><b>[Pal]</b> Pal, P. B. (2005). <i>Divisibility tests with weighted digital sums.</i>
+                arXiv:math/0507011. <a href="https://arxiv.org/abs/math/0507011">arxiv.org/abs/math/0507011</a></li>
+            <li id="ref-grinberg"><b>[GL]</b> Grinberg, A. A., Luryi, S. (2014). <i>General Divisibility Criteria.</i>
+                arXiv:1401.5486. <a href="https://arxiv.org/abs/1401.5486">arxiv.org/abs/1401.5486</a></li>
+            <li id="ref-mcdowell"><b>[M]</b> McDowell, E. L. (2018). <i>Divisibility Tests: A History and User's
+                Guide.</i> MAA Convergence, May 2018.
+                <a href="https://old.maa.org/press/periodicals/convergence/divisibility-tests-a-history-and-users-guide">old.maa.org</a></li>
+            <li id="ref-oshea"><b>[O]</b> O'Shea, E. (2019). <i>Divisibility Tests Unified: Stacking the Trimmings for
+                Sums.</i> Mathematics Magazine; arXiv:1903.04903.
+                <a href="https://arxiv.org/abs/1903.04903">arxiv.org/abs/1903.04903</a></li>
+            <li id="ref-ganzell"><b>[G]</b> Ganzell, S. (2017). <i>Divisibility Tests, Old and New.</i> The College
+                Mathematics Journal <b>48</b>(1): 36–40.
+                <a href="https://doi.org/10.4169/college.math.j.48.1.36">doi:10.4169/college.math.j.48.1.36</a></li>
+            <li id="ref-vedic"><b>[V]</b> Tirthaji, B. K. (1965). <i>Vedic Mathematics.</i> Motilal Banarsidass — the
+                <i>osculator</i> (<i>Ekādhikena Pūrvena</i>) construction.
+                <a href="https://instavm.org/wp-content/uploads/2021/05/M33.pdf">instavm.org (PDF)</a></li>
+            <li id="ref-kordemsky"><b>[Ko]</b> Kordemsky, B. A. <i>The Moscow Puzzles: 359 Mathematical
+                Recreations.</i> Ed. Martin Gardner, Dover, 1992, problem 320.</li>
+            <li id="ref-wikipedia"><b>[W]</b> <i>Divisibility rule.</i> Wikipedia.
+                <a href="https://en.wikipedia.org/wiki/Divisibility_rule">en.wikipedia.org</a></li>
+            <li id="ref-frwiki"><b>[FR]</b> <i>Critères de divisibilité.</i> Wikipédia (French) — statement of Pascal's
+                criterion and its remainder-preserving property.
+                <a href="https://fr.wikipedia.org/wiki/Crit%C3%A8res_de_divisibilit%C3%A9">fr.wikipedia.org</a></li>
+            <li id="ref-sathaye"><b>[S]</b> Sathaye, A. <i>A universal divisibility test.</i> University of Kentucky,
+                MA330 notes. <a href="https://www.ms.uky.edu/~sohum/ma330/files/note2.pdf">ms.uky.edu (PDF)</a></li>
+            <li id="ref-dickson"><b>[D]</b> Dickson, L. E. <i>History of the Theory of Numbers, Volume I: Divisibility
+                and Primality.</i> Dover, 2005.</li>
+        </ul>
+        <p class="math-note" data-i18n="prior.refsOutro">
+            The full claim-by-claim discussion, with the algebra, is in the
+            <a href="https://github.com/lemiorhan/grand-unified-divisibility-rule#prior-art-and-related-work">project README</a>.
+            If you find that any of the four items above is also already in print, please open an issue — a correct map
+            beats a flattering one.
+        </p>
+    </div>
+</section>
+
+<section class="alt" id="try">
     <div class="container">
         <div class="section-kicker" data-i18n="calc.kicker">Try It Yourself</div>
         <h2 data-i18n="calc.h2">Watch the algorithm run, step by step</h2>
@@ -303,13 +496,16 @@
 <footer>
     <div class="container">
         <div>
-            <span data-i18n="footer.credit"><b>Grand Unified Divisibility Rule</b> &mdash; discovered by
+            <span data-i18n="footer.credit"><b>Grand Unified Divisibility Rule</b> &mdash; written and implemented by
             <a href="https://www.lemiorhanergin.com">Lemi Orhan Ergin</a>, co-founder of
             <a href="https://www.craftgate.io">Craftgate</a>.</span><br>
+            <span data-i18n="footer.priorArt">The rule itself is <b>Pascal's divisibility criterion</b> (c. 1654) &mdash;
+            independently rediscovered here. <a href="#prior-art">See Prior Art</a> for every source.</span><br>
             <span data-i18n="footer.license">Code licensed under <a href="https://www.apache.org/licenses/LICENSE-2.0">Apache 2.0</a>, prose under <a href="https://creativecommons.org/licenses/by/4.0/">CC BY 4.0</a>.</span>
         </div>
         <div>
             <a href="https://github.com/lemiorhan/grand-unified-divisibility-rule" data-i18n="footer.source">Source &amp; full story on GitHub</a><br>
+            <a href="https://github.com/lemiorhan/grand-unified-divisibility-rule#prior-art-and-related-work" data-i18n="footer.priorLink">Prior art &amp; references</a><br>
             <a href="https://github.com/lemiorhan/grand-unified-divisibility-rule#the-tests" data-i18n="footer.tests">10,000+ verified test executions</a>
         </div>
     </div>

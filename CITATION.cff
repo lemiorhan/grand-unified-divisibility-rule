@@ -2,24 +2,35 @@ cff-version: 1.2.0
 message: >-
   If you use this rule, its proof, or this implementation, please cite it using
   the metadata below.
-title: "Grand Unified Divisibility Rule (Lemi's Formula)"
+title: "Grand Unified Divisibility Rule"
 abstract: >-
-  A single algorithm that generates the divisibility rule of every divisor,
-  using no prime factorization and no division. A number is divisible by d
-  exactly when the weighted sum of its digits is divisible by d, where the
-  weight of the ones digit is 1 and every subsequent weight is the previous one
-  multiplied by 10 and then reduced below d by repeated subtraction; the final
-  total is the exact remainder. The classical rules for 2, 3, 4, 7, 8, 9 and 11
-  are rows of the resulting table. Generalizes an equation discovered by the
-  author in 1997, whose hidden validity criterion -- gcd((y*a2)+1, d) = 1 -- is
-  identified here and shown to be the reason the original formulation required
-  prime factorization.
+  A division-free, fully traceable implementation of the general divisibility
+  criterion: a number is divisible by d exactly when the weighted sum of its
+  digits is divisible by d, where the weight of the ones digit is 1 and every
+  subsequent weight is the previous one multiplied by 10 and then reduced below
+  d by repeated subtraction; the final total is the exact remainder. The
+  classical rules for 2, 3, 4, 7, 8, 9 and 11 are rows of the resulting table.
+  This criterion is NOT new: it is Pascal's divisibility criterion, described in
+  De numeris multiplicibus around 1654, and it is presented here as an
+  independent rediscovery rather than a contribution. The original contributions
+  of this work are narrow and stated as such: a closed form for the coefficients
+  of the associated trimming test read off the divisor's last digit alone
+  (x = 10 + b2 - b2*CEIL(10/b2), y = CEIL(10/b2) - 1); the exactness criterion
+  gcd((y*a2)+1, d) = 1 for that particular parametrization together with the
+  complete list of divisors below 100 where it fails; the implementation, its
+  step-by-step trace, exhaustive verification over all 10,000 dividend/divisor
+  pairs from 1 to 100, and a four-language interactive visualization. The
+  trimming test itself belongs to the family published by Zbikowski in 1861 and
+  is one member of the two-parameter family of Grinberg and Luryi (2014); the
+  equivalence of trimming and summing tests is due to O'Shea (2019). See the
+  Prior Art section of the README for a claim-by-claim mapping to the
+  literature.
 type: software
 authors:
   - family-names: Ergin
     given-names: Lemi Orhan
     website: "https://www.lemiorhanergin.com"
-version: "2.1"
+version: "2.2"
 date-released: "2026-07-26"
 license:
   - Apache-2.0
@@ -42,3 +53,155 @@ identifiers:
   - type: doi
     value: 10.5281/zenodo.21572578
     description: DOI of the v2.0 archive
+
+# Prior art. The divisibility criterion implemented here is Pascal's; these are
+# the works that contain the mathematics this repository rediscovered and
+# implements. If you are citing the mathematics rather than this implementation,
+# cite these instead. The claim-by-claim mapping is in the README's Prior Art
+# section.
+references:
+  - type: generic
+    title: >-
+      De numeris multiplicibus ex sola characterum numericorum additione
+      agnoscendis
+    authors:
+      - family-names: Pascal
+        given-names: Blaise
+    year: 1665
+    notes: >-
+      Written c. 1654, presented to the Academie Parisienne in 1654, published
+      1665 in Traite du triangle arithmetique. The general divisibility
+      criterion: replace each power of ten by its remainder modulo the divisor.
+      This is the rule implemented by this repository.
+  - type: article
+    title: "Note sur la divisibilite des nombres"
+    authors:
+      - family-names: Zbikowski
+        given-names: A.
+    journal: >-
+      Bulletin de l'Academie imperiale des sciences de St. Petersbourg, Classe
+      physico-mathematique
+    volume: 3
+    start: 151
+    end: 153
+    year: 1861
+    notes: >-
+      The family of trimming tests to which the 1997 equation of this project
+      belongs.
+  - type: article
+    title: "Zbikowski's Divisibility Criterion"
+    authors:
+      - family-names: Cherniavsky
+        given-names: Yonah
+      - family-names: Mouftakhov
+        given-names: Artour
+    journal: The College Mathematics Journal
+    volume: 45
+    issue: 1
+    start: 17
+    end: 21
+    year: 2014
+    doi: 10.4169/college.math.j.45.1.017
+  - type: article
+    title: "Divisibility Tests"
+    authors:
+      - family-names: Khare
+        given-names: Apoorva
+    journal: >-
+      Furman University Electronic Journal of Undergraduate Mathematics
+    volume: 3
+    start: 1
+    end: 5
+    year: 1997
+    url: "https://scholarexchange.furman.edu/fuejum/vol3/iss1/1/"
+    notes: The summing tests with inverse-of-10 weights.
+  - type: article
+    title: "Divisibility tests with weighted digital sums"
+    authors:
+      - family-names: Pal
+        given-names: Palash B.
+    year: 2005
+    url: "https://arxiv.org/abs/math/0507011"
+    notes: >-
+      arXiv:math/0507011. Horner-form test for divisors ending in 1, 3, 7, 9,
+      with proof; notes explicitly that it does not yield the remainder.
+  - type: article
+    title: "General Divisibility Criteria"
+    authors:
+      - family-names: Grinberg
+        given-names: Anatoly A.
+      - family-names: Luryi
+        given-names: Serge
+    year: 2014
+    url: "https://arxiv.org/abs/1401.5486"
+    notes: >-
+      arXiv:1401.5486. The two-parameter universal criterion for any divisor in
+      any base. The 1997 equation of this project is exactly their restricted
+      rule for the parameter choice q = CEIL(10/b2) - 1.
+  - type: article
+    title: "Divisibility Tests: A History and User's Guide"
+    authors:
+      - family-names: McDowell
+        given-names: Eric L.
+    journal: MAA Convergence
+    year: 2018
+    url: >-
+      https://old.maa.org/press/periodicals/convergence/divisibility-tests-a-history-and-users-guide
+    notes: >-
+      History of the field, with dedicated sections on the Pascal and Zbikowski
+      tests.
+  - type: article
+    title: "Divisibility Tests Unified: Stacking the Trimmings for Sums"
+    authors:
+      - family-names: O'Shea
+        given-names: Edwin
+    journal: Mathematics Magazine
+    year: 2019
+    url: "https://arxiv.org/abs/1903.04903"
+    notes: >-
+      arXiv:1903.04903. Proves that the trimming and summing families of tests
+      are the same tests, in both directions.
+  - type: article
+    title: "Divisibility Tests, Old and New"
+    authors:
+      - family-names: Ganzell
+        given-names: Sandy
+    journal: The College Mathematics Journal
+    volume: 48
+    issue: 1
+    start: 36
+    end: 40
+    year: 2017
+    doi: 10.4169/college.math.j.48.1.36
+  - type: book
+    title: "Vedic Mathematics"
+    authors:
+      - family-names: Tirthaji
+        given-names: Bharati Krishna
+    publisher:
+      name: Motilal Banarsidass
+    year: 1965
+    notes: >-
+      The osculator (Ekadhikena Purvena) construction, which produces the same
+      multipliers as Zbikowski's test.
+  - type: book
+    title: "The Moscow Puzzles: 359 Mathematical Recreations"
+    authors:
+      - family-names: Kordemsky
+        given-names: Boris A.
+    editors:
+      - family-names: Gardner
+        given-names: Martin
+    publisher:
+      name: Dover Publications
+    year: 1992
+    notes: Problem 320 -- the times-five walk for testing divisibility by 7.
+  - type: book
+    title: >-
+      History of the Theory of Numbers, Volume I: Divisibility and Primality
+    authors:
+      - family-names: Dickson
+        given-names: Leonard Eugene
+    publisher:
+      name: Dover Publications
+    year: 2005
