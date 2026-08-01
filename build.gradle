@@ -14,7 +14,7 @@ repositories {
 dependencies {
     // Groovy 5 is what supports JDK 25; its groupId is org.apache.groovy, not
     // the org.codehaus.groovy of Groovy 3 and earlier.
-    implementation 'org.apache.groovy:groovy:5.0.6'
+    implementation 'org.apache.groovy:groovy:5.0.8'
 
     // Spock ships one build per Groovy major; this must track the Groovy above.
     // No junit-jupiter dependency is declared: every test here is a Spock
