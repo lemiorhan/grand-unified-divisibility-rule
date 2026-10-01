@@ -27,10 +27,10 @@ dependencies {
     // implicitly. Left unversioned so Spock's JUnit BOM picks the matching one.
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
-    implementation 'org.slf4j:slf4j-api:2.0.18'
-    implementation 'org.slf4j:jcl-over-slf4j:2.0.18'
-    implementation 'org.slf4j:log4j-over-slf4j:2.0.18'
-    implementation 'org.slf4j:slf4j-simple:2.0.18'
+    implementation 'org.slf4j:slf4j-api:2.0.20'
+    implementation 'org.slf4j:jcl-over-slf4j:2.0.20'
+    implementation 'org.slf4j:log4j-over-slf4j:2.0.20'
+    implementation 'org.slf4j:slf4j-simple:2.0.20'
 }
 
 test {
